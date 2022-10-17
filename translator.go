@@ -24,8 +24,8 @@ func (t Translator) Translate(message string) (string, error) {
 
 	url_str := fmt.Sprintf(
 		API_URL,
-		Lang[t.src_lang],
-		Lang[t.dest_lang],
+		Lang_Code[t.src_lang],
+		Lang_Code[t.dest_lang],
 		url.QueryEscape(message),
 	)
 	res, err := http.Get(url_str)
