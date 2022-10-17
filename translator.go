@@ -30,16 +30,16 @@ func (t Translator) Translate(message string) (string, error) {
 	)
 	res, err := http.Get(url_str)
 	if err != nil {
-		return err.Error(), err
+		return "", err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return err.Error(), err
+		return "", err
 	}
 
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		return err.Error(), err
+		return "", err
 	}
 
 	if len(data) > 0 {
@@ -50,5 +50,5 @@ func (t Translator) Translate(message string) (string, error) {
 		}
 		return translated, nil
 	}
-	return "Translation not found", errors.New("Translation not found")
+	return "", errors.New("Translation not found")
 }
