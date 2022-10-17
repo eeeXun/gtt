@@ -7,8 +7,9 @@ import (
 
 type Colors struct {
 	background_color tcell.Color
-	foreground_color tcell.Color
 	border_color     tcell.Color
+	foreground_color tcell.Color
+	text_color       tcell.Color
 }
 
 type Window struct {
