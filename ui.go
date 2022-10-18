@@ -44,6 +44,8 @@ func InputHandle(event *tcell.EventKey) *tcell.EventKey {
 		dest_box.SetText("PPP")
 	case tcell.KeyCtrlT:
 		dest_box.SetText("TTT")
+	case tcell.KeyCtrlS:
+		dest_box.SetText("SSS")
 	}
 
 	return event
