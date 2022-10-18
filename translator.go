@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	API_URL = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s"
+	api_url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s"
+	sound_url = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
 type Translator struct {
@@ -23,7 +24,7 @@ func (t Translator) Translate(message string) (string, error) {
 	var translated string
 
 	url_str := fmt.Sprintf(
-		API_URL,
+		api_url,
 		Lang_Code[t.src_lang],
 		Lang_Code[t.dest_lang],
 		url.QueryEscape(message),
