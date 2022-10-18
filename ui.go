@@ -13,6 +13,9 @@ func ui_init() {
 	src_box.SetTextStyle(tcell.StyleDefault.
 		Background(window.src.background_color).
 		Foreground(window.src.foreground_color))
+	src_box.SetSelectedStyle(tcell.StyleDefault.
+		Background(window.src.selected_color).
+		Foreground(window.src.foreground_color))
 
 	dest_box.SetBorder(true).
 		SetTitle(translator.dest_lang).

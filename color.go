@@ -7,6 +7,7 @@ import (
 type color_theme struct {
 	bg     tcell.Color
 	fg     tcell.Color
+	gray   tcell.Color
 	red    tcell.Color
 	green  tcell.Color
 	yellow tcell.Color
@@ -19,6 +20,7 @@ var (
 	Gruvbox color_theme = color_theme{
 		bg:     tcell.NewHexColor(0x282828),
 		fg:     tcell.NewHexColor(0xebdbb2),
+		gray:   tcell.NewHexColor(0x928374),
 		red:    tcell.NewHexColor(0xfb4934),
 		green:  tcell.NewHexColor(0xfabd2f),
 		yellow: tcell.NewHexColor(0xfabd2f),
@@ -29,6 +31,7 @@ var (
 	Nord color_theme = color_theme{
 		bg:     tcell.NewHexColor(0x3b4252),
 		fg:     tcell.NewHexColor(0xeceff4),
+		gray:   tcell.NewHexColor(0x4c566a),
 		red:    tcell.NewHexColor(0xbf616a),
 		green:  tcell.NewHexColor(0xa3be8c),
 		yellow: tcell.NewHexColor(0xebcb8b),
@@ -43,6 +46,7 @@ type Colors struct {
 	border_color     tcell.Color
 	foreground_color tcell.Color
 	text_color       tcell.Color
+	selected_color   tcell.Color
 }
 
 type Window struct {
@@ -51,10 +55,11 @@ type Window struct {
 }
 
 func (w *Window) color_init() {
-	w.src.background_color = Nord.bg
-	w.src.border_color = Nord.yellow
-	w.src.foreground_color = Nord.fg
-	w.dest.background_color = Nord.bg
-	w.dest.border_color = Nord.blue
-	w.dest.foreground_color = Nord.fg
+	w.src.background_color = Gruvbox.bg
+	w.src.border_color = Gruvbox.red
+	w.src.foreground_color = Gruvbox.fg
+	w.src.selected_color = Gruvbox.gray
+	w.dest.background_color = Gruvbox.bg
+	w.dest.border_color = Gruvbox.blue
+	w.dest.foreground_color = Gruvbox.fg
 }
