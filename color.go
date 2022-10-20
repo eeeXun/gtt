@@ -5,8 +5,9 @@ import (
 )
 
 var (
-	themes_name = []string{"Gruvbox", "Nord"}
-	Themes = map[string]map[string]tcell.Color{
+	themes_name             = []string{"Gruvbox", "Nord"}
+	Transparent tcell.Color = tcell.ColorDefault
+	Themes                  = map[string]map[string]tcell.Color{
 		"Gruvbox": {
 			"bg":     tcell.NewHexColor(0x282828),
 			"fg":     tcell.NewHexColor(0xebdbb2),
@@ -37,6 +38,7 @@ type Colors struct {
 	foreground_color tcell.Color
 	border_color     tcell.Color
 	text_color       tcell.Color
+	title_color      tcell.Color
 	selected_color   tcell.Color
 }
 
@@ -46,11 +48,20 @@ type Window struct {
 }
 
 func (w *Window) color_init() {
-	w.src.background_color = Themes["Gruvbox"]["bg"]
-	w.src.border_color = Themes["Gruvbox"]["red"]
-	w.src.foreground_color = Themes["Gruvbox"]["fg"]
-	w.src.selected_color = Themes["Gruvbox"]["gray"]
-	w.dest.background_color = Themes["Gruvbox"]["bg"]
-	w.dest.border_color = Themes["Gruvbox"]["blue"]
-	w.dest.foreground_color = Themes["Gruvbox"]["fg"]
+	theme := "Gruvbox"
+	transparent := true
+	if transparent {
+		w.src.background_color = Transparent
+		w.dest.background_color = Transparent
+	} else {
+		w.src.background_color = Themes[theme]["bg"]
+		w.dest.background_color = Themes[theme]["bg"]
+	}
+	w.src.border_color = Themes[theme]["red"]
+	w.src.foreground_color = Themes[theme]["fg"]
+	w.src.title_color = Themes[theme]["yellow"]
+	w.src.selected_color = Themes[theme]["gray"]
+	w.dest.foreground_color = Themes[theme]["fg"]
+	w.dest.border_color = Themes[theme]["blue"]
+	w.dest.title_color = Themes[theme]["cyan"]
 }

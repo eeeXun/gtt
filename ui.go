@@ -8,7 +8,7 @@ func ui_init() {
 	src_box.SetBorder(true).
 		SetTitle(translator.src_lang).
 		SetBorderColor(window.src.border_color).
-		SetTitleColor(window.src.border_color).
+		SetTitleColor(window.src.title_color).
 		SetBackgroundColor(window.src.background_color)
 	src_box.SetTextStyle(tcell.StyleDefault.
 		Background(window.src.background_color).
@@ -21,13 +21,15 @@ func ui_init() {
 	dest_box.SetBorder(true).
 		SetTitle(translator.dest_lang).
 		SetBorderColor(window.dest.border_color).
-		SetTitleColor(window.dest.border_color).
+		SetTitleColor(window.dest.title_color).
 		SetBackgroundColor(window.dest.background_color)
 	dest_box.SetTextColor(window.dest.foreground_color)
 }
 
 func InputHandle(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
+	// panic(event.Name())
+
 	switch key {
 	case tcell.KeyCtrlJ:
 		result, err := translator.Translate(src_box.GetText())
@@ -39,9 +41,9 @@ func InputHandle(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlQ:
 		src_box.SetText("", true)
 	case tcell.KeyCtrlN:
-		dest_box.SetText("NNN")
+		translator.PlaySound(translator.src_lang, src_box.GetText())
 	case tcell.KeyCtrlP:
-		dest_box.SetText("PPP")
+		translator.PlaySound(translator.dest_lang, dest_box.GetText(false))
 	case tcell.KeyCtrlT:
 		dest_box.SetText("TTT")
 	case tcell.KeyCtrlS:
