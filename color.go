@@ -44,7 +44,7 @@ type Colors struct {
 
 type Window struct {
 	src  Colors
-	dest Colors
+	dst Colors
 }
 
 func (w *Window) color_init() {
@@ -52,16 +52,16 @@ func (w *Window) color_init() {
 	transparent := true
 	if transparent {
 		w.src.background_color = Transparent
-		w.dest.background_color = Transparent
+		w.dst.background_color = Transparent
 	} else {
 		w.src.background_color = Themes[theme]["bg"]
-		w.dest.background_color = Themes[theme]["bg"]
+		w.dst.background_color = Themes[theme]["bg"]
 	}
 	w.src.border_color = Themes[theme]["red"]
 	w.src.foreground_color = Themes[theme]["fg"]
 	w.src.title_color = Themes[theme]["yellow"]
 	w.src.selected_color = Themes[theme]["gray"]
-	w.dest.foreground_color = Themes[theme]["fg"]
-	w.dest.border_color = Themes[theme]["blue"]
-	w.dest.title_color = Themes[theme]["cyan"]
+	w.dst.foreground_color = Themes[theme]["fg"]
+	w.dst.border_color = Themes[theme]["blue"]
+	w.dst.title_color = Themes[theme]["cyan"]
 }

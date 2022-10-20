@@ -18,12 +18,21 @@ func ui_init() {
 		Foreground(window.src.foreground_color))
 	src_box.SetInputCapture(InputHandle)
 
-	dest_box.SetBorder(true).
+	dst_box.SetBorder(true).
 		SetTitle(translator.dest_lang).
-		SetBorderColor(window.dest.border_color).
-		SetTitleColor(window.dest.title_color).
-		SetBackgroundColor(window.dest.background_color)
-	dest_box.SetTextColor(window.dest.foreground_color)
+		SetBorderColor(window.dst.border_color).
+		SetTitleColor(window.dst.title_color).
+		SetBackgroundColor(window.dst.background_color)
+	dst_box.SetTextColor(window.dst.foreground_color)
+
+	src_dropdown.SetOptions(Lang, nil)
+	dst_dropdown.SetOptions(Lang, nil)
+	// src_dropdown.SetOptions([]string{"a", "b"}, nil)
+	// dst_dropdown.SetOptions([]string{"a", "b"}, nil)
+	src_dropdown.SetBorder(true).
+		SetTitle("Select an option (hit Enter): ")
+	dst_dropdown.SetBorder(true).
+		SetTitle("Select an option (hit Enter): ")
 }
 
 func InputHandle(event *tcell.EventKey) *tcell.EventKey {
@@ -34,20 +43,20 @@ func InputHandle(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlJ:
 		result, err := translator.Translate(src_box.GetText())
 		if err != nil {
-			dest_box.SetText(err.Error())
+			dst_box.SetText(err.Error())
 		} else {
-			dest_box.SetText(result)
+			dst_box.SetText(result)
 		}
 	case tcell.KeyCtrlQ:
 		src_box.SetText("", true)
 	case tcell.KeyCtrlN:
 		translator.PlaySound(translator.src_lang, src_box.GetText())
 	case tcell.KeyCtrlP:
-		translator.PlaySound(translator.dest_lang, dest_box.GetText(false))
+		translator.PlaySound(translator.dest_lang, dst_box.GetText(false))
 	case tcell.KeyCtrlT:
-		dest_box.SetText("TTT")
+		dst_box.SetText("TTT")
 	case tcell.KeyCtrlS:
-		dest_box.SetText("SSS")
+		dst_box.SetText("SSS")
 	}
 
 	return event
