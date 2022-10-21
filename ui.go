@@ -73,10 +73,10 @@ func ui_init() {
 	// handler
 	pages.SetInputCapture(PagesHandler)
 	translate_page.SetInputCapture(TranslatePageHandler)
-	src_dropdown.SetDoneFunc(SrcDropDownHandler)
-	src_dropdown.SetSelectedFunc(SrcSelected)
-	dst_dropdown.SetDoneFunc(DstDropDownHandler)
-	dst_dropdown.SetSelectedFunc(DstSelected)
+	src_dropdown.SetDoneFunc(SrcDropDownHandler).
+		SetSelectedFunc(SrcSelected)
+	dst_dropdown.SetDoneFunc(DstDropDownHandler).
+		SetSelectedFunc(DstSelected)
 }
 
 func PagesHandler(event *tcell.EventKey) *tcell.EventKey {

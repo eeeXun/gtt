@@ -112,7 +112,7 @@ var (
 		"Yoruba",
 		"Zulu",
 	}
-	Lang_Code = map[string]string{
+	LangCode = map[string]string{
 		"Afrikaans":                     "af",
 		"Albanian":                      "sq",
 		"Amharic":                       "am",

@@ -47,7 +47,7 @@ type Window struct {
 	dst Colors
 }
 
-func (w *Window) color_init() {
+func (w *Window) colorInit() {
 	if transparent {
 		w.src.background_color = Transparent
 		w.dst.background_color = Transparent

@@ -28,8 +28,8 @@ func (t Translator) Translate(message string) (string, error) {
 
 	url_str := fmt.Sprintf(
 		api_url,
-		Lang_Code[t.src_lang],
-		Lang_Code[t.dst_lang],
+		LangCode[t.src_lang],
+		LangCode[t.dst_lang],
 		url.QueryEscape(message),
 	)
 	res, err := http.Get(url_str)
@@ -61,7 +61,7 @@ func (t Translator) PlaySound(lang string, message string) {
 	url_str := fmt.Sprintf(
 		sound_url,
 		url.QueryEscape(message),
-		Lang_Code[lang],
+		LangCode[lang],
 	)
 	res, err := http.Get(url_str)
 	if err != nil {

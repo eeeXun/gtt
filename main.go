@@ -27,7 +27,7 @@ func main() {
 	translator.dst_lang = "Chinese (Traditional)"
 	// result, _ := translator.Translate("Hello world\nApple\nbumper")
 	// fmt.Println(result)
-	window.color_init()
+	window.colorInit()
 	ui_init()
 	translate_page.SetDirection(tview.FlexColumn).
 		AddItem(src_box, 0, 1, true).
