@@ -23,7 +23,6 @@ func update_background() {
 			Foreground(window.src.prefix_color))
 
 	dst_dropdown.SetBackgroundColor(window.dst.background_color)
-	// dst_dropdown.SetFieldBackgroundColor(window.src.selected_color)
 	dst_dropdown.SetListStyles(tcell.StyleDefault.
 		Background(window.src.background_color).
 		Foreground(window.src.foreground_color),
@@ -34,14 +33,6 @@ func update_background() {
 
 func ui_init() {
 	update_background()
-
-	// handler
-	pages.SetInputCapture(PagesHandler)
-	translate_page.SetInputCapture(TranslatePageHandler)
-	src_dropdown.SetDoneFunc(SrcDropDownHandler)
-	src_dropdown.SetSelectedFunc(SrcSelected)
-	dst_dropdown.SetDoneFunc(DstDropDownHandler)
-	dst_dropdown.SetSelectedFunc(DstSelected)
 
 	// box
 	src_box.SetBorder(true).
@@ -78,6 +69,14 @@ func ui_init() {
 		SetTitle(translator.dst_lang).
 		SetBorderColor(window.dst.border_color).
 		SetTitleColor(window.dst.border_color)
+
+	// handler
+	pages.SetInputCapture(PagesHandler)
+	translate_page.SetInputCapture(TranslatePageHandler)
+	src_dropdown.SetDoneFunc(SrcDropDownHandler)
+	src_dropdown.SetSelectedFunc(SrcSelected)
+	dst_dropdown.SetDoneFunc(DstDropDownHandler)
+	dst_dropdown.SetSelectedFunc(DstSelected)
 }
 
 func PagesHandler(event *tcell.EventKey) *tcell.EventKey {

@@ -18,7 +18,7 @@ const (
 )
 
 type Translator struct {
-	src_lang  string
+	src_lang string
 	dst_lang string
 }
 
