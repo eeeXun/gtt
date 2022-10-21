@@ -28,7 +28,7 @@ func main() {
 	// result, _ := translator.Translate("Hello world\nApple\nbumper")
 	// fmt.Println(result)
 	window.colorInit()
-	ui_init()
+	uiInit()
 	translate_page.SetDirection(tview.FlexColumn).
 		AddItem(src_box, 0, 1, true).
 		AddItem(dst_box, 0, 1, false)

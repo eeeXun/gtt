@@ -4,7 +4,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-func update_background() {
+func updateBackground() {
 	// box
 	src_box.SetBackgroundColor(window.src.background_color)
 	src_box.SetTextStyle(tcell.StyleDefault.
@@ -31,8 +31,8 @@ func update_background() {
 			Foreground(window.src.prefix_color))
 }
 
-func ui_init() {
-	update_background()
+func uiInit() {
+	updateBackground()
 
 	// box
 	src_box.SetBorder(true).
@@ -91,7 +91,7 @@ func PagesHandler(event *tcell.EventKey) *tcell.EventKey {
 			window.src.background_color = Transparent
 			window.dst.background_color = Transparent
 		}
-		update_background()
+		updateBackground()
 		transparent = !transparent
 	}
 
@@ -118,7 +118,7 @@ func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlP:
 		translator.PlaySound(translator.dst_lang, dst_box.GetText(false))
 	case tcell.KeyCtrlS:
-		dst_box.SetText("SSS")
+		translator.src_lang, translator.dst_lang = translator.dst_lang, translator.src_lang
 	}
 
 	return event
