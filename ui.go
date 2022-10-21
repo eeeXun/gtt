@@ -31,12 +31,18 @@ func updateBackground() {
 			Foreground(window.src.prefix_color))
 }
 
-func uiInit() {
-	updateBackground()
+func updateTitle() {
+	src_box.SetTitle(translator.src_lang)
+	dst_box.SetTitle(translator.dst_lang)
+	src_dropdown.SetCurrentOption(IndexOf(translator.src_lang, Lang))
+	src_dropdown.SetTitle(translator.src_lang)
+	dst_dropdown.SetCurrentOption(IndexOf(translator.dst_lang, Lang))
+	dst_dropdown.SetTitle(translator.dst_lang)
+}
 
+func uiInit() {
 	// box
 	src_box.SetBorder(true).
-		SetTitle(translator.src_lang).
 		SetBorderColor(window.src.border_color).
 		SetTitleColor(window.src.border_color)
 	src_box.SetSelectedStyle(tcell.StyleDefault.
@@ -44,32 +50,29 @@ func uiInit() {
 		Foreground(window.src.foreground_color))
 
 	dst_box.SetBorder(true).
-		SetTitle(translator.dst_lang).
 		SetBorderColor(window.dst.border_color).
 		SetTitleColor(window.dst.border_color)
 	dst_box.SetTextColor(window.dst.foreground_color)
 
 	// dropdown
-	src_dropdown.SetOptions(Lang, nil).
-		SetCurrentOption(IndexOf(translator.src_lang, Lang))
+	src_dropdown.SetOptions(Lang, nil)
 	src_dropdown.SetFieldBackgroundColor(window.src.selected_color).
 		SetFieldTextColor(window.src.foreground_color).
 		SetPrefixTextColor(window.dst.prefix_color)
 	src_dropdown.SetBorder(true).
-		SetTitle(translator.src_lang).
 		SetBorderColor(window.src.border_color).
 		SetTitleColor(window.src.border_color)
 
-	dst_dropdown.SetOptions(Lang, nil).
-		SetCurrentOption(IndexOf(translator.dst_lang, Lang))
+	dst_dropdown.SetOptions(Lang, nil)
 	dst_dropdown.SetFieldBackgroundColor(window.src.selected_color).
 		SetFieldTextColor(window.src.foreground_color).
 		SetPrefixTextColor(window.dst.prefix_color)
 	dst_dropdown.SetBorder(true).
-		SetTitle(translator.dst_lang).
 		SetBorderColor(window.dst.border_color).
 		SetTitleColor(window.dst.border_color)
 
+	updateBackground()
+	updateTitle()
 	// handler
 	pages.SetInputCapture(PagesHandler)
 	translate_page.SetInputCapture(TranslatePageHandler)
@@ -119,6 +122,11 @@ func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		translator.PlaySound(translator.dst_lang, dst_box.GetText(false))
 	case tcell.KeyCtrlS:
 		translator.src_lang, translator.dst_lang = translator.dst_lang, translator.src_lang
+		updateTitle()
+		src_text := src_box.GetText()
+		dst_text := dst_box.GetText(false)
+		src_box.SetText(dst_text, true)
+		dst_box.SetText(src_text)
 	}
 
 	return event
