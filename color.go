@@ -48,8 +48,6 @@ type Window struct {
 }
 
 func (w *Window) color_init() {
-	theme := "Gruvbox"
-	transparent := true
 	if transparent {
 		w.src.background_color = Transparent
 		w.dst.background_color = Transparent

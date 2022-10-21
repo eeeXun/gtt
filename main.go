@@ -17,6 +17,9 @@ var (
 	lang_page      = tview.NewFlex()
 	pages          = tview.NewPages()
 	window         Window
+	// config
+	theme       string = "Gruvbox"
+	transparent bool   = true
 )
 
 func main() {
