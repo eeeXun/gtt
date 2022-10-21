@@ -125,7 +125,12 @@ func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		updateTitle()
 		src_text := src_box.GetText()
 		dst_text := dst_box.GetText(false)
-		src_box.SetText(dst_text[:len(dst_text)-1], true)
+		if len(dst_text) > 0 {
+			// GetText of Box contains "\n" if it has words
+			src_box.SetText(dst_text[:len(dst_text)-1], true)
+		} else {
+			src_box.SetText(dst_text, true)
+		}
 		dst_box.SetText(src_text)
 	}
 
