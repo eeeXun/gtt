@@ -11,7 +11,7 @@ var (
 		"Gruvbox": {
 			"bg":     tcell.NewHexColor(0x282828),
 			"fg":     tcell.NewHexColor(0xebdbb2),
-			"gray":   tcell.NewHexColor(0x928374),
+			"gray":   tcell.NewHexColor(0x665c54),
 			"red":    tcell.NewHexColor(0xfb4934),
 			"green":  tcell.NewHexColor(0xfabd2f),
 			"yellow": tcell.NewHexColor(0xfabd2f),
@@ -38,12 +38,12 @@ type Colors struct {
 	foreground_color tcell.Color
 	border_color     tcell.Color
 	text_color       tcell.Color
-	title_color      tcell.Color
 	selected_color   tcell.Color
+	prefix_color     tcell.Color
 }
 
 type Window struct {
-	src  Colors
+	src Colors
 	dst Colors
 }
 
@@ -59,9 +59,9 @@ func (w *Window) color_init() {
 	}
 	w.src.border_color = Themes[theme]["red"]
 	w.src.foreground_color = Themes[theme]["fg"]
-	w.src.title_color = Themes[theme]["yellow"]
 	w.src.selected_color = Themes[theme]["gray"]
+	w.src.prefix_color = Themes[theme]["yellow"]
 	w.dst.foreground_color = Themes[theme]["fg"]
 	w.dst.border_color = Themes[theme]["blue"]
-	w.dst.title_color = Themes[theme]["cyan"]
+	w.dst.prefix_color = Themes[theme]["yellow"]
 }

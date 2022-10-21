@@ -19,7 +19,7 @@ const (
 
 type Translator struct {
 	src_lang  string
-	dest_lang string
+	dst_lang string
 }
 
 func (t Translator) Translate(message string) (string, error) {
@@ -29,7 +29,7 @@ func (t Translator) Translate(message string) (string, error) {
 	url_str := fmt.Sprintf(
 		api_url,
 		Lang_Code[t.src_lang],
-		Lang_Code[t.dest_lang],
+		Lang_Code[t.dst_lang],
 		url.QueryEscape(message),
 	)
 	res, err := http.Get(url_str)

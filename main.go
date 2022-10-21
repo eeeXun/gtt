@@ -21,7 +21,7 @@ var (
 
 func main() {
 	translator.src_lang = "English"
-	translator.dest_lang = "Chinese (Traditional)"
+	translator.dst_lang = "Chinese (Traditional)"
 	// result, _ := translator.Translate("Hello world\nApple\nbumper")
 	// fmt.Println(result)
 	window.color_init()
@@ -39,7 +39,7 @@ func main() {
 		AddItem(nil, 0, 1, false)
 
 	pages.AddPage("translate_page", translate_page, true, true)
-	pages.AddPage("lang_page", lang_page, true, true)
+	pages.AddPage("lang_page", lang_page, true, false)
 
 	if err := app.SetRoot(pages, true).
 		EnableMouse(true).Run(); err != nil {
