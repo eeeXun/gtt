@@ -41,8 +41,7 @@ func (t Translator) Translate(message string) (string, error) {
 		return "", err
 	}
 
-	err = json.Unmarshal(body, &data)
-	if err != nil {
+	if err = json.Unmarshal(body, &data); err != nil {
 		return "", err
 	}
 
@@ -81,8 +80,7 @@ func (t Translator) PlaySound(lang string, message string) {
 	for player.IsPlaying() {
 		time.Sleep(time.Second)
 	}
-	err = player.Close()
-	if err != nil {
+	if err = player.Close(); err != nil {
 		panic(err)
 	}
 }
