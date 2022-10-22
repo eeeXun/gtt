@@ -110,24 +110,17 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyEsc:
 		pages.ShowPage("lang_page")
 	case tcell.KeyCtrlJ:
-		result, err := translator.Translate(src_box.GetText())
-		if err != nil {
-			dst_box.SetText(err.Error())
-		} else {
-			dst_box.SetText(result)
+		message := src_box.GetText()
+		if len(message) > 0 {
+			result, err := translator.Translate(message)
+			if err != nil {
+				dst_box.SetText(err.Error())
+			} else {
+				dst_box.SetText(result)
+			}
 		}
 	case tcell.KeyCtrlQ:
 		src_box.SetText("", true)
-	case tcell.KeyCtrlN:
-		err := translator.PlaySound(translator.srcLang, src_box.GetText())
-		if err != nil {
-			src_box.SetText(err.Error(), true)
-		}
-	case tcell.KeyCtrlP:
-		err := translator.PlaySound(translator.dstLang, dst_box.GetText(false))
-		if err != nil {
-			dst_box.SetText(err.Error())
-		}
 	case tcell.KeyCtrlS:
 		translator.srcLang, translator.dstLang = translator.dstLang, translator.srcLang
 		updateTitle()
@@ -140,6 +133,22 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 			src_box.SetText(dst_text, true)
 		}
 		dst_box.SetText(src_text)
+	case tcell.KeyCtrlN:
+		message := src_box.GetText()
+		if len(message) > 0 {
+			err := translator.PlaySound(translator.srcLang, message)
+			if err != nil {
+				src_box.SetText(err.Error(), true)
+			}
+		}
+	case tcell.KeyCtrlP:
+		message := dst_box.GetText(false)
+		if len(message) > 0 {
+			err := translator.PlaySound(translator.dstLang, message)
+			if err != nil {
+				dst_box.SetText(err.Error())
+			}
+		}
 	}
 
 	return event
