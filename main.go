@@ -25,8 +25,7 @@ var (
 )
 
 func main() {
-	// result, _ := translator.Translate("Hello world\nApple\nbumper")
-	// fmt.Println(result)
+	SetTermTitle("GTT")
 	configInit()
 	window.colorInit()
 	uiInit()
