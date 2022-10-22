@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/rivo/tview"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -18,6 +19,7 @@ var (
 	pages          = tview.NewPages()
 	window         Window
 	// config
+	config      = viper.New()
 	theme       string
 	transparent bool
 )
@@ -47,4 +49,6 @@ func main() {
 		EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
+
+	defer updateConfig()
 }

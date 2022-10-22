@@ -1,7 +1,6 @@
 package main
 
 import (
-	config "github.com/spf13/viper"
 	"os"
 )
 
@@ -27,7 +26,7 @@ func configInit() {
 		if _, err = os.Stat(defaultConfigPath); os.IsNotExist(err) {
 			os.Mkdir(defaultConfigPath, os.ModePerm)
 		}
-		config.SafeWriteConfig();
+		config.SafeWriteConfig()
 	}
 
 	// setup
@@ -35,4 +34,29 @@ func configInit() {
 	transparent = config.GetBool("transparent")
 	translator.src_lang = config.GetString("source_language")
 	translator.dst_lang = config.GetString("destination_language")
+}
+
+func updateConfig() {
+	changed := false
+
+	if config.GetString("theme") != theme {
+		changed = true
+		config.Set("theme", theme)
+	}
+	if config.GetBool("transparent") != transparent {
+		changed = true
+		config.Set("transparent", transparent)
+	}
+	if config.GetString("source_language") != translator.src_lang {
+		changed = true
+		config.Set("source_language", translator.src_lang)
+	}
+	if config.GetString("destination_language") != translator.dst_lang {
+		changed = true
+		config.Set("destination_language", translator.dst_lang)
+	}
+
+	if changed {
+		config.WriteConfig()
+	}
 }
