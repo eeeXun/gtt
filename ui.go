@@ -31,7 +31,7 @@ func updateBackground() {
 			Foreground(window.src.prefix_color))
 }
 
-func updateTitle() {
+func updateLang() {
 	src_box.SetTitle(translator.src_lang)
 	dst_box.SetTitle(translator.dst_lang)
 	src_dropdown.SetCurrentOption(IndexOf(translator.src_lang, Lang))
@@ -72,7 +72,8 @@ func uiInit() {
 		SetTitleColor(window.dst.border_color)
 
 	updateBackground()
-	updateTitle()
+	updateLang()
+
 	// handler
 	pages.SetInputCapture(PagesHandler)
 	translate_page.SetInputCapture(TranslatePageHandler)
@@ -122,7 +123,7 @@ func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		translator.PlaySound(translator.dst_lang, dst_box.GetText(false))
 	case tcell.KeyCtrlS:
 		translator.src_lang, translator.dst_lang = translator.dst_lang, translator.src_lang
-		updateTitle()
+		updateLang()
 		src_text := src_box.GetText()
 		dst_text := dst_box.GetText(false)
 		if len(dst_text) > 0 {
