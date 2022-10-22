@@ -18,8 +18,8 @@ const (
 )
 
 type Translator struct {
-	src_lang string
-	dst_lang string
+	srcLang string
+	dstLang string
 }
 
 func (t Translator) Translate(message string) (string, error) {
@@ -28,8 +28,8 @@ func (t Translator) Translate(message string) (string, error) {
 
 	url_str := fmt.Sprintf(
 		textURL,
-		LangCode[t.src_lang],
-		LangCode[t.dst_lang],
+		LangCode[t.srcLang],
+		LangCode[t.dstLang],
 		url.QueryEscape(message),
 	)
 	res, err := http.Get(url_str)

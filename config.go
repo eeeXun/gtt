@@ -32,8 +32,8 @@ func configInit() {
 	// setup
 	theme = config.GetString("theme")
 	transparent = config.GetBool("transparent")
-	translator.src_lang = config.GetString("source_language")
-	translator.dst_lang = config.GetString("destination_language")
+	translator.srcLang = config.GetString("source_language")
+	translator.dstLang = config.GetString("destination_language")
 }
 
 func updateConfig() {
@@ -47,13 +47,13 @@ func updateConfig() {
 		changed = true
 		config.Set("transparent", transparent)
 	}
-	if config.GetString("source_language") != translator.src_lang {
+	if config.GetString("source_language") != translator.srcLang {
 		changed = true
-		config.Set("source_language", translator.src_lang)
+		config.Set("source_language", translator.srcLang)
 	}
-	if config.GetString("destination_language") != translator.dst_lang {
+	if config.GetString("destination_language") != translator.dstLang {
 		changed = true
-		config.Set("destination_language", translator.dst_lang)
+		config.Set("destination_language", translator.dstLang)
 	}
 
 	if changed {

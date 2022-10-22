@@ -31,13 +31,14 @@ func updateBackground() {
 			Foreground(window.src.prefix_color))
 }
 
-func updateLang() {
-	src_box.SetTitle(translator.src_lang)
-	dst_box.SetTitle(translator.dst_lang)
-	src_dropdown.SetCurrentOption(IndexOf(translator.src_lang, Lang))
-	src_dropdown.SetTitle(translator.src_lang)
-	dst_dropdown.SetCurrentOption(IndexOf(translator.dst_lang, Lang))
-	dst_dropdown.SetTitle(translator.dst_lang)
+// update title and option
+func updateTitle() {
+	src_box.SetTitle(translator.srcLang)
+	dst_box.SetTitle(translator.dstLang)
+	src_dropdown.SetCurrentOption(IndexOf(translator.srcLang, Lang))
+	src_dropdown.SetTitle(translator.srcLang)
+	dst_dropdown.SetCurrentOption(IndexOf(translator.dstLang, Lang))
+	dst_dropdown.SetTitle(translator.dstLang)
 }
 
 func uiInit() {
@@ -72,18 +73,18 @@ func uiInit() {
 		SetTitleColor(window.dst.border_color)
 
 	updateBackground()
-	updateLang()
+	updateTitle()
 
 	// handler
-	pages.SetInputCapture(PagesHandler)
-	translate_page.SetInputCapture(TranslatePageHandler)
-	src_dropdown.SetDoneFunc(SrcDropDownHandler).
-		SetSelectedFunc(SrcSelected)
-	dst_dropdown.SetDoneFunc(DstDropDownHandler).
-		SetSelectedFunc(DstSelected)
+	pages.SetInputCapture(pagesHandler)
+	translate_page.SetInputCapture(translatePageHandler)
+	src_dropdown.SetDoneFunc(srcDropDownHandler).
+		SetSelectedFunc(srcSelected)
+	dst_dropdown.SetDoneFunc(dstDropDownHandler).
+		SetSelectedFunc(dstSelected)
 }
 
-func PagesHandler(event *tcell.EventKey) *tcell.EventKey {
+func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
 
 	switch key {
@@ -102,7 +103,7 @@ func PagesHandler(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
-func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
+func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
 
 	switch key {
@@ -118,18 +119,18 @@ func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlQ:
 		src_box.SetText("", true)
 	case tcell.KeyCtrlN:
-		err := translator.PlaySound(translator.src_lang, src_box.GetText())
+		err := translator.PlaySound(translator.srcLang, src_box.GetText())
 		if err != nil {
 			src_box.SetText(err.Error(), true)
 		}
 	case tcell.KeyCtrlP:
-		err := translator.PlaySound(translator.dst_lang, dst_box.GetText(false))
+		err := translator.PlaySound(translator.dstLang, dst_box.GetText(false))
 		if err != nil {
 			dst_box.SetText(err.Error())
 		}
 	case tcell.KeyCtrlS:
-		translator.src_lang, translator.dst_lang = translator.dst_lang, translator.src_lang
-		updateLang()
+		translator.srcLang, translator.dstLang = translator.dstLang, translator.srcLang
+		updateTitle()
 		src_text := src_box.GetText()
 		dst_text := dst_box.GetText(false)
 		if len(dst_text) > 0 {
@@ -144,19 +145,19 @@ func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
-func SrcSelected(text string, index int) {
-	translator.src_lang = text
+func srcSelected(text string, index int) {
+	translator.srcLang = text
 	src_box.SetTitle(text)
 	src_dropdown.SetTitle(text)
 }
 
-func DstSelected(text string, index int) {
-	translator.dst_lang = text
+func dstSelected(text string, index int) {
+	translator.dstLang = text
 	dst_box.SetTitle(text)
 	dst_dropdown.SetTitle(text)
 }
 
-func SrcDropDownHandler(key tcell.Key) {
+func srcDropDownHandler(key tcell.Key) {
 	switch key {
 	case tcell.KeyTAB:
 		app.SetFocus(dst_dropdown)
@@ -165,7 +166,7 @@ func SrcDropDownHandler(key tcell.Key) {
 	}
 }
 
-func DstDropDownHandler(key tcell.Key) {
+func dstDropDownHandler(key tcell.Key) {
 	switch key {
 	case tcell.KeyTAB:
 		app.SetFocus(src_dropdown)
