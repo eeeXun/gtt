@@ -18,13 +18,11 @@ var (
 	pages          = tview.NewPages()
 	window         Window
 	// config
-	theme       string = "Gruvbox"
-	transparent bool   = true
+	theme       string
+	transparent bool
 )
 
 func main() {
-	translator.src_lang = "English"
-	translator.dst_lang = "Chinese (Traditional)"
 	// result, _ := translator.Translate("Hello world\nApple\nbumper")
 	// fmt.Println(result)
 	configInit()

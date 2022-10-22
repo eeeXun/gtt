@@ -18,6 +18,7 @@ func configInit() {
 	}
 	config.AddConfigPath("$HOME/.config/gtt")
 
+	// create config file if not exists
 	if err := config.ReadInConfig(); err != nil {
 		config.Set("transparent", false)
 		config.Set("theme", "Gruvbox")
@@ -28,4 +29,10 @@ func configInit() {
 		}
 		config.SafeWriteConfig();
 	}
+
+	// setup
+	theme = config.GetString("theme")
+	transparent = config.GetBool("transparent")
+	translator.src_lang = config.GetString("source_language")
+	translator.dst_lang = config.GetString("destination_language")
 }
