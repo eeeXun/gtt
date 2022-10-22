@@ -56,7 +56,7 @@ func (t Translator) Translate(message string) (string, error) {
 	return "", errors.New("Translation not found")
 }
 
-func (t Translator) PlaySound(lang string, message string) {
+func (t Translator) PlaySound(lang string, message string) error {
 	url_str := fmt.Sprintf(
 		sound_url,
 		url.QueryEscape(message),
@@ -64,15 +64,15 @@ func (t Translator) PlaySound(lang string, message string) {
 	)
 	res, err := http.Get(url_str)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	decoder, err := mp3.NewDecoder(res.Body)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	<-readyChan
 	player := otoCtx.NewPlayer(decoder)
@@ -81,6 +81,8 @@ func (t Translator) PlaySound(lang string, message string) {
 		time.Sleep(time.Second)
 	}
 	if err = player.Close(); err != nil {
-		panic(err)
+		return err
 	}
+
+	return nil
 }

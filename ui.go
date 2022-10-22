@@ -118,9 +118,15 @@ func TranslatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlQ:
 		src_box.SetText("", true)
 	case tcell.KeyCtrlN:
-		translator.PlaySound(translator.src_lang, src_box.GetText())
+		err := translator.PlaySound(translator.src_lang, src_box.GetText())
+		if err != nil {
+			src_box.SetText(err.Error(), true)
+		}
 	case tcell.KeyCtrlP:
-		translator.PlaySound(translator.dst_lang, dst_box.GetText(false))
+		err := translator.PlaySound(translator.dst_lang, dst_box.GetText(false))
+		if err != nil {
+			dst_box.SetText(err.Error())
+		}
 	case tcell.KeyCtrlS:
 		translator.src_lang, translator.dst_lang = translator.dst_lang, translator.src_lang
 		updateLang()
