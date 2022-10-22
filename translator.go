@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	api_url   = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s"
-	sound_url = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
+	textURL   = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s"
+	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
 type Translator struct {
@@ -27,7 +27,7 @@ func (t Translator) Translate(message string) (string, error) {
 	var translated string
 
 	url_str := fmt.Sprintf(
-		api_url,
+		textURL,
 		LangCode[t.src_lang],
 		LangCode[t.dst_lang],
 		url.QueryEscape(message),
@@ -58,7 +58,7 @@ func (t Translator) Translate(message string) (string, error) {
 
 func (t Translator) PlaySound(lang string, message string) error {
 	url_str := fmt.Sprintf(
-		sound_url,
+		soundURL,
 		url.QueryEscape(message),
 		LangCode[lang],
 	)
