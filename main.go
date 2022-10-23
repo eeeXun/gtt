@@ -9,18 +9,21 @@ var (
 	// Translate
 	translator = NewTranslator()
 	// UI
-	app             = tview.NewApplication()
-	srcBox          = tview.NewTextArea()
-	dstBox          = tview.NewTextView()
-	srcDropDown     = tview.NewDropDown()
-	dstDropDown     = tview.NewDropDown()
-	langButton      = tview.NewButton("(1)Language")
-	styleButton     = tview.NewButton("(2)Style")
-	menuButton      = tview.NewButton("(3)KeyMap")
-	translateWindow = tview.NewFlex()
-	langWindow      = tview.NewFlex()
-	mainPage        = tview.NewPages()
-	window          Window
+	app                 = tview.NewApplication()
+	srcBox              = tview.NewTextArea()
+	dstBox              = tview.NewTextView()
+	srcLangDropDown     = tview.NewDropDown()
+	dstLangDropDown     = tview.NewDropDown()
+	themeDropDown       = tview.NewDropDown()
+	transparentDropDown = tview.NewDropDown()
+	langButton          = tview.NewButton("(1)Language")
+	styleButton         = tview.NewButton("(2)Style")
+	menuButton          = tview.NewButton("(3)KeyMap")
+	translateWindow     = tview.NewFlex()
+	langWindow          = tview.NewFlex()
+	styleWindow         = tview.NewFlex()
+	mainPage            = tview.NewPages()
+	window              Window
 	// config
 	config      = viper.New()
 	theme       string

@@ -15,16 +15,16 @@ func updateBackground() {
 	dstBox.SetBackgroundColor(window.dst.backgroundColor)
 
 	// dropdown
-	srcDropDown.SetBackgroundColor(window.src.backgroundColor)
-	srcDropDown.SetListStyles(tcell.StyleDefault.
+	srcLangDropDown.SetBackgroundColor(window.src.backgroundColor)
+	srcLangDropDown.SetListStyles(tcell.StyleDefault.
 		Background(window.src.backgroundColor).
 		Foreground(window.src.foregroundColor),
 		tcell.StyleDefault.
 			Background(window.src.selectedColor).
 			Foreground(window.src.prefixColor))
 
-	dstDropDown.SetBackgroundColor(window.dst.backgroundColor)
-	dstDropDown.SetListStyles(tcell.StyleDefault.
+	dstLangDropDown.SetBackgroundColor(window.dst.backgroundColor)
+	dstLangDropDown.SetListStyles(tcell.StyleDefault.
 		Background(window.src.backgroundColor).
 		Foreground(window.src.foregroundColor),
 		tcell.StyleDefault.
@@ -36,10 +36,10 @@ func updateBackground() {
 func updateTitle() {
 	srcBox.SetTitle(translator.srcLang)
 	dstBox.SetTitle(translator.dstLang)
-	srcDropDown.SetCurrentOption(IndexOf(translator.srcLang, Lang))
-	srcDropDown.SetTitle(translator.srcLang)
-	dstDropDown.SetCurrentOption(IndexOf(translator.dstLang, Lang))
-	dstDropDown.SetTitle(translator.dstLang)
+	srcLangDropDown.SetCurrentOption(IndexOf(translator.srcLang, Lang))
+	srcLangDropDown.SetTitle(translator.srcLang)
+	dstLangDropDown.SetCurrentOption(IndexOf(translator.dstLang, Lang))
+	dstLangDropDown.SetTitle(translator.dstLang)
 }
 
 func attachButton() *tview.Flex {
@@ -68,19 +68,19 @@ func uiInit() {
 	dstBox.SetTextColor(window.dst.foregroundColor)
 
 	// dropdown
-	srcDropDown.SetOptions(Lang, nil)
-	srcDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+	srcLangDropDown.SetOptions(Lang, nil)
+	srcLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
 		SetFieldTextColor(window.src.foregroundColor).
 		SetPrefixTextColor(window.dst.prefixColor)
-	srcDropDown.SetBorder(true).
+	srcLangDropDown.SetBorder(true).
 		SetBorderColor(window.src.borderColor).
 		SetTitleColor(window.src.borderColor)
 
-	dstDropDown.SetOptions(Lang, nil)
-	dstDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+	dstLangDropDown.SetOptions(Lang, nil)
+	dstLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
 		SetFieldTextColor(window.src.foregroundColor).
 		SetPrefixTextColor(window.dst.prefixColor)
-	dstDropDown.SetBorder(true).
+	dstLangDropDown.SetBorder(true).
 		SetBorderColor(window.dst.borderColor).
 		SetTitleColor(window.dst.borderColor)
 
@@ -109,18 +109,29 @@ func uiInit() {
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
-			AddItem(srcDropDown, 32, 1, true).
-			AddItem(dstDropDown, 32, 1, false).
+			AddItem(srcLangDropDown, 32, 1, true).
+			AddItem(dstLangDropDown, 32, 1, false).
 			AddItem(nil, 0, 1, false), 20, 1, true).
+		AddItem(attachButton(), 1, 1, true).
+		AddItem(nil, 0, 1, false)
+	styleWindow.SetDirection(tview.FlexRow).
+		AddItem(nil, 0, 1, false).
+	// 	AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+	// AddItem())
+		// AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+		// 	AddItem(nil, 0, 1, false).
+		// 	AddItem(srcDropDown, 32, 1, true).
+		// 	AddItem(dstDropDown, 32, 1, false).
+		// 	AddItem(nil, 0, 1, false), 20, 1, true).
 		AddItem(attachButton(), 1, 1, true).
 		AddItem(nil, 0, 1, false)
 
 	// handler
 	mainPage.SetInputCapture(pagesHandler)
 	translateWindow.SetInputCapture(translatePageHandler)
-	srcDropDown.SetDoneFunc(srcDropDownHandler).
+	srcLangDropDown.SetDoneFunc(srcDropDownHandler).
 		SetSelectedFunc(srcSelected)
-	dstDropDown.SetDoneFunc(dstDropDownHandler).
+	dstLangDropDown.SetDoneFunc(dstDropDownHandler).
 		SetSelectedFunc(dstSelected)
 }
 
@@ -213,19 +224,19 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 func srcSelected(text string, index int) {
 	translator.srcLang = text
 	srcBox.SetTitle(text)
-	srcDropDown.SetTitle(text)
+	srcLangDropDown.SetTitle(text)
 }
 
 func dstSelected(text string, index int) {
 	translator.dstLang = text
 	dstBox.SetTitle(text)
-	dstDropDown.SetTitle(text)
+	dstLangDropDown.SetTitle(text)
 }
 
 func srcDropDownHandler(key tcell.Key) {
 	switch key {
 	case tcell.KeyTAB:
-		app.SetFocus(dstDropDown)
+		app.SetFocus(dstLangDropDown)
 	case tcell.KeyEsc:
 		mainPage.HidePage("langPage")
 	}
@@ -234,7 +245,7 @@ func srcDropDownHandler(key tcell.Key) {
 func dstDropDownHandler(key tcell.Key) {
 	switch key {
 	case tcell.KeyTAB:
-		app.SetFocus(srcDropDown)
+		app.SetFocus(srcLangDropDown)
 	case tcell.KeyEsc:
 		mainPage.HidePage("langPage")
 	}
