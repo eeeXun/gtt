@@ -9,15 +9,15 @@ var (
 	// Translate
 	translator = NewTranslator()
 	// UI
-	app            = tview.NewApplication()
-	src_box        = tview.NewTextArea()
-	dst_box        = tview.NewTextView()
-	src_dropdown   = tview.NewDropDown()
-	dst_dropdown   = tview.NewDropDown()
-	translate_page = tview.NewFlex()
-	lang_page      = tview.NewFlex()
-	pages          = tview.NewPages()
-	window         Window
+	app             = tview.NewApplication()
+	srcBox         = tview.NewTextArea()
+	dstBox         = tview.NewTextView()
+	srcDropDown    = tview.NewDropDown()
+	dstDropDown    = tview.NewDropDown()
+	translateWindow = tview.NewFlex()
+	langWindow      = tview.NewFlex()
+	mainPage        = tview.NewPages()
+	window          Window
 	// config
 	config      = viper.New()
 	theme       string
@@ -29,22 +29,22 @@ func main() {
 	configInit()
 	window.colorInit()
 	uiInit()
-	translate_page.SetDirection(tview.FlexColumn).
-		AddItem(src_box, 0, 1, true).
-		AddItem(dst_box, 0, 1, false)
-	lang_page.SetDirection(tview.FlexRow).
+	translateWindow.SetDirection(tview.FlexColumn).
+		AddItem(srcBox, 0, 1, true).
+		AddItem(dstBox, 0, 1, false)
+	langWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
-			AddItem(src_dropdown, 32, 1, true).
-			AddItem(dst_dropdown, 32, 1, false).
+			AddItem(srcDropDown, 32, 1, true).
+			AddItem(dstDropDown, 32, 1, false).
 			AddItem(nil, 0, 1, false), 20, 1, true).
 		AddItem(nil, 0, 1, false)
 
-	pages.AddPage("translate_page", translate_page, true, true)
-	pages.AddPage("lang_page", lang_page, true, false)
+	mainPage.AddPage("translatePage", translateWindow, true, true)
+	mainPage.AddPage("langPage", langWindow, true, false)
 
-	if err := app.SetRoot(pages, true).
+	if err := app.SetRoot(mainPage, true).
 		EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
