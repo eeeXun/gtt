@@ -22,8 +22,8 @@ func configInit() {
 	if err := config.ReadInConfig(); err != nil {
 		config.Set("transparent", false)
 		config.Set("theme", "Gruvbox")
-		config.Set("source_language", "English")
-		config.Set("destination_language", "Chinese (Traditional)")
+		config.Set("source.language", "English")
+		config.Set("destination.language", "Chinese (Traditional)")
 		if _, err = os.Stat(defaultConfigPath); os.IsNotExist(err) {
 			os.Mkdir(defaultConfigPath, os.ModePerm)
 		}
@@ -33,8 +33,8 @@ func configInit() {
 	// setup
 	theme = config.GetString("theme")
 	transparent = config.GetBool("transparent")
-	translator.srcLang = config.GetString("source_language")
-	translator.dstLang = config.GetString("destination_language")
+	translator.srcLang = config.GetString("source.language")
+	translator.dstLang = config.GetString("destination.language")
 }
 
 func updateConfig() {
@@ -48,13 +48,13 @@ func updateConfig() {
 		changed = true
 		config.Set("transparent", transparent)
 	}
-	if config.GetString("source_language") != translator.srcLang {
+	if config.GetString("source.language") != translator.srcLang {
 		changed = true
-		config.Set("source_language", translator.srcLang)
+		config.Set("source.language", translator.srcLang)
 	}
-	if config.GetString("destination_language") != translator.dstLang {
+	if config.GetString("destination.language") != translator.dstLang {
 		changed = true
-		config.Set("destination_language", translator.dstLang)
+		config.Set("destination.language", translator.dstLang)
 	}
 
 	if changed {
