@@ -86,6 +86,7 @@ func (t *Translator) Translate(message string) (string, error) {
 		}
 		return translated, nil
 	}
+
 	return "", errors.New("Translation not found")
 }
 

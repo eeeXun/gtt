@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-// search XDG_CONFIG_HOME or $HOME/.config
+// Search XDG_CONFIG_HOME or $HOME/.config
 func configInit() {
 	var defaultConfigPath string
 
@@ -37,6 +37,7 @@ func configInit() {
 	translator.dstLang = config.GetString("destination.language")
 }
 
+// Check if need to modify config file when quit program
 func updateConfig() {
 	changed := false
 

@@ -1,5 +1,6 @@
 package main
 
+// https://cloud.google.com/translate/docs/languages
 var (
 	Lang = []string{
 		"Afrikaans",

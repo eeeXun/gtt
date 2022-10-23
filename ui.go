@@ -103,7 +103,7 @@ func updateAllColor() {
 	updateNonConfigColor()
 }
 
-// update title and option
+// Update title and option
 func updateTitle() {
 	srcBox.SetTitle(translator.srcLang)
 	dstBox.SetTitle(translator.dstLang)
@@ -239,7 +239,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 		dstBox.SetText(src_text)
 	case tcell.KeyCtrlO:
-		// play source sound
+		// Play source sound
 		if translator.soundLock.Available() {
 			message := srcBox.GetText()
 			if len(message) > 0 {
@@ -254,7 +254,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 
 		}
 	case tcell.KeyCtrlP:
-		// play destination sound
+		// Play destination sound
 		if translator.soundLock.Available() {
 			message := dstBox.GetText(false)
 			if len(message) > 0 {
@@ -268,7 +268,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 			}
 		}
 	case tcell.KeyCtrlX:
-		// stop play sound
+		// Stop play sound
 		translator.soundLock.stop = true
 	}
 
