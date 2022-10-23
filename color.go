@@ -5,8 +5,8 @@ import (
 )
 
 var (
-	themesName             = []string{"Gruvbox", "Nord"}
 	Transparent tcell.Color = tcell.ColorDefault
+	themesName              = []string{"Gruvbox", "Nord"}
 	Themes                  = map[string]map[string]tcell.Color{
 		"Gruvbox": {
 			"bg":     tcell.NewHexColor(0x282828),
