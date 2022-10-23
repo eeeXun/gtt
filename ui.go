@@ -72,6 +72,20 @@ func uiInit() {
 		SetBorderColor(window.dst.borderColor).
 		SetTitleColor(window.dst.borderColor)
 
+	// button
+	langButton.SetLabelColor(window.src.foregroundColor).
+		SetBackgroundColorActivated(window.src.pressColor).
+		SetLabelColorActivated(window.src.foregroundColor).
+		SetBackgroundColor(window.src.selectedColor)
+	styleButton.SetLabelColor(window.src.foregroundColor).
+		SetBackgroundColorActivated(window.src.pressColor).
+		SetLabelColorActivated(window.src.foregroundColor).
+		SetBackgroundColor(window.src.selectedColor)
+	menuButton.SetLabelColor(window.src.foregroundColor).
+		SetBackgroundColorActivated(window.src.pressColor).
+		SetLabelColorActivated(window.src.foregroundColor).
+		SetBackgroundColor(window.src.selectedColor)
+
 	updateBackground()
 	updateTitle()
 

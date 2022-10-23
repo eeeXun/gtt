@@ -40,6 +40,7 @@ type Colors struct {
 	textColor       tcell.Color
 	selectedColor   tcell.Color
 	prefixColor     tcell.Color
+	pressColor      tcell.Color
 }
 
 type Window struct {
@@ -58,8 +59,9 @@ func (w *Window) colorInit() {
 	w.src.borderColor = Themes[theme]["red"]
 	w.src.foregroundColor = Themes[theme]["fg"]
 	w.src.selectedColor = Themes[theme]["gray"]
-	w.src.prefixColor = Themes[theme]["yellow"]
+	w.src.prefixColor = Themes[theme]["cyan"]
+	w.src.pressColor = Themes[theme]["purple"]
 	w.dst.foregroundColor = Themes[theme]["fg"]
 	w.dst.borderColor = Themes[theme]["blue"]
-	w.dst.prefixColor = Themes[theme]["yellow"]
+	w.dst.prefixColor = Themes[theme]["cyan"]
 }
