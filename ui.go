@@ -3,9 +3,10 @@ package main
 import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
+	"strconv"
 )
 
-func updateBackground() {
+func updateBackgroundColor() {
 	// box
 	srcBox.SetBackgroundColor(window.src.backgroundColor)
 	srcBox.SetTextStyle(tcell.StyleDefault.
@@ -44,6 +45,64 @@ func updateBackground() {
 			Foreground(window.src.prefixColor))
 }
 
+func updateBorderColor() {
+	// box
+	srcBox.SetBorderColor(window.src.borderColor).
+		SetTitleColor(window.src.borderColor)
+	dstBox.SetBorderColor(window.dst.borderColor).
+		SetTitleColor(window.dst.borderColor)
+
+	// dropdown
+	srcLangDropDown.SetBorderColor(window.src.borderColor).
+		SetTitleColor(window.src.borderColor)
+	dstLangDropDown.SetBorderColor(window.dst.borderColor).
+		SetTitleColor(window.dst.borderColor)
+}
+
+func updateNonConfigColor() {
+	// box
+	srcBox.SetSelectedStyle(tcell.StyleDefault.
+		Background(window.src.selectedColor).
+		Foreground(window.src.foregroundColor))
+	dstBox.SetTextColor(window.dst.foregroundColor)
+
+	// dropdown
+	srcLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.src.prefixColor)
+	dstLangDropDown.SetFieldBackgroundColor(window.dst.selectedColor).
+		SetFieldTextColor(window.dst.foregroundColor).
+		SetPrefixTextColor(window.dst.prefixColor)
+	themeDropDown.SetLabelColor(window.src.labelColor)
+	themeDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.src.prefixColor)
+	transparentDropDown.SetLabelColor(window.src.labelColor)
+	transparentDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.src.prefixColor)
+
+	// button
+	langButton.SetLabelColor(window.src.foregroundColor).
+		SetBackgroundColorActivated(window.src.pressColor).
+		SetLabelColorActivated(window.src.foregroundColor).
+		SetBackgroundColor(window.src.selectedColor)
+	styleButton.SetLabelColor(window.src.foregroundColor).
+		SetBackgroundColorActivated(window.src.pressColor).
+		SetLabelColorActivated(window.src.foregroundColor).
+		SetBackgroundColor(window.src.selectedColor)
+	menuButton.SetLabelColor(window.src.foregroundColor).
+		SetBackgroundColorActivated(window.src.pressColor).
+		SetLabelColorActivated(window.src.foregroundColor).
+		SetBackgroundColor(window.src.selectedColor)
+}
+
+func updateAllColor() {
+	updateBackgroundColor()
+	updateBorderColor()
+	updateNonConfigColor()
+}
+
 // update title and option
 func updateTitle() {
 	srcBox.SetTitle(translator.srcLang)
@@ -67,59 +126,22 @@ func attachButton() *tview.Flex {
 
 func uiInit() {
 	// box
-	srcBox.SetBorder(true).
-		SetBorderColor(window.src.borderColor).
-		SetTitleColor(window.src.borderColor)
-	srcBox.SetSelectedStyle(tcell.StyleDefault.
-		Background(window.src.selectedColor).
-		Foreground(window.src.foregroundColor))
-	dstBox.SetBorder(true).
-		SetBorderColor(window.dst.borderColor).
-		SetTitleColor(window.dst.borderColor)
-	dstBox.SetTextColor(window.dst.foregroundColor)
+	srcBox.SetBorder(true)
+	dstBox.SetBorder(true)
 
 	// dropdown
+	srcLangDropDown.SetBorder(true)
 	srcLangDropDown.SetOptions(Lang, nil)
-	srcLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-	srcLangDropDown.SetBorder(true).
-		SetBorderColor(window.src.borderColor).
-		SetTitleColor(window.src.borderColor)
+	dstLangDropDown.SetBorder(true)
 	dstLangDropDown.SetOptions(Lang, nil)
-	dstLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-	dstLangDropDown.SetBorder(true).
-		SetBorderColor(window.dst.borderColor).
-		SetTitleColor(window.dst.borderColor)
-	themeDropDown.SetOptions(themes_name, nil).
-		SetLabel("Theme: ").SetLabelColor(window.src.labelColor)
-	themeDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-	transparentDropDown.SetOptions([]string{"true", "false"}, nil).
-		SetLabel("Transparent: ").SetLabelColor(window.src.labelColor)
-	transparentDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-
-	// button
-	langButton.SetLabelColor(window.src.foregroundColor).
-		SetBackgroundColorActivated(window.src.pressColor).
-		SetLabelColorActivated(window.src.foregroundColor).
-		SetBackgroundColor(window.src.selectedColor)
-	styleButton.SetLabelColor(window.src.foregroundColor).
-		SetBackgroundColorActivated(window.src.pressColor).
-		SetLabelColorActivated(window.src.foregroundColor).
-		SetBackgroundColor(window.src.selectedColor)
-	menuButton.SetLabelColor(window.src.foregroundColor).
-		SetBackgroundColorActivated(window.src.pressColor).
-		SetLabelColorActivated(window.src.foregroundColor).
-		SetBackgroundColor(window.src.selectedColor)
-
-	updateBackground()
-	updateTitle()
+	themeDropDown.SetLabel("Theme: ").
+		SetOptions(themesName, nil).
+		SetCurrentOption(IndexOf(theme, themesName))
+	transparentDropDown.SetLabel("Transparent: ").
+		SetOptions([]string{"true", "false"}, nil).
+		SetCurrentOption(
+			IndexOf(strconv.FormatBool(transparent),
+				[]string{"true", "false"}))
 
 	// window
 	translateWindow.SetDirection(tview.FlexColumn).
@@ -145,13 +167,24 @@ func uiInit() {
 		AddItem(attachButton(), 1, 1, true).
 		AddItem(nil, 0, 1, false)
 
+	updateAllColor()
+	updateTitle()
+
 	// handler
 	mainPage.SetInputCapture(pagesHandler)
 	translateWindow.SetInputCapture(translatePageHandler)
 	srcLangDropDown.SetDoneFunc(srcDropDownHandler).
-		SetSelectedFunc(srcSelected)
+		SetSelectedFunc(srcLangSelected)
 	dstLangDropDown.SetDoneFunc(dstDropDownHandler).
-		SetSelectedFunc(dstSelected)
+		SetSelectedFunc(dstLangSelected)
+	langButton.SetSelectedFunc(func() {
+		mainPage.HidePage("stylePage")
+		mainPage.ShowPage("langPage")
+	})
+	styleButton.SetSelectedFunc(func() {
+		mainPage.HidePage("langPage")
+		mainPage.ShowPage("stylePage")
+	})
 }
 
 func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
@@ -166,7 +199,7 @@ func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
 			window.src.backgroundColor = Transparent
 			window.dst.backgroundColor = Transparent
 		}
-		updateBackground()
+		updateBackgroundColor()
 		transparent = !transparent
 	}
 
@@ -240,13 +273,13 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
-func srcSelected(text string, index int) {
+func srcLangSelected(text string, index int) {
 	translator.srcLang = text
 	srcBox.SetTitle(text)
 	srcLangDropDown.SetTitle(text)
 }
 
-func dstSelected(text string, index int) {
+func dstLangSelected(text string, index int) {
 	translator.dstLang = text
 	dstBox.SetTitle(text)
 	dstLangDropDown.SetTitle(text)

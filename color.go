@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	themes_name             = []string{"Gruvbox", "Nord"}
+	themesName             = []string{"Gruvbox", "Nord"}
 	Transparent tcell.Color = tcell.ColorDefault
 	Themes                  = map[string]map[string]tcell.Color{
 		"Gruvbox": {
@@ -64,6 +64,7 @@ func (w *Window) colorInit() {
 	w.src.pressColor = Themes[theme]["purple"]
 	w.src.labelColor = Themes[theme]["yellow"]
 	w.dst.foregroundColor = Themes[theme]["fg"]
+	w.dst.selectedColor = Themes[theme]["gray"]
 	w.dst.borderColor = Themes[theme]["blue"]
 	w.dst.prefixColor = Themes[theme]["cyan"]
 }
