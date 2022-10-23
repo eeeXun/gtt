@@ -28,6 +28,20 @@ func updateBackground() {
 		tcell.StyleDefault.
 			Background(window.src.selectedColor).
 			Foreground(window.src.prefixColor))
+	themeDropDown.SetBackgroundColor(window.src.backgroundColor)
+	themeDropDown.SetListStyles(tcell.StyleDefault.
+		Background(window.src.backgroundColor).
+		Foreground(window.src.foregroundColor),
+		tcell.StyleDefault.
+			Background(window.src.selectedColor).
+			Foreground(window.src.prefixColor))
+	transparentDropDown.SetBackgroundColor(window.src.backgroundColor)
+	transparentDropDown.SetListStyles(tcell.StyleDefault.
+		Background(window.src.backgroundColor).
+		Foreground(window.src.foregroundColor),
+		tcell.StyleDefault.
+			Background(window.src.selectedColor).
+			Foreground(window.src.prefixColor))
 }
 
 // update title and option
@@ -68,19 +82,27 @@ func uiInit() {
 	srcLangDropDown.SetOptions(Lang, nil)
 	srcLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
 		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.dst.prefixColor)
+		SetPrefixTextColor(window.src.prefixColor)
 	srcLangDropDown.SetBorder(true).
 		SetBorderColor(window.src.borderColor).
 		SetTitleColor(window.src.borderColor)
 	dstLangDropDown.SetOptions(Lang, nil)
 	dstLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
 		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.dst.prefixColor)
+		SetPrefixTextColor(window.src.prefixColor)
 	dstLangDropDown.SetBorder(true).
 		SetBorderColor(window.dst.borderColor).
 		SetTitleColor(window.dst.borderColor)
-	themeDropDown.SetOptions(themes_name, nil).SetLabel("Theme: ")
-	transparentDropDown.SetOptions([]string{"true", "false"}, nil).SetLabel("Transparent: ")
+	themeDropDown.SetOptions(themes_name, nil).
+		SetLabel("Theme: ").SetLabelColor(window.src.labelColor)
+	themeDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.src.prefixColor)
+	transparentDropDown.SetOptions([]string{"true", "false"}, nil).
+		SetLabel("Transparent: ").SetLabelColor(window.src.labelColor)
+	transparentDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.src.prefixColor)
 
 	// button
 	langButton.SetLabelColor(window.src.foregroundColor).
