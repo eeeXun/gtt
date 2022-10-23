@@ -11,7 +11,6 @@ func updateBackground() {
 	srcBox.SetTextStyle(tcell.StyleDefault.
 		Background(window.src.backgroundColor).
 		Foreground(window.src.foregroundColor))
-
 	dstBox.SetBackgroundColor(window.dst.backgroundColor)
 
 	// dropdown
@@ -22,7 +21,6 @@ func updateBackground() {
 		tcell.StyleDefault.
 			Background(window.src.selectedColor).
 			Foreground(window.src.prefixColor))
-
 	dstLangDropDown.SetBackgroundColor(window.dst.backgroundColor)
 	dstLangDropDown.SetListStyles(tcell.StyleDefault.
 		Background(window.src.backgroundColor).
@@ -61,7 +59,6 @@ func uiInit() {
 	srcBox.SetSelectedStyle(tcell.StyleDefault.
 		Background(window.src.selectedColor).
 		Foreground(window.src.foregroundColor))
-
 	dstBox.SetBorder(true).
 		SetBorderColor(window.dst.borderColor).
 		SetTitleColor(window.dst.borderColor)
@@ -75,7 +72,6 @@ func uiInit() {
 	srcLangDropDown.SetBorder(true).
 		SetBorderColor(window.src.borderColor).
 		SetTitleColor(window.src.borderColor)
-
 	dstLangDropDown.SetOptions(Lang, nil)
 	dstLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
 		SetFieldTextColor(window.src.foregroundColor).
@@ -83,6 +79,8 @@ func uiInit() {
 	dstLangDropDown.SetBorder(true).
 		SetBorderColor(window.dst.borderColor).
 		SetTitleColor(window.dst.borderColor)
+	themeDropDown.SetOptions(themes_name, nil).SetLabel("Theme: ")
+	transparentDropDown.SetOptions([]string{"true", "false"}, nil).SetLabel("Transparent: ")
 
 	// button
 	langButton.SetLabelColor(window.src.foregroundColor).
@@ -116,13 +114,12 @@ func uiInit() {
 		AddItem(nil, 0, 1, false)
 	styleWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
-	// 	AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-	// AddItem())
-		// AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-		// 	AddItem(nil, 0, 1, false).
-		// 	AddItem(srcDropDown, 32, 1, true).
-		// 	AddItem(dstDropDown, 32, 1, false).
-		// 	AddItem(nil, 0, 1, false), 20, 1, true).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(nil, 0, 1, false).
+			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+				AddItem(themeDropDown, 1, 1, false).
+				AddItem(transparentDropDown, 1, 1, false), 20, 1, false).
+			AddItem(nil, 0, 1, false), 20, 1, true).
 		AddItem(attachButton(), 1, 1, true).
 		AddItem(nil, 0, 1, false)
 

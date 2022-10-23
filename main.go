@@ -38,6 +38,7 @@ func main() {
 
 	mainPage.AddPage("translatePage", translateWindow, true, true)
 	mainPage.AddPage("langPage", langWindow, true, false)
+	mainPage.AddPage("stylePage", styleWindow, true, true)
 
 	if err := app.SetRoot(mainPage, true).
 		EnableMouse(true).Run(); err != nil {
