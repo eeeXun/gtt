@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/tview"
 )
 
 func updateBackground() {
@@ -39,6 +40,17 @@ func updateTitle() {
 	srcDropDown.SetTitle(translator.srcLang)
 	dstDropDown.SetCurrentOption(IndexOf(translator.dstLang, Lang))
 	dstDropDown.SetTitle(translator.dstLang)
+}
+
+func attachButton() *tview.Flex {
+	return tview.NewFlex().SetDirection(tview.FlexColumn).
+		AddItem(nil, 0, 1, false).
+		AddItem(langButton, 11, 1, true).
+		AddItem(nil, 18, 1, false).
+		AddItem(styleButton, 8, 1, true).
+		AddItem(nil, 18, 1, false).
+		AddItem(menuButton, 9, 1, true).
+		AddItem(nil, 0, 1, false)
 }
 
 func uiInit() {
@@ -88,6 +100,20 @@ func uiInit() {
 
 	updateBackground()
 	updateTitle()
+
+	// window
+	translateWindow.SetDirection(tview.FlexColumn).
+		AddItem(srcBox, 0, 1, true).
+		AddItem(dstBox, 0, 1, false)
+	langWindow.SetDirection(tview.FlexRow).
+		AddItem(nil, 0, 1, false).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(nil, 0, 1, false).
+			AddItem(srcDropDown, 32, 1, true).
+			AddItem(dstDropDown, 32, 1, false).
+			AddItem(nil, 0, 1, false), 20, 1, true).
+		AddItem(attachButton(), 1, 1, true).
+		AddItem(nil, 0, 1, false)
 
 	// handler
 	mainPage.SetInputCapture(pagesHandler)

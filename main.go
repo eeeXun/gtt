@@ -32,25 +32,6 @@ func main() {
 	configInit()
 	window.colorInit()
 	uiInit()
-	translateWindow.SetDirection(tview.FlexColumn).
-		AddItem(srcBox, 0, 1, true).
-		AddItem(dstBox, 0, 1, false)
-	langWindow.SetDirection(tview.FlexRow).
-		AddItem(nil, 0, 1, false).
-		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-			AddItem(nil, 0, 1, false).
-			AddItem(srcDropDown, 32, 1, true).
-			AddItem(dstDropDown, 32, 1, false).
-			AddItem(nil, 0, 1, false), 20, 1, true).
-		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-			AddItem(nil, 0, 1, false).
-			AddItem(langButton, 11, 1, true).
-			AddItem(nil, 18, 1, false).
-			AddItem(styleButton, 8, 1, true).
-			AddItem(nil, 18, 1, false).
-			AddItem(menuButton, 9, 1, true).
-			AddItem(nil, 0, 1, false), 1, 1, true).
-		AddItem(nil, 0, 1, false)
 
 	mainPage.AddPage("translatePage", translateWindow, true, true)
 	mainPage.AddPage("langPage", langWindow, true, false)
