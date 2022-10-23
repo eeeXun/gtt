@@ -12,4 +12,3 @@ func IndexOf(candidate string, arr []string) int {
 func SetTermTitle(title string) {
 	print("\033]0;", title, "\007")
 }
-
