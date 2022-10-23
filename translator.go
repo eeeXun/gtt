@@ -13,13 +13,20 @@ import (
 )
 
 const (
-	textURL   = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s"
+	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s"
 	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
 type Translator struct {
-	srcLang string
-	dstLang string
+	srcLang   string
+	dstLang   string
+	soundLock *Lock
+}
+
+func NewTranslator() Translator {
+	return Translator{
+		soundLock: NewLock(),
+	}
 }
 
 func (t Translator) Translate(message string) (string, error) {

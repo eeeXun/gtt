@@ -7,7 +7,7 @@ import (
 
 var (
 	// Translate
-	translator Translator
+	translator = NewTranslator()
 	// UI
 	app            = tview.NewApplication()
 	src_box        = tview.NewTextArea()
