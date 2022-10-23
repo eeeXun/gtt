@@ -154,17 +154,17 @@ func uiInit() {
 			AddItem(srcLangDropDown, 32, 1, true).
 			AddItem(dstLangDropDown, 32, 1, false).
 			AddItem(nil, 0, 1, false), 20, 1, true).
-		AddItem(attachButton(), 1, 1, true).
+		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	styleWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
 			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-				AddItem(themeDropDown, 1, 1, false).
-				AddItem(transparentDropDown, 1, 1, false), 20, 1, false).
+				AddItem(themeDropDown, 1, 1, true).
+				AddItem(transparentDropDown, 1, 1, false), 20, 1, true).
 			AddItem(nil, 0, 1, false), 20, 1, true).
-		AddItem(attachButton(), 1, 1, true).
+		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 
 	updateAllColor()
@@ -177,6 +177,8 @@ func uiInit() {
 		SetSelectedFunc(srcLangSelected)
 	dstLangDropDown.SetDoneFunc(dstDropDownHandler).
 		SetSelectedFunc(dstLangSelected)
+	themeDropDown.SetSelectedFunc(themeSelected)
+	transparentDropDown.SetSelectedFunc(transparentSelected)
 	langButton.SetSelectedFunc(func() {
 		mainPage.HidePage("stylePage")
 		mainPage.ShowPage("langPage")
@@ -283,6 +285,24 @@ func dstLangSelected(text string, index int) {
 	translator.dstLang = text
 	dstBox.SetTitle(text)
 	dstLangDropDown.SetTitle(text)
+}
+
+func themeSelected(text string, index int) {
+	theme = text
+	window.colorInit()
+	updateAllColor()
+}
+
+func transparentSelected(text string, index int) {
+	transparent, _ = strconv.ParseBool(text)
+	if transparent {
+		window.src.backgroundColor = Transparent
+		window.dst.backgroundColor = Transparent
+	} else {
+		window.src.backgroundColor = Themes[theme]["bg"]
+		window.dst.backgroundColor = Themes[theme]["bg"]
+	}
+	updateBackgroundColor()
 }
 
 func srcDropDownHandler(key tcell.Key) {
