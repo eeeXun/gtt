@@ -14,9 +14,9 @@ var (
 	dstBox          = tview.NewTextView()
 	srcDropDown     = tview.NewDropDown()
 	dstDropDown     = tview.NewDropDown()
-	langButton      = tview.NewButton("(1)Lang")
+	langButton      = tview.NewButton("(1)Language")
 	styleButton     = tview.NewButton("(2)Style")
-	menuButton      = tview.NewButton("(3)Menu")
+	menuButton      = tview.NewButton("(3)KeyMap")
 	translateWindow = tview.NewFlex()
 	langWindow      = tview.NewFlex()
 	mainPage        = tview.NewPages()
@@ -44,11 +44,11 @@ func main() {
 			AddItem(nil, 0, 1, false), 20, 1, true).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
-			AddItem(langButton, 7, 1, true).
-			AddItem(nil, 20, 1, false).
+			AddItem(langButton, 11, 1, true).
+			AddItem(nil, 18, 1, false).
 			AddItem(styleButton, 8, 1, true).
-			AddItem(nil, 20, 1, false).
-			AddItem(menuButton, 7, 1, true).
+			AddItem(nil, 18, 1, false).
+			AddItem(menuButton, 9, 1, true).
 			AddItem(nil, 0, 1, false), 1, 1, true).
 		AddItem(nil, 0, 1, false)
 
