@@ -133,7 +133,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 			src_box.SetText(dst_text, true)
 		}
 		dst_box.SetText(src_text)
-	case tcell.KeyCtrlN:
+	case tcell.KeyCtrlO:
 		message := src_box.GetText()
 		if len(message) > 0 {
 			err := translator.PlaySound(translator.srcLang, message)

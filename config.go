@@ -4,6 +4,7 @@ import (
 	"os"
 )
 
+// search XDG_CONFIG_HOME or $HOME/.config
 func configInit() {
 	var defaultConfigPath string
 
