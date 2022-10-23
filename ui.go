@@ -134,21 +134,37 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 		dst_box.SetText(src_text)
 	case tcell.KeyCtrlO:
-		message := src_box.GetText()
-		if len(message) > 0 {
-			err := translator.PlaySound(translator.srcLang, message)
-			if err != nil {
-				src_box.SetText(err.Error(), true)
+		// play source sound
+		if translator.soundLock.Available() {
+			message := src_box.GetText()
+			if len(message) > 0 {
+				translator.soundLock.Acquire()
+				go func() {
+					err := translator.PlaySound(translator.srcLang, message)
+					if err != nil {
+						src_box.SetText(err.Error(), true)
+					}
+				}()
 			}
+
 		}
 	case tcell.KeyCtrlP:
-		message := dst_box.GetText(false)
-		if len(message) > 0 {
-			err := translator.PlaySound(translator.dstLang, message)
-			if err != nil {
-				dst_box.SetText(err.Error())
+		// play destination sound
+		if translator.soundLock.Available() {
+			message := dst_box.GetText(false)
+			if len(message) > 0 {
+				translator.soundLock.Acquire()
+				go func() {
+					err := translator.PlaySound(translator.dstLang, message)
+					if err != nil {
+						dst_box.SetText(err.Error())
+					}
+				}()
 			}
 		}
+	case tcell.KeyCtrlX:
+		// stop play sound
+		translator.soundLock.stop = true
 	}
 
 	return event

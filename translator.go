@@ -17,19 +17,45 @@ const (
 	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
+type Lock struct {
+	stop        bool
+	threadCount int8
+}
+
+func NewLock() *Lock {
+	return &Lock{
+		stop:        true,
+		threadCount: 0,
+	}
+}
+
+func (l *Lock) Available() bool {
+	return l.stop && l.threadCount == 0
+}
+
+func (l *Lock) Acquire() {
+	l.stop = false
+	l.threadCount++
+}
+
+func (l *Lock) Release() {
+	l.stop = true
+	l.threadCount--
+}
+
 type Translator struct {
 	srcLang   string
 	dstLang   string
 	soundLock *Lock
 }
 
-func NewTranslator() Translator {
-	return Translator{
+func NewTranslator() *Translator {
+	return &Translator{
 		soundLock: NewLock(),
 	}
 }
 
-func (t Translator) Translate(message string) (string, error) {
+func (t *Translator) Translate(message string) (string, error) {
 	var data []interface{}
 	var translated string
 
@@ -63,7 +89,7 @@ func (t Translator) Translate(message string) (string, error) {
 	return "", errors.New("Translation not found")
 }
 
-func (t Translator) PlaySound(lang string, message string) error {
+func (t *Translator) PlaySound(lang string, message string) error {
 	url_str := fmt.Sprintf(
 		soundURL,
 		url.QueryEscape(message),
@@ -71,25 +97,35 @@ func (t Translator) PlaySound(lang string, message string) error {
 	)
 	res, err := http.Get(url_str)
 	if err != nil {
+		t.soundLock.Release()
 		return err
 	}
 	decoder, err := mp3.NewDecoder(res.Body)
 	if err != nil {
+		t.soundLock.Release()
 		return err
 	}
 	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
 	if err != nil {
+		t.soundLock.Release()
 		return err
 	}
 	<-readyChan
 	player := otoCtx.NewPlayer(decoder)
 	player.Play()
 	for player.IsPlaying() {
-		time.Sleep(time.Second)
+		if t.soundLock.stop {
+			t.soundLock.Release()
+			return nil
+		} else {
+			time.Sleep(time.Millisecond)
+		}
 	}
 	if err = player.Close(); err != nil {
+		t.soundLock.Release()
 		return err
 	}
 
+	t.soundLock.Release()
 	return nil
 }
