@@ -34,12 +34,12 @@ var (
 )
 
 type Colors struct {
-	background_color tcell.Color
-	foreground_color tcell.Color
-	border_color     tcell.Color
-	text_color       tcell.Color
-	selected_color   tcell.Color
-	prefix_color     tcell.Color
+	backgroundColor tcell.Color
+	foregroundColor tcell.Color
+	borderColor     tcell.Color
+	textColor       tcell.Color
+	selectedColor   tcell.Color
+	prefixColor     tcell.Color
 }
 
 type Window struct {
@@ -49,17 +49,17 @@ type Window struct {
 
 func (w *Window) colorInit() {
 	if transparent {
-		w.src.background_color = Transparent
-		w.dst.background_color = Transparent
+		w.src.backgroundColor = Transparent
+		w.dst.backgroundColor = Transparent
 	} else {
-		w.src.background_color = Themes[theme]["bg"]
-		w.dst.background_color = Themes[theme]["bg"]
+		w.src.backgroundColor = Themes[theme]["bg"]
+		w.dst.backgroundColor = Themes[theme]["bg"]
 	}
-	w.src.border_color = Themes[theme]["red"]
-	w.src.foreground_color = Themes[theme]["fg"]
-	w.src.selected_color = Themes[theme]["gray"]
-	w.src.prefix_color = Themes[theme]["yellow"]
-	w.dst.foreground_color = Themes[theme]["fg"]
-	w.dst.border_color = Themes[theme]["blue"]
-	w.dst.prefix_color = Themes[theme]["yellow"]
+	w.src.borderColor = Themes[theme]["red"]
+	w.src.foregroundColor = Themes[theme]["fg"]
+	w.src.selectedColor = Themes[theme]["gray"]
+	w.src.prefixColor = Themes[theme]["yellow"]
+	w.dst.foregroundColor = Themes[theme]["fg"]
+	w.dst.borderColor = Themes[theme]["blue"]
+	w.dst.prefixColor = Themes[theme]["yellow"]
 }

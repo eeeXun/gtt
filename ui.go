@@ -6,29 +6,29 @@ import (
 
 func updateBackground() {
 	// box
-	srcBox.SetBackgroundColor(window.src.background_color)
+	srcBox.SetBackgroundColor(window.src.backgroundColor)
 	srcBox.SetTextStyle(tcell.StyleDefault.
-		Background(window.src.background_color).
-		Foreground(window.src.foreground_color))
+		Background(window.src.backgroundColor).
+		Foreground(window.src.foregroundColor))
 
-	dstBox.SetBackgroundColor(window.dst.background_color)
+	dstBox.SetBackgroundColor(window.dst.backgroundColor)
 
 	// dropdown
-	srcDropDown.SetBackgroundColor(window.src.background_color)
+	srcDropDown.SetBackgroundColor(window.src.backgroundColor)
 	srcDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.background_color).
-		Foreground(window.src.foreground_color),
+		Background(window.src.backgroundColor).
+		Foreground(window.src.foregroundColor),
 		tcell.StyleDefault.
-			Background(window.src.selected_color).
-			Foreground(window.src.prefix_color))
+			Background(window.src.selectedColor).
+			Foreground(window.src.prefixColor))
 
-	dstDropDown.SetBackgroundColor(window.dst.background_color)
+	dstDropDown.SetBackgroundColor(window.dst.backgroundColor)
 	dstDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.background_color).
-		Foreground(window.src.foreground_color),
+		Background(window.src.backgroundColor).
+		Foreground(window.src.foregroundColor),
 		tcell.StyleDefault.
-			Background(window.src.selected_color).
-			Foreground(window.src.prefix_color))
+			Background(window.src.selectedColor).
+			Foreground(window.src.prefixColor))
 }
 
 // update title and option
@@ -44,33 +44,33 @@ func updateTitle() {
 func uiInit() {
 	// box
 	srcBox.SetBorder(true).
-		SetBorderColor(window.src.border_color).
-		SetTitleColor(window.src.border_color)
+		SetBorderColor(window.src.borderColor).
+		SetTitleColor(window.src.borderColor)
 	srcBox.SetSelectedStyle(tcell.StyleDefault.
-		Background(window.src.selected_color).
-		Foreground(window.src.foreground_color))
+		Background(window.src.selectedColor).
+		Foreground(window.src.foregroundColor))
 
 	dstBox.SetBorder(true).
-		SetBorderColor(window.dst.border_color).
-		SetTitleColor(window.dst.border_color)
-	dstBox.SetTextColor(window.dst.foreground_color)
+		SetBorderColor(window.dst.borderColor).
+		SetTitleColor(window.dst.borderColor)
+	dstBox.SetTextColor(window.dst.foregroundColor)
 
 	// dropdown
 	srcDropDown.SetOptions(Lang, nil)
-	srcDropDown.SetFieldBackgroundColor(window.src.selected_color).
-		SetFieldTextColor(window.src.foreground_color).
-		SetPrefixTextColor(window.dst.prefix_color)
+	srcDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.dst.prefixColor)
 	srcDropDown.SetBorder(true).
-		SetBorderColor(window.src.border_color).
-		SetTitleColor(window.src.border_color)
+		SetBorderColor(window.src.borderColor).
+		SetTitleColor(window.src.borderColor)
 
 	dstDropDown.SetOptions(Lang, nil)
-	dstDropDown.SetFieldBackgroundColor(window.src.selected_color).
-		SetFieldTextColor(window.src.foreground_color).
-		SetPrefixTextColor(window.dst.prefix_color)
+	dstDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.dst.prefixColor)
 	dstDropDown.SetBorder(true).
-		SetBorderColor(window.dst.border_color).
-		SetTitleColor(window.dst.border_color)
+		SetBorderColor(window.dst.borderColor).
+		SetTitleColor(window.dst.borderColor)
 
 	updateBackground()
 	updateTitle()
@@ -90,11 +90,11 @@ func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
 	switch key {
 	case tcell.KeyCtrlT:
 		if transparent {
-			window.src.background_color = Themes[theme]["bg"]
-			window.dst.background_color = Themes[theme]["bg"]
+			window.src.backgroundColor = Themes[theme]["bg"]
+			window.dst.backgroundColor = Themes[theme]["bg"]
 		} else {
-			window.src.background_color = Transparent
-			window.dst.background_color = Transparent
+			window.src.backgroundColor = Transparent
+			window.dst.backgroundColor = Transparent
 		}
 		updateBackground()
 		transparent = !transparent
