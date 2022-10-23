@@ -172,6 +172,8 @@ func uiInit() {
 
 	// handler
 	mainPage.SetInputCapture(pagesHandler)
+	langWindow.SetInputCapture(langWindowHandler)
+	styleWindow.SetInputCapture(styleWindowHandler)
 	translateWindow.SetInputCapture(translatePageHandler)
 	srcLangDropDown.SetDoneFunc(srcDropDownHandler).
 		SetSelectedFunc(srcLangSelected)
@@ -203,6 +205,30 @@ func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 		updateBackgroundColor()
 		transparent = !transparent
+	}
+
+	return event
+}
+
+func langWindowHandler(event *tcell.EventKey) *tcell.EventKey {
+	ch := event.Rune()
+
+	switch ch {
+	case '2':
+		mainPage.HidePage("langPage")
+		mainPage.ShowPage("stylePage")
+	}
+
+	return event
+}
+
+func styleWindowHandler(event *tcell.EventKey) *tcell.EventKey {
+	ch := event.Rune()
+
+	switch ch {
+	case '1':
+		mainPage.HidePage("stylePage")
+		mainPage.ShowPage("langPage")
 	}
 
 	return event
