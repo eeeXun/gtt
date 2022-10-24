@@ -39,12 +39,12 @@ func (ui *UICycle) GetCurrentUI() tview.Primitive {
 }
 
 func updateBackgroundColor() {
-	// box
-	srcBox.SetBackgroundColor(style.BackgroundColor())
-	srcBox.SetTextStyle(tcell.StyleDefault.
+	// input/output
+	srcInput.SetBackgroundColor(style.BackgroundColor())
+	srcInput.SetTextStyle(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()))
-	dstBox.SetBackgroundColor(style.BackgroundColor())
+	dstOutput.SetBackgroundColor(style.BackgroundColor())
 
 	// dropdown
 	srcLangDropDown.SetBackgroundColor(style.BackgroundColor())
@@ -92,10 +92,10 @@ func updateBackgroundColor() {
 }
 
 func updateBorderColor() {
-	// box
-	srcBox.SetBorderColor(style.SrcBorderColor()).
+	// input/output
+	srcInput.SetBorderColor(style.SrcBorderColor()).
 		SetTitleColor(style.SrcBorderColor())
-	dstBox.SetBorderColor(style.DstBorderColor()).
+	dstOutput.SetBorderColor(style.DstBorderColor()).
 		SetTitleColor(style.DstBorderColor())
 
 	// dropdown
@@ -110,11 +110,11 @@ func updateBorderColor() {
 }
 
 func updateNonConfigColor() {
-	// box
-	srcBox.SetSelectedStyle(tcell.StyleDefault.
+	// input/output
+	srcInput.SetSelectedStyle(tcell.StyleDefault.
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
-	dstBox.SetTextColor(style.ForegroundColor())
+	dstOutput.SetTextColor(style.ForegroundColor())
 
 	// dropdown
 	srcLangDropDown.SetFieldBackgroundColor(style.SelectedColor()).
@@ -163,8 +163,8 @@ func updateAllColor() {
 
 // Update title and option
 func updateTitle() {
-	srcBox.SetTitle(translator.srcLang)
-	dstBox.SetTitle(translator.dstLang)
+	srcInput.SetTitle(translator.srcLang)
+	dstOutput.SetTitle(translator.dstLang)
 	srcLangDropDown.SetCurrentOption(IndexOf(translator.srcLang, Lang))
 	srcLangDropDown.SetTitle(translator.srcLang)
 	dstLangDropDown.SetCurrentOption(IndexOf(translator.dstLang, Lang))
@@ -183,9 +183,9 @@ func attachButton() *tview.Flex {
 }
 
 func uiInit() {
-	// box
-	srcBox.SetBorder(true)
-	dstBox.SetBorder(true)
+	// input/output
+	srcInput.SetBorder(true)
+	dstOutput.SetBorder(true)
 
 	// dropdown
 	srcLangDropDown.SetBorder(true)
@@ -213,8 +213,8 @@ func uiInit() {
 
 	// window
 	translateWindow.SetDirection(tview.FlexColumn).
-		AddItem(srcBox, 0, 1, true).
-		AddItem(dstBox, 0, 1, false)
+		AddItem(srcInput, 0, 1, true).
+		AddItem(dstOutput, 0, 1, false)
 	langWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
@@ -259,13 +259,13 @@ func uiInit() {
 	srcLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
 			translator.srcLang = text
-			srcBox.SetTitle(text)
+			srcInput.SetTitle(text)
 			srcLangDropDown.SetTitle(text)
 		})
 	dstLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
 			translator.dstLang = text
-			dstBox.SetTitle(text)
+			dstOutput.SetTitle(text)
 			dstLangDropDown.SetTitle(text)
 		})
 	themeDropDown.SetDoneFunc(styleDropDownHandler).
@@ -350,41 +350,41 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		mainPage.ShowPage("langPage")
 		app.SetFocus(langCycle.GetCurrentUI())
 	case tcell.KeyCtrlJ:
-		message := srcBox.GetText()
+		message := srcInput.GetText()
 		if len(message) > 0 {
 			// Only translate when message exist
 			result, err := translator.Translate(message)
 			if err != nil {
-				dstBox.SetText(err.Error())
+				dstOutput.SetText(err.Error())
 			} else {
-				dstBox.SetText(result)
+				dstOutput.SetText(result)
 			}
 		}
 	case tcell.KeyCtrlQ:
-		srcBox.SetText("", true)
+		srcInput.SetText("", true)
 	case tcell.KeyCtrlS:
 		translator.srcLang, translator.dstLang = translator.dstLang, translator.srcLang
 		updateTitle()
-		srcText := srcBox.GetText()
-		dstText := dstBox.GetText(false)
+		srcText := srcInput.GetText()
+		dstText := dstOutput.GetText(false)
 		if len(dstText) > 0 {
 			// GetText of Box contains "\n" if it has words
-			srcBox.SetText(dstText[:len(dstText)-1], true)
+			srcInput.SetText(dstText[:len(dstText)-1], true)
 		} else {
-			srcBox.SetText(dstText, true)
+			srcInput.SetText(dstText, true)
 		}
-		dstBox.SetText(srcText)
+		dstOutput.SetText(srcText)
 	case tcell.KeyCtrlO:
 		// Play source sound
 		if translator.soundLock.Available() {
-			message := srcBox.GetText()
+			message := srcInput.GetText()
 			if len(message) > 0 {
 				// Only play when message exist
 				translator.soundLock.Acquire()
 				go func() {
 					err := translator.PlaySound(translator.srcLang, message)
 					if err != nil {
-						srcBox.SetText(err.Error(), true)
+						srcInput.SetText(err.Error(), true)
 					}
 				}()
 			}
@@ -393,14 +393,14 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlP:
 		// Play destination sound
 		if translator.soundLock.Available() {
-			message := dstBox.GetText(false)
+			message := dstOutput.GetText(false)
 			if len(message) > 0 {
 				// Only play when message exist
 				translator.soundLock.Acquire()
 				go func() {
 					err := translator.PlaySound(translator.dstLang, message)
 					if err != nil {
-						dstBox.SetText(err.Error())
+						dstOutput.SetText(err.Error())
 					}
 				}()
 			}

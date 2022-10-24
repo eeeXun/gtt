@@ -27,7 +27,7 @@ func configInit() {
 		config.Set("destination.language", "Chinese (Traditional)")
 		config.Set("destination.borderColor", "blue")
 		if _, err = os.Stat(defaultConfigPath); os.IsNotExist(err) {
-			os.Mkdir(defaultConfigPath, os.ModePerm)
+			os.MkdirAll(defaultConfigPath, os.ModePerm)
 		}
 		config.SafeWriteConfig()
 	}

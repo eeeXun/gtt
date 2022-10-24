@@ -10,8 +10,8 @@ var (
 	translator = NewTranslator()
 	// UI
 	app                 = tview.NewApplication()
-	srcBox              = tview.NewTextArea()
-	dstBox              = tview.NewTextView()
+	srcInput            = tview.NewTextArea()
+	dstOutput           = tview.NewTextView()
 	srcLangDropDown     = tview.NewDropDown()
 	dstLangDropDown     = tview.NewDropDown()
 	langCycle           = NewUICycle(srcLangDropDown, dstLangDropDown)
