@@ -213,7 +213,8 @@ func uiInit() {
 			AddItem(nil, 0, 1, false).
 			AddItem(srcLangDropDown, 32, 1, true).
 			AddItem(dstLangDropDown, 32, 1, false).
-			AddItem(nil, 0, 1, false), 20, 1, true).
+			AddItem(nil, 0, 1, false),
+			20, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	styleWindow.SetDirection(tview.FlexRow).
@@ -227,9 +228,11 @@ func uiInit() {
 					AddItem(nil, 0, 1, false).
 					AddItem(srcBorderDropDown, 32, 1, false).
 					AddItem(dstBorderDropDown, 32, 1, false).
-					AddItem(nil, 0, 1, false), 0, 1, false),
+					AddItem(nil, 0, 1, false),
+					0, 1, false),
 				20, 1, true).
-			AddItem(nil, 0, 1, false), 20, 1, true).
+			AddItem(nil, 0, 1, false),
+			20, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 
