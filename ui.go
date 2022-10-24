@@ -197,11 +197,13 @@ func uiInit() {
 			IndexOf(strconv.FormatBool(transparent),
 				[]string{"true", "false"}))
 	srcBorderDropDown.SetLabel("Border Color: ").
-		SetOptions(Palette, nil)
+		SetOptions(Palette, nil).
+		SetCurrentOption(IndexOf(style.SrcBorderStr(), Palette))
 	srcBorderDropDown.SetBorder(true).
 		SetTitle("Source")
 	dstBorderDropDown.SetLabel("Border Color: ").
-		SetOptions(Palette, nil)
+		SetOptions(Palette, nil).
+		SetCurrentOption(IndexOf(style.DstBorderStr(), Palette))
 	dstBorderDropDown.SetBorder(true).
 		SetTitle("Destination")
 
@@ -258,8 +260,16 @@ func uiInit() {
 		SetSelectedFunc(themeSelected)
 	transparentDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(transparentSelected)
-	srcBorderDropDown.SetDoneFunc(styleDropDownHandler)
-	dstBorderDropDown.SetDoneFunc(styleDropDownHandler)
+	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(func(text string, index int) {
+			style.SetSrcBorderColor(text)
+			updateBorderColor()
+		})
+	dstBorderDropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(func(text string, index int) {
+			style.SetDstBorderColor(text)
+			updateBorderColor()
+		})
 	langButton.SetSelectedFunc(func() {
 		mainPage.HidePage("stylePage")
 		mainPage.ShowPage("langPage")
