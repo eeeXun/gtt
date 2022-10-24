@@ -1,4 +1,4 @@
-package main
+package translate
 
 // https://cloud.google.com/translate/docs/languages
 var (

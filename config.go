@@ -33,8 +33,8 @@ func configInit() {
 	}
 
 	// setup
-	translator.srcLang = config.GetString("source.language")
-	translator.dstLang = config.GetString("destination.language")
+	translator.SrcLang = config.GetString("source.language")
+	translator.DstLang = config.GetString("destination.language")
 	style.Theme = config.GetString("theme")
 	style.Transparent = config.GetBool("transparent")
 	style.SetSrcBorderColor(config.GetString("source.borderColor")).
@@ -53,17 +53,17 @@ func updateConfig() {
 		changed = true
 		config.Set("transparent", style.Transparent)
 	}
-	if config.GetString("source.language") != translator.srcLang {
+	if config.GetString("source.language") != translator.SrcLang {
 		changed = true
-		config.Set("source.language", translator.srcLang)
+		config.Set("source.language", translator.SrcLang)
 	}
 	if config.GetString("source.borderColor") != style.SrcBorderStr() {
 		changed = true
 		config.Set("source.borderColor", style.SrcBorderStr())
 	}
-	if config.GetString("destination.language") != translator.dstLang {
+	if config.GetString("destination.language") != translator.DstLang {
 		changed = true
-		config.Set("destination.language", translator.dstLang)
+		config.Set("destination.language", translator.DstLang)
 	}
 	if config.GetString("destination.borderColor") != style.DstBorderStr() {
 		changed = true

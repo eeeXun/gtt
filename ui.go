@@ -4,40 +4,10 @@ import (
 	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
+	"gtt/internal/color"
+	"gtt/internal/translate"
 	"strconv"
 )
-
-type UICycle struct {
-	widget []tview.Primitive
-	index  int
-	len    int
-}
-
-func NewUICycle(widgets ...tview.Primitive) *UICycle {
-	var w []tview.Primitive
-
-	for _, widget := range widgets {
-		w = append(w, widget)
-	}
-
-	return &UICycle{
-		widget: w,
-		index:  0,
-		len:    len(w),
-	}
-}
-
-func (ui *UICycle) Increase() {
-	ui.index = (ui.index + 1) % ui.len
-}
-
-func (ui *UICycle) Decrease() {
-	ui.index = ((ui.index-1)%ui.len + ui.len) % ui.len
-}
-
-func (ui *UICycle) GetCurrentUI() tview.Primitive {
-	return ui.widget[ui.index]
-}
 
 const (
 	keyMapText string = `[#%[1]s]<C-c>[-]
@@ -197,12 +167,12 @@ func updateAllColor() {
 
 // Update title and option
 func updateTitle() {
-	srcInput.SetTitle(translator.srcLang)
-	dstOutput.SetTitle(translator.dstLang)
-	srcLangDropDown.SetCurrentOption(IndexOf(translator.srcLang, Lang))
-	srcLangDropDown.SetTitle(translator.srcLang)
-	dstLangDropDown.SetCurrentOption(IndexOf(translator.dstLang, Lang))
-	dstLangDropDown.SetTitle(translator.dstLang)
+	srcInput.SetTitle(translator.SrcLang)
+	dstOutput.SetTitle(translator.DstLang)
+	srcLangDropDown.SetCurrentOption(IndexOf(translator.SrcLang, translate.Lang))
+	srcLangDropDown.SetTitle(translator.SrcLang)
+	dstLangDropDown.SetCurrentOption(IndexOf(translator.DstLang, translate.Lang))
+	dstLangDropDown.SetTitle(translator.DstLang)
 }
 
 func attachButton() *tview.Flex {
@@ -223,25 +193,25 @@ func uiInit() {
 
 	// dropdown
 	srcLangDropDown.SetBorder(true)
-	srcLangDropDown.SetOptions(Lang, nil)
+	srcLangDropDown.SetOptions(translate.Lang, nil)
 	dstLangDropDown.SetBorder(true)
-	dstLangDropDown.SetOptions(Lang, nil)
+	dstLangDropDown.SetOptions(translate.Lang, nil)
 	themeDropDown.SetLabel("Theme: ").
-		SetOptions(AllTheme, nil).
-		SetCurrentOption(IndexOf(style.Theme, AllTheme))
+		SetOptions(color.AllTheme, nil).
+		SetCurrentOption(IndexOf(style.Theme, color.AllTheme))
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
 			IndexOf(strconv.FormatBool(style.Transparent),
 				[]string{"true", "false"}))
 	srcBorderDropDown.SetLabel("Border Color: ").
-		SetOptions(Palette, nil).
-		SetCurrentOption(IndexOf(style.SrcBorderStr(), Palette))
+		SetOptions(color.Palette, nil).
+		SetCurrentOption(IndexOf(style.SrcBorderStr(), color.Palette))
 	srcBorderDropDown.SetBorder(true).
 		SetTitle("Source")
 	dstBorderDropDown.SetLabel("Border Color: ").
-		SetOptions(Palette, nil).
-		SetCurrentOption(IndexOf(style.DstBorderStr(), Palette))
+		SetOptions(color.Palette, nil).
+		SetCurrentOption(IndexOf(style.DstBorderStr(), color.Palette))
 	dstBorderDropDown.SetBorder(true).
 		SetTitle("Destination")
 
@@ -303,19 +273,19 @@ func uiInit() {
 
 	// handler
 	mainPage.SetInputCapture(mainPageHandler)
+	translateWindow.SetInputCapture(translatePageHandler)
 	langWindow.SetInputCapture(popOutWindowHandler)
 	styleWindow.SetInputCapture(popOutWindowHandler)
 	keyMapWindow.SetInputCapture(popOutWindowHandler)
-	translateWindow.SetInputCapture(translatePageHandler)
 	srcLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			translator.srcLang = text
+			translator.SrcLang = text
 			srcInput.SetTitle(text)
 			srcLangDropDown.SetTitle(text)
 		})
 	dstLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			translator.dstLang = text
+			translator.DstLang = text
 			dstOutput.SetTitle(text)
 			dstLangDropDown.SetTitle(text)
 		})
@@ -380,29 +350,6 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
-func popOutWindowHandler(event *tcell.EventKey) *tcell.EventKey {
-	ch := event.Rune()
-
-	switch ch {
-	case '1':
-		mainPage.HidePage("stylePage")
-		mainPage.HidePage("keyMapPage")
-		mainPage.ShowPage("langPage")
-		app.SetFocus(langCycle.GetCurrentUI())
-	case '2':
-		mainPage.HidePage("langPage")
-		mainPage.HidePage("keyMapPage")
-		mainPage.ShowPage("stylePage")
-		app.SetFocus(styleCycle.GetCurrentUI())
-	case '3':
-		mainPage.HidePage("langPage")
-		mainPage.HidePage("stylePage")
-		mainPage.ShowPage("keyMapPage")
-	}
-
-	return event
-}
-
 func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
 
@@ -424,7 +371,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlQ:
 		srcInput.SetText("", true)
 	case tcell.KeyCtrlS:
-		translator.srcLang, translator.dstLang = translator.dstLang, translator.srcLang
+		translator.SrcLang, translator.DstLang = translator.DstLang, translator.SrcLang
 		updateTitle()
 		srcText := srcInput.GetText()
 		dstText := dstOutput.GetText(false)
@@ -437,13 +384,13 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		dstOutput.SetText(srcText)
 	case tcell.KeyCtrlO:
 		// Play source sound
-		if translator.soundLock.Available() {
+		if translator.SoundLock.Available() {
 			message := srcInput.GetText()
 			if len(message) > 0 {
 				// Only play when message exist
-				translator.soundLock.Acquire()
+				translator.SoundLock.Acquire()
 				go func() {
-					err := translator.PlaySound(translator.srcLang, message)
+					err := translator.PlaySound(translator.SrcLang, message)
 					if err != nil {
 						srcInput.SetText(err.Error(), true)
 					}
@@ -453,13 +400,13 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 	case tcell.KeyCtrlP:
 		// Play destination sound
-		if translator.soundLock.Available() {
+		if translator.SoundLock.Available() {
 			message := dstOutput.GetText(false)
 			if len(message) > 0 {
 				// Only play when message exist
-				translator.soundLock.Acquire()
+				translator.SoundLock.Acquire()
 				go func() {
-					err := translator.PlaySound(translator.dstLang, message)
+					err := translator.PlaySound(translator.DstLang, message)
 					if err != nil {
 						dstOutput.SetText(err.Error())
 					}
@@ -468,7 +415,30 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 	case tcell.KeyCtrlX:
 		// Stop play sound
-		translator.soundLock.stop = true
+		translator.SoundLock.Stop = true
+	}
+
+	return event
+}
+
+func popOutWindowHandler(event *tcell.EventKey) *tcell.EventKey {
+	ch := event.Rune()
+
+	switch ch {
+	case '1':
+		mainPage.HidePage("stylePage")
+		mainPage.HidePage("keyMapPage")
+		mainPage.ShowPage("langPage")
+		app.SetFocus(langCycle.GetCurrentUI())
+	case '2':
+		mainPage.HidePage("langPage")
+		mainPage.HidePage("keyMapPage")
+		mainPage.ShowPage("stylePage")
+		app.SetFocus(styleCycle.GetCurrentUI())
+	case '3':
+		mainPage.HidePage("langPage")
+		mainPage.HidePage("stylePage")
+		mainPage.ShowPage("keyMapPage")
 	}
 
 	return event

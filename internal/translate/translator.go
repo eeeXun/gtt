@@ -1,4 +1,4 @@
-package main
+package translate
 
 import (
 	"encoding/json"
@@ -17,41 +17,15 @@ const (
 	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
-type Lock struct {
-	stop        bool
-	threadCount int8
-}
-
-func NewLock() *Lock {
-	return &Lock{
-		stop:        true,
-		threadCount: 0,
-	}
-}
-
-func (l *Lock) Available() bool {
-	return l.stop && l.threadCount == 0
-}
-
-func (l *Lock) Acquire() {
-	l.stop = false
-	l.threadCount++
-}
-
-func (l *Lock) Release() {
-	l.stop = true
-	l.threadCount--
-}
-
 type Translator struct {
-	srcLang   string
-	dstLang   string
-	soundLock *Lock
+	SrcLang   string
+	DstLang   string
+	SoundLock *Lock
 }
 
 func NewTranslator() *Translator {
 	return &Translator{
-		soundLock: NewLock(),
+		SoundLock: NewLock(),
 	}
 }
 
@@ -61,8 +35,8 @@ func (t *Translator) Translate(message string) (string, error) {
 
 	urlStr := fmt.Sprintf(
 		textURL,
-		LangCode[t.srcLang],
-		LangCode[t.dstLang],
+		LangCode[t.SrcLang],
+		LangCode[t.DstLang],
 		url.QueryEscape(message),
 	)
 	res, err := http.Get(urlStr)
@@ -98,35 +72,35 @@ func (t *Translator) PlaySound(lang string, message string) error {
 	)
 	res, err := http.Get(urlStr)
 	if err != nil {
-		t.soundLock.Release()
+		t.SoundLock.Release()
 		return err
 	}
 	decoder, err := mp3.NewDecoder(res.Body)
 	if err != nil {
-		t.soundLock.Release()
+		t.SoundLock.Release()
 		return err
 	}
 	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
 	if err != nil {
-		t.soundLock.Release()
+		t.SoundLock.Release()
 		return err
 	}
 	<-readyChan
 	player := otoCtx.NewPlayer(decoder)
 	player.Play()
 	for player.IsPlaying() {
-		if t.soundLock.stop {
-			t.soundLock.Release()
+		if t.SoundLock.Stop {
+			t.SoundLock.Release()
 			return nil
 		} else {
 			time.Sleep(time.Millisecond)
 		}
 	}
 	if err = player.Close(); err != nil {
-		t.soundLock.Release()
+		t.SoundLock.Release()
 		return err
 	}
 
-	t.soundLock.Release()
+	t.SoundLock.Release()
 	return nil
 }
