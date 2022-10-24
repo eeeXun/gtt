@@ -6,6 +6,34 @@ import (
 	"strconv"
 )
 
+type UICycle struct {
+	widget []tview.Primitive
+	index  int
+	len    int
+}
+
+func NewUICycle(widgets ...tview.Primitive) *UICycle {
+	var w []tview.Primitive
+
+	for _, widget := range widgets {
+		w = append(w, widget)
+	}
+
+	return &UICycle{
+		widget: w,
+		index:  0,
+		len:    len(w),
+	}
+}
+
+func (ui *UICycle) Increase() {
+	ui.index = (ui.index + 1) % ui.len
+}
+
+func (ui *UICycle) GetCurrentUI() tview.Primitive {
+	return ui.widget[ui.index]
+}
+
 func updateBackgroundColor() {
 	// box
 	srcBox.SetBackgroundColor(window.src.backgroundColor)
@@ -175,12 +203,14 @@ func uiInit() {
 	langWindow.SetInputCapture(langWindowHandler)
 	styleWindow.SetInputCapture(styleWindowHandler)
 	translateWindow.SetInputCapture(translatePageHandler)
-	srcLangDropDown.SetDoneFunc(srcDropDownHandler).
+	srcLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(srcLangSelected)
-	dstLangDropDown.SetDoneFunc(dstDropDownHandler).
+	dstLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(dstLangSelected)
-	themeDropDown.SetSelectedFunc(themeSelected)
-	transparentDropDown.SetSelectedFunc(transparentSelected)
+	themeDropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(themeSelected)
+	transparentDropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(transparentSelected)
 	langButton.SetSelectedFunc(func() {
 		mainPage.HidePage("stylePage")
 		mainPage.ShowPage("langPage")
@@ -301,6 +331,16 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
+func langDropDownHandler(key tcell.Key) {
+	switch key {
+	case tcell.KeyTAB:
+		langCycle.Increase()
+		app.SetFocus(langCycle.GetCurrentUI())
+	case tcell.KeyEsc:
+		mainPage.HidePage("langPage")
+	}
+}
+
 func srcLangSelected(text string, index int) {
 	translator.srcLang = text
 	srcBox.SetTitle(text)
@@ -311,6 +351,16 @@ func dstLangSelected(text string, index int) {
 	translator.dstLang = text
 	dstBox.SetTitle(text)
 	dstLangDropDown.SetTitle(text)
+}
+
+func styleDropDownHandler(key tcell.Key) {
+	switch key {
+	case tcell.KeyTAB:
+		styleCycle.Increase()
+		app.SetFocus(styleCycle.GetCurrentUI())
+	case tcell.KeyEsc:
+		mainPage.HidePage("stylePage")
+	}
 }
 
 func themeSelected(text string, index int) {
@@ -329,22 +379,4 @@ func transparentSelected(text string, index int) {
 		window.dst.backgroundColor = Themes[theme]["bg"]
 	}
 	updateBackgroundColor()
-}
-
-func srcDropDownHandler(key tcell.Key) {
-	switch key {
-	case tcell.KeyTAB:
-		app.SetFocus(dstLangDropDown)
-	case tcell.KeyEsc:
-		mainPage.HidePage("langPage")
-	}
-}
-
-func dstDropDownHandler(key tcell.Key) {
-	switch key {
-	case tcell.KeyTAB:
-		app.SetFocus(srcLangDropDown)
-	case tcell.KeyEsc:
-		mainPage.HidePage("langPage")
-	}
 }
