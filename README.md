@@ -2,26 +2,53 @@
 
 Google Translate TUI
 
-## Translate
+## ScreenShot
 
-[free-google-translate (go)](https://github.com/turk/free-google-translate/blob/master/translator.go)
+![screenshot](https://i.imgur.com/ECtL7ac.gif)
+
+## Install
 
 ```
-https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s
+go get && go build
 ```
 
-## MP3
+## Key Map
 
-![sample code](https://i.imgur.com/GOsiti7.png)
+`<C-c>`
+Exit program.
 
-[beep](https://github.com/faiface/beep)
+`<Esc>`
+Toggle pop out window.
 
-[example](https://gist.github.com/iochen/acad285d2d23066df9449d40a7f3547c)
+`<C-j>`
+Translate from left window to right window.
 
-[play on network](https://github.com/tosone/minimp3#examples-are-here)
+`<C-s>`
+Swap language.
 
-[low level](https://github.com/hajimehoshi/oto)
+`<C-q>`
+Clear all text in left window.
 
-## config
+`<C-o>`
+Play sound on left window.
 
-[viper](https://github.com/spf13/viper)
+`<C-p>`
+Play sound on right window.
+
+`<C-x>`
+Stop play sound.
+
+`<C-t>`
+Toggle transparent.
+
+`<Tab>`, `<S-Tab>`
+Cycle through the pop out widget.
+
+`<1>`, `<2>`, `<3>`
+Switch pop out window.
+
+## Credit
+
+[snsd0805/GoogleTranslate-TUI](https://github.com/snsd0805/GoogleTranslate-TUI) For inspiration.
+
+[turk/free-google-translate](https://github.com/turk/free-google-translate) For Google translate in Golang.
