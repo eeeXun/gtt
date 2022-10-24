@@ -263,10 +263,12 @@ func uiInit() {
 	langButton.SetSelectedFunc(func() {
 		mainPage.HidePage("stylePage")
 		mainPage.ShowPage("langPage")
+		app.SetFocus(langCycle.GetCurrentUI())
 	})
 	styleButton.SetSelectedFunc(func() {
 		mainPage.HidePage("langPage")
 		mainPage.ShowPage("stylePage")
+		app.SetFocus(styleCycle.GetCurrentUI())
 	})
 }
 
@@ -299,6 +301,7 @@ func langWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 	case '2':
 		mainPage.HidePage("langPage")
 		mainPage.ShowPage("stylePage")
+		app.SetFocus(styleCycle.GetCurrentUI())
 	}
 
 	return event
@@ -311,6 +314,7 @@ func styleWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 	case '1':
 		mainPage.HidePage("stylePage")
 		mainPage.ShowPage("langPage")
+		app.SetFocus(langCycle.GetCurrentUI())
 	}
 
 	return event
@@ -322,6 +326,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	switch key {
 	case tcell.KeyEsc:
 		mainPage.ShowPage("langPage")
+		app.SetFocus(langCycle.GetCurrentUI())
 	case tcell.KeyCtrlJ:
 		message := srcBox.GetText()
 		if len(message) > 0 {
