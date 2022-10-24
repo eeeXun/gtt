@@ -235,6 +235,9 @@ func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 		updateBackgroundColor()
 		transparent = !transparent
+		transparentDropDown.SetCurrentOption(
+			IndexOf(strconv.FormatBool(transparent),
+				[]string{"true", "false"}))
 	}
 
 	return event
