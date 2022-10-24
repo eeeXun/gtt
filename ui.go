@@ -253,13 +253,27 @@ func uiInit() {
 	styleWindow.SetInputCapture(styleWindowHandler)
 	translateWindow.SetInputCapture(translatePageHandler)
 	srcLangDropDown.SetDoneFunc(langDropDownHandler).
-		SetSelectedFunc(srcLangSelected)
+		SetSelectedFunc(func(text string, index int) {
+			translator.srcLang = text
+			srcBox.SetTitle(text)
+			srcLangDropDown.SetTitle(text)
+		})
 	dstLangDropDown.SetDoneFunc(langDropDownHandler).
-		SetSelectedFunc(dstLangSelected)
+		SetSelectedFunc(func(text string, index int) {
+			translator.dstLang = text
+			dstBox.SetTitle(text)
+			dstLangDropDown.SetTitle(text)
+		})
 	themeDropDown.SetDoneFunc(styleDropDownHandler).
-		SetSelectedFunc(themeSelected)
+		SetSelectedFunc(func(text string, index int) {
+			theme = text
+			updateAllColor()
+		})
 	transparentDropDown.SetDoneFunc(styleDropDownHandler).
-		SetSelectedFunc(transparentSelected)
+		SetSelectedFunc(func(text string, index int) {
+			transparent, _ = strconv.ParseBool(text)
+			updateBackgroundColor()
+		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
 			style.SetSrcBorderColor(text)
@@ -401,18 +415,6 @@ func langDropDownHandler(key tcell.Key) {
 	}
 }
 
-func srcLangSelected(text string, index int) {
-	translator.srcLang = text
-	srcBox.SetTitle(text)
-	srcLangDropDown.SetTitle(text)
-}
-
-func dstLangSelected(text string, index int) {
-	translator.dstLang = text
-	dstBox.SetTitle(text)
-	dstLangDropDown.SetTitle(text)
-}
-
 func styleDropDownHandler(key tcell.Key) {
 	switch key {
 	case tcell.KeyTAB:
@@ -421,14 +423,4 @@ func styleDropDownHandler(key tcell.Key) {
 	case tcell.KeyEsc:
 		mainPage.HidePage("stylePage")
 	}
-}
-
-func themeSelected(text string, index int) {
-	theme = text
-	updateAllColor()
-}
-
-func transparentSelected(text string, index int) {
-	transparent, _ = strconv.ParseBool(text)
-	updateBackgroundColor()
 }
