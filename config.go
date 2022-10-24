@@ -10,8 +10,8 @@ func configInit() {
 
 	config.SetConfigName("gtt")
 	config.SetConfigType("yaml")
-	if len(os.Getenv("$XDG_CONFIG_HOME")) > 0 {
-		defaultConfigPath = os.Getenv("$XDG_CONFIG_HOME") + "/gtt"
+	if len(os.Getenv("XDG_CONFIG_HOME")) > 0 {
+		defaultConfigPath = os.Getenv("XDG_CONFIG_HOME") + "/gtt"
 		config.AddConfigPath(defaultConfigPath)
 	} else {
 		defaultConfigPath = os.Getenv("HOME") + "/.config/gtt"
