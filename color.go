@@ -5,8 +5,7 @@ import (
 )
 
 var (
-	Transparent tcell.Color = tcell.ColorDefault
-	ThemesName              = []string{"Gruvbox", "Nord"}
+	AllTheme                = []string{"Gruvbox", "Nord"}
 	Palette                 = []string{"red", "green", "yellow", "blue", "purple", "cyan"}
 	Themes                  = map[string]map[string]tcell.Color{
 		"Gruvbox": {
@@ -64,7 +63,7 @@ func NewStyle() *Style {
 
 func (s Style) BackgroundColor() tcell.Color {
 	if s.Transparent {
-		return Transparent
+		return tcell.ColorDefault
 	}
 	return Themes[s.Theme][s.backgroundColor]
 }

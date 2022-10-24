@@ -193,8 +193,8 @@ func uiInit() {
 	dstLangDropDown.SetBorder(true)
 	dstLangDropDown.SetOptions(Lang, nil)
 	themeDropDown.SetLabel("Theme: ").
-		SetOptions(ThemesName, nil).
-		SetCurrentOption(IndexOf(style.Theme, ThemesName))
+		SetOptions(AllTheme, nil).
+		SetCurrentOption(IndexOf(style.Theme, AllTheme))
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
