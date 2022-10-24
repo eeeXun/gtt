@@ -71,6 +71,20 @@ func updateBackgroundColor() {
 		tcell.StyleDefault.
 			Background(window.src.selectedColor).
 			Foreground(window.src.prefixColor))
+	srcBorderDropDown.SetBackgroundColor(window.src.backgroundColor)
+	srcBorderDropDown.SetListStyles(tcell.StyleDefault.
+		Background(window.src.backgroundColor).
+		Foreground(window.src.foregroundColor),
+		tcell.StyleDefault.
+			Background(window.src.selectedColor).
+			Foreground(window.src.prefixColor))
+	dstBorderDropDown.SetBackgroundColor(window.dst.backgroundColor)
+	dstBorderDropDown.SetListStyles(tcell.StyleDefault.
+		Background(window.src.backgroundColor).
+		Foreground(window.src.foregroundColor),
+		tcell.StyleDefault.
+			Background(window.src.selectedColor).
+			Foreground(window.src.prefixColor))
 }
 
 func updateBorderColor() {
@@ -84,6 +98,10 @@ func updateBorderColor() {
 	srcLangDropDown.SetBorderColor(window.src.borderColor).
 		SetTitleColor(window.src.borderColor)
 	dstLangDropDown.SetBorderColor(window.dst.borderColor).
+		SetTitleColor(window.dst.borderColor)
+	srcBorderDropDown.SetBorderColor(window.src.borderColor).
+		SetTitleColor(window.src.borderColor)
+	dstBorderDropDown.SetBorderColor(window.dst.borderColor).
 		SetTitleColor(window.dst.borderColor)
 }
 
@@ -107,6 +125,14 @@ func updateNonConfigColor() {
 		SetPrefixTextColor(window.src.prefixColor)
 	transparentDropDown.SetLabelColor(window.src.labelColor)
 	transparentDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.src.prefixColor)
+	srcBorderDropDown.SetLabelColor(window.src.labelColor)
+	srcBorderDropDown.SetFieldBackgroundColor(window.src.selectedColor).
+		SetFieldTextColor(window.src.foregroundColor).
+		SetPrefixTextColor(window.src.prefixColor)
+	dstBorderDropDown.SetLabelColor(window.src.labelColor)
+	dstBorderDropDown.SetFieldBackgroundColor(window.src.selectedColor).
 		SetFieldTextColor(window.src.foregroundColor).
 		SetPrefixTextColor(window.src.prefixColor)
 
@@ -163,13 +189,19 @@ func uiInit() {
 	dstLangDropDown.SetBorder(true)
 	dstLangDropDown.SetOptions(Lang, nil)
 	themeDropDown.SetLabel("Theme: ").
-		SetOptions(themesName, nil).
-		SetCurrentOption(IndexOf(theme, themesName))
+		SetOptions(ThemesName, nil).
+		SetCurrentOption(IndexOf(theme, ThemesName))
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
 			IndexOf(strconv.FormatBool(transparent),
 				[]string{"true", "false"}))
+	srcBorderDropDown.SetOptions(Palette, nil)
+	srcBorderDropDown.SetBorder(true).
+		SetTitle("Source")
+	dstBorderDropDown.SetOptions(Palette, nil)
+	dstBorderDropDown.SetBorder(true).
+		SetTitle("Destination")
 
 	// window
 	translateWindow.SetDirection(tview.FlexColumn).
@@ -190,7 +222,13 @@ func uiInit() {
 			AddItem(nil, 0, 1, false).
 			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 				AddItem(themeDropDown, 1, 1, true).
-				AddItem(transparentDropDown, 1, 1, false), 20, 1, true).
+				AddItem(transparentDropDown, 1, 1, false).
+				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+					AddItem(nil, 0, 1, false).
+					AddItem(srcBorderDropDown, 32, 1, false).
+					AddItem(dstBorderDropDown, 32, 1, false).
+					AddItem(nil, 0, 1, false), 0, 1, false),
+				20, 1, true).
 			AddItem(nil, 0, 1, false), 20, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
@@ -211,6 +249,8 @@ func uiInit() {
 		SetSelectedFunc(themeSelected)
 	transparentDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(transparentSelected)
+	srcBorderDropDown.SetDoneFunc(styleDropDownHandler)
+	dstBorderDropDown.SetDoneFunc(styleDropDownHandler)
 	langButton.SetSelectedFunc(func() {
 		mainPage.HidePage("stylePage")
 		mainPage.ShowPage("langPage")
