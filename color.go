@@ -95,6 +95,14 @@ func (s Style) DstBorderColor() tcell.Color {
 	return Themes[theme][s.dst.borderColor]
 }
 
+func (s Style) SrcBorderStr() string {
+	return s.src.borderColor
+}
+
+func (s Style) DstBorderStr() string {
+	return s.dst.borderColor
+}
+
 func (s *Style) SetSrcBorderColor(color string) *Style {
 	s.src.borderColor = color
 	return s
