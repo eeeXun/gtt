@@ -33,10 +33,10 @@ func configInit() {
 	}
 
 	// setup
-	theme = config.GetString("theme")
-	transparent = config.GetBool("transparent")
 	translator.srcLang = config.GetString("source.language")
 	translator.dstLang = config.GetString("destination.language")
+	style.Theme = config.GetString("theme")
+	style.Transparent = config.GetBool("transparent")
 	style.SetSrcBorderColor(config.GetString("source.borderColor")).
 		SetDstBorderColor(config.GetString("destination.borderColor"))
 }
@@ -45,13 +45,13 @@ func configInit() {
 func updateConfig() {
 	changed := false
 
-	if config.GetString("theme") != theme {
+	if config.GetString("theme") != style.Theme {
 		changed = true
-		config.Set("theme", theme)
+		config.Set("theme", style.Theme)
 	}
-	if config.GetBool("transparent") != transparent {
+	if config.GetBool("transparent") != style.Transparent {
 		changed = true
-		config.Set("transparent", transparent)
+		config.Set("transparent", style.Transparent)
 	}
 	if config.GetString("source.language") != translator.srcLang {
 		changed = true

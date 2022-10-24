@@ -47,6 +47,8 @@ type Style struct {
 	prefixColor     string
 	labelColor      string
 	pressColor      string
+	Theme           string
+	Transparent     bool
 }
 
 func NewStyle() *Style {
@@ -61,38 +63,38 @@ func NewStyle() *Style {
 }
 
 func (s Style) BackgroundColor() tcell.Color {
-	if transparent {
+	if s.Transparent {
 		return Transparent
 	}
-	return Themes[theme][s.backgroundColor]
+	return Themes[s.Theme][s.backgroundColor]
 }
 
 func (s Style) ForegroundColor() tcell.Color {
-	return Themes[theme][s.foregroundColor]
+	return Themes[s.Theme][s.foregroundColor]
 }
 
 func (s Style) SelectedColor() tcell.Color {
-	return Themes[theme][s.selectedColor]
+	return Themes[s.Theme][s.selectedColor]
 }
 
 func (s Style) PrefixColor() tcell.Color {
-	return Themes[theme][s.prefixColor]
+	return Themes[s.Theme][s.prefixColor]
 }
 
 func (s Style) LabelColor() tcell.Color {
-	return Themes[theme][s.labelColor]
+	return Themes[s.Theme][s.labelColor]
 }
 
 func (s Style) PressColor() tcell.Color {
-	return Themes[theme][s.pressColor]
+	return Themes[s.Theme][s.pressColor]
 }
 
 func (s Style) SrcBorderColor() tcell.Color {
-	return Themes[theme][s.src.borderColor]
+	return Themes[s.Theme][s.src.borderColor]
 }
 
 func (s Style) DstBorderColor() tcell.Color {
-	return Themes[theme][s.dst.borderColor]
+	return Themes[s.Theme][s.dst.borderColor]
 }
 
 func (s Style) SrcBorderStr() string {

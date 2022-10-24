@@ -194,11 +194,11 @@ func uiInit() {
 	dstLangDropDown.SetOptions(Lang, nil)
 	themeDropDown.SetLabel("Theme: ").
 		SetOptions(ThemesName, nil).
-		SetCurrentOption(IndexOf(theme, ThemesName))
+		SetCurrentOption(IndexOf(style.Theme, ThemesName))
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
-			IndexOf(strconv.FormatBool(transparent),
+			IndexOf(strconv.FormatBool(style.Transparent),
 				[]string{"true", "false"}))
 	srcBorderDropDown.SetLabel("Border Color: ").
 		SetOptions(Palette, nil).
@@ -270,12 +270,12 @@ func uiInit() {
 		})
 	themeDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			theme = text
+			style.Theme = text
 			updateAllColor()
 		})
 	transparentDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			transparent, _ = strconv.ParseBool(text)
+			style.Transparent, _ = strconv.ParseBool(text)
 			updateBackgroundColor()
 		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
@@ -305,10 +305,10 @@ func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
 
 	switch key {
 	case tcell.KeyCtrlT:
-		transparent = !transparent
+		style.Transparent = !style.Transparent
 		updateBackgroundColor()
 		transparentDropDown.SetCurrentOption(
-			IndexOf(strconv.FormatBool(transparent),
+			IndexOf(strconv.FormatBool(style.Transparent),
 				[]string{"true", "false"}))
 	}
 

@@ -27,11 +27,9 @@ var (
 	langWindow          = tview.NewFlex()
 	styleWindow         = tview.NewFlex()
 	mainPage            = tview.NewPages()
-	style               = NewStyle()
-	// config
-	config      = viper.New()
-	theme       string
-	transparent bool
+	// settings
+	config = viper.New()
+	style  = NewStyle()
 )
 
 func main() {
