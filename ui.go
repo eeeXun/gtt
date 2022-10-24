@@ -30,6 +30,10 @@ func (ui *UICycle) Increase() {
 	ui.index = (ui.index + 1) % ui.len
 }
 
+func (ui *UICycle) Decrease() {
+	ui.index = ((ui.index-1)%ui.len + ui.len) % ui.len
+}
+
 func (ui *UICycle) GetCurrentUI() tview.Primitive {
 	return ui.widget[ui.index]
 }
@@ -407,8 +411,11 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 
 func langDropDownHandler(key tcell.Key) {
 	switch key {
-	case tcell.KeyTAB:
+	case tcell.KeyTab:
 		langCycle.Increase()
+		app.SetFocus(langCycle.GetCurrentUI())
+	case tcell.KeyBacktab:
+		langCycle.Decrease()
 		app.SetFocus(langCycle.GetCurrentUI())
 	case tcell.KeyEsc:
 		mainPage.HidePage("langPage")
@@ -417,8 +424,11 @@ func langDropDownHandler(key tcell.Key) {
 
 func styleDropDownHandler(key tcell.Key) {
 	switch key {
-	case tcell.KeyTAB:
+	case tcell.KeyTab:
 		styleCycle.Increase()
+		app.SetFocus(styleCycle.GetCurrentUI())
+	case tcell.KeyBacktab:
+		styleCycle.Decrease()
 		app.SetFocus(styleCycle.GetCurrentUI())
 	case tcell.KeyEsc:
 		mainPage.HidePage("stylePage")
