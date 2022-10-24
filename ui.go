@@ -36,119 +36,119 @@ func (ui *UICycle) GetCurrentUI() tview.Primitive {
 
 func updateBackgroundColor() {
 	// box
-	srcBox.SetBackgroundColor(window.src.backgroundColor)
+	srcBox.SetBackgroundColor(style.BackgroundColor())
 	srcBox.SetTextStyle(tcell.StyleDefault.
-		Background(window.src.backgroundColor).
-		Foreground(window.src.foregroundColor))
-	dstBox.SetBackgroundColor(window.dst.backgroundColor)
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()))
+	dstBox.SetBackgroundColor(style.BackgroundColor())
 
 	// dropdown
-	srcLangDropDown.SetBackgroundColor(window.src.backgroundColor)
+	srcLangDropDown.SetBackgroundColor(style.BackgroundColor())
 	srcLangDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.backgroundColor).
-		Foreground(window.src.foregroundColor),
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()),
 		tcell.StyleDefault.
-			Background(window.src.selectedColor).
-			Foreground(window.src.prefixColor))
-	dstLangDropDown.SetBackgroundColor(window.dst.backgroundColor)
+			Background(style.SelectedColor()).
+			Foreground(style.PrefixColor()))
+	dstLangDropDown.SetBackgroundColor(style.BackgroundColor())
 	dstLangDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.backgroundColor).
-		Foreground(window.src.foregroundColor),
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()),
 		tcell.StyleDefault.
-			Background(window.src.selectedColor).
-			Foreground(window.src.prefixColor))
-	themeDropDown.SetBackgroundColor(window.src.backgroundColor)
+			Background(style.SelectedColor()).
+			Foreground(style.PrefixColor()))
+	themeDropDown.SetBackgroundColor(style.BackgroundColor())
 	themeDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.backgroundColor).
-		Foreground(window.src.foregroundColor),
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()),
 		tcell.StyleDefault.
-			Background(window.src.selectedColor).
-			Foreground(window.src.prefixColor))
-	transparentDropDown.SetBackgroundColor(window.src.backgroundColor)
+			Background(style.SelectedColor()).
+			Foreground(style.PrefixColor()))
+	transparentDropDown.SetBackgroundColor(style.BackgroundColor())
 	transparentDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.backgroundColor).
-		Foreground(window.src.foregroundColor),
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()),
 		tcell.StyleDefault.
-			Background(window.src.selectedColor).
-			Foreground(window.src.prefixColor))
-	srcBorderDropDown.SetBackgroundColor(window.src.backgroundColor)
+			Background(style.SelectedColor()).
+			Foreground(style.PrefixColor()))
+	srcBorderDropDown.SetBackgroundColor(style.BackgroundColor())
 	srcBorderDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.backgroundColor).
-		Foreground(window.src.foregroundColor),
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()),
 		tcell.StyleDefault.
-			Background(window.src.selectedColor).
-			Foreground(window.src.prefixColor))
-	dstBorderDropDown.SetBackgroundColor(window.dst.backgroundColor)
+			Background(style.SelectedColor()).
+			Foreground(style.PrefixColor()))
+	dstBorderDropDown.SetBackgroundColor(style.BackgroundColor())
 	dstBorderDropDown.SetListStyles(tcell.StyleDefault.
-		Background(window.src.backgroundColor).
-		Foreground(window.src.foregroundColor),
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()),
 		tcell.StyleDefault.
-			Background(window.src.selectedColor).
-			Foreground(window.src.prefixColor))
+			Background(style.SelectedColor()).
+			Foreground(style.PrefixColor()))
 }
 
 func updateBorderColor() {
 	// box
-	srcBox.SetBorderColor(window.src.borderColor).
-		SetTitleColor(window.src.borderColor)
-	dstBox.SetBorderColor(window.dst.borderColor).
-		SetTitleColor(window.dst.borderColor)
+	srcBox.SetBorderColor(style.SrcBorderColor()).
+		SetTitleColor(style.SrcBorderColor())
+	dstBox.SetBorderColor(style.DstBorderColor()).
+		SetTitleColor(style.DstBorderColor())
 
 	// dropdown
-	srcLangDropDown.SetBorderColor(window.src.borderColor).
-		SetTitleColor(window.src.borderColor)
-	dstLangDropDown.SetBorderColor(window.dst.borderColor).
-		SetTitleColor(window.dst.borderColor)
-	srcBorderDropDown.SetBorderColor(window.src.borderColor).
-		SetTitleColor(window.src.borderColor)
-	dstBorderDropDown.SetBorderColor(window.dst.borderColor).
-		SetTitleColor(window.dst.borderColor)
+	srcLangDropDown.SetBorderColor(style.SrcBorderColor()).
+		SetTitleColor(style.SrcBorderColor())
+	dstLangDropDown.SetBorderColor(style.DstBorderColor()).
+		SetTitleColor(style.DstBorderColor())
+	srcBorderDropDown.SetBorderColor(style.SrcBorderColor()).
+		SetTitleColor(style.SrcBorderColor())
+	dstBorderDropDown.SetBorderColor(style.DstBorderColor()).
+		SetTitleColor(style.DstBorderColor())
 }
 
 func updateNonConfigColor() {
 	// box
 	srcBox.SetSelectedStyle(tcell.StyleDefault.
-		Background(window.src.selectedColor).
-		Foreground(window.src.foregroundColor))
-	dstBox.SetTextColor(window.dst.foregroundColor)
+		Background(style.SelectedColor()).
+		Foreground(style.ForegroundColor()))
+	dstBox.SetTextColor(style.ForegroundColor())
 
 	// dropdown
-	srcLangDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-	dstLangDropDown.SetFieldBackgroundColor(window.dst.selectedColor).
-		SetFieldTextColor(window.dst.foregroundColor).
-		SetPrefixTextColor(window.dst.prefixColor)
-	themeDropDown.SetLabelColor(window.src.labelColor)
-	themeDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-	transparentDropDown.SetLabelColor(window.src.labelColor)
-	transparentDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-	srcBorderDropDown.SetLabelColor(window.src.labelColor)
-	srcBorderDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
-	dstBorderDropDown.SetLabelColor(window.src.labelColor)
-	dstBorderDropDown.SetFieldBackgroundColor(window.src.selectedColor).
-		SetFieldTextColor(window.src.foregroundColor).
-		SetPrefixTextColor(window.src.prefixColor)
+	srcLangDropDown.SetFieldBackgroundColor(style.SelectedColor()).
+		SetFieldTextColor(style.ForegroundColor()).
+		SetPrefixTextColor(style.PrefixColor())
+	dstLangDropDown.SetFieldBackgroundColor(style.SelectedColor()).
+		SetFieldTextColor(style.ForegroundColor()).
+		SetPrefixTextColor(style.PrefixColor())
+	themeDropDown.SetLabelColor(style.LabelColor())
+	themeDropDown.SetFieldBackgroundColor(style.SelectedColor()).
+		SetFieldTextColor(style.ForegroundColor()).
+		SetPrefixTextColor(style.PrefixColor())
+	transparentDropDown.SetLabelColor(style.LabelColor())
+	transparentDropDown.SetFieldBackgroundColor(style.SelectedColor()).
+		SetFieldTextColor(style.ForegroundColor()).
+		SetPrefixTextColor(style.PrefixColor())
+	srcBorderDropDown.SetLabelColor(style.LabelColor())
+	srcBorderDropDown.SetFieldBackgroundColor(style.SelectedColor()).
+		SetFieldTextColor(style.ForegroundColor()).
+		SetPrefixTextColor(style.PrefixColor())
+	dstBorderDropDown.SetLabelColor(style.LabelColor())
+	dstBorderDropDown.SetFieldBackgroundColor(style.SelectedColor()).
+		SetFieldTextColor(style.ForegroundColor()).
+		SetPrefixTextColor(style.PrefixColor())
 
 	// button
-	langButton.SetLabelColor(window.src.foregroundColor).
-		SetBackgroundColorActivated(window.src.pressColor).
-		SetLabelColorActivated(window.src.foregroundColor).
-		SetBackgroundColor(window.src.selectedColor)
-	styleButton.SetLabelColor(window.src.foregroundColor).
-		SetBackgroundColorActivated(window.src.pressColor).
-		SetLabelColorActivated(window.src.foregroundColor).
-		SetBackgroundColor(window.src.selectedColor)
-	menuButton.SetLabelColor(window.src.foregroundColor).
-		SetBackgroundColorActivated(window.src.pressColor).
-		SetLabelColorActivated(window.src.foregroundColor).
-		SetBackgroundColor(window.src.selectedColor)
+	langButton.SetLabelColor(style.ForegroundColor()).
+		SetBackgroundColorActivated(style.PressColor()).
+		SetLabelColorActivated(style.ForegroundColor()).
+		SetBackgroundColor(style.SelectedColor())
+	styleButton.SetLabelColor(style.ForegroundColor()).
+		SetBackgroundColorActivated(style.PressColor()).
+		SetLabelColorActivated(style.ForegroundColor()).
+		SetBackgroundColor(style.SelectedColor())
+	menuButton.SetLabelColor(style.ForegroundColor()).
+		SetBackgroundColorActivated(style.PressColor()).
+		SetLabelColorActivated(style.ForegroundColor()).
+		SetBackgroundColor(style.SelectedColor())
 }
 
 func updateAllColor() {
@@ -277,15 +277,8 @@ func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
 
 	switch key {
 	case tcell.KeyCtrlT:
-		if transparent {
-			window.src.backgroundColor = Themes[theme]["bg"]
-			window.dst.backgroundColor = Themes[theme]["bg"]
-		} else {
-			window.src.backgroundColor = Transparent
-			window.dst.backgroundColor = Transparent
-		}
-		updateBackgroundColor()
 		transparent = !transparent
+		updateBackgroundColor()
 		transparentDropDown.SetCurrentOption(
 			IndexOf(strconv.FormatBool(transparent),
 				[]string{"true", "false"}))
@@ -422,18 +415,10 @@ func styleDropDownHandler(key tcell.Key) {
 
 func themeSelected(text string, index int) {
 	theme = text
-	window.colorInit()
 	updateAllColor()
 }
 
 func transparentSelected(text string, index int) {
 	transparent, _ = strconv.ParseBool(text)
-	if transparent {
-		window.src.backgroundColor = Transparent
-		window.dst.backgroundColor = Transparent
-	} else {
-		window.src.backgroundColor = Themes[theme]["bg"]
-		window.dst.backgroundColor = Themes[theme]["bg"]
-	}
 	updateBackgroundColor()
 }

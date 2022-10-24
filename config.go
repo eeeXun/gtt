@@ -24,6 +24,8 @@ func configInit() {
 		config.Set("theme", "Gruvbox")
 		config.Set("source.language", "English")
 		config.Set("destination.language", "Chinese (Traditional)")
+		config.Set("source.borderColor", "red")
+		config.Set("destination.borderColor", "blue")
 		if _, err = os.Stat(defaultConfigPath); os.IsNotExist(err) {
 			os.Mkdir(defaultConfigPath, os.ModePerm)
 		}
@@ -35,6 +37,8 @@ func configInit() {
 	transparent = config.GetBool("transparent")
 	translator.srcLang = config.GetString("source.language")
 	translator.dstLang = config.GetString("destination.language")
+	style.SetSrcBorderColor(config.GetString("source.borderColor"))
+	style.SetDstBorderColor(config.GetString("destination.borderColor"))
 }
 
 // Check if need to modify config file when quit program

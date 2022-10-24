@@ -27,7 +27,7 @@ var (
 	langWindow          = tview.NewFlex()
 	styleWindow         = tview.NewFlex()
 	mainPage            = tview.NewPages()
-	window              Window
+	style               = NewStyle()
 	// config
 	config      = viper.New()
 	theme       string
@@ -37,7 +37,6 @@ var (
 func main() {
 	SetTermTitle("GTT")
 	configInit()
-	window.colorInit()
 	uiInit()
 
 	mainPage.AddPage("translatePage", translateWindow, true, true)

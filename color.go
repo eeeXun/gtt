@@ -34,38 +34,73 @@ var (
 	}
 )
 
-type Colors struct {
-	backgroundColor tcell.Color
-	foregroundColor tcell.Color
-	borderColor     tcell.Color
-	textColor       tcell.Color
-	selectedColor   tcell.Color
-	prefixColor     tcell.Color
-	labelColor      tcell.Color
-	pressColor      tcell.Color
+type WindowStyle struct {
+	borderColor string
 }
 
-type Window struct {
-	src Colors
-	dst Colors
+type Style struct {
+	src             WindowStyle
+	dst             WindowStyle
+	backgroundColor string
+	foregroundColor string
+	selectedColor   string
+	prefixColor     string
+	labelColor      string
+	pressColor      string
 }
 
-func (w *Window) colorInit() {
-	if transparent {
-		w.src.backgroundColor = Transparent
-		w.dst.backgroundColor = Transparent
-	} else {
-		w.src.backgroundColor = Themes[theme]["bg"]
-		w.dst.backgroundColor = Themes[theme]["bg"]
+func NewStyle() *Style {
+	return &Style{
+		backgroundColor: "bg",
+		foregroundColor: "fg",
+		selectedColor:   "gray",
+		prefixColor:     "cyan",
+		labelColor:      "yellow",
+		pressColor:      "cyan",
 	}
-	w.src.borderColor = Themes[theme]["red"]
-	w.src.foregroundColor = Themes[theme]["fg"]
-	w.src.selectedColor = Themes[theme]["gray"]
-	w.src.prefixColor = Themes[theme]["cyan"]
-	w.src.pressColor = Themes[theme]["purple"]
-	w.src.labelColor = Themes[theme]["yellow"]
-	w.dst.foregroundColor = Themes[theme]["fg"]
-	w.dst.selectedColor = Themes[theme]["gray"]
-	w.dst.borderColor = Themes[theme]["blue"]
-	w.dst.prefixColor = Themes[theme]["cyan"]
+}
+
+func (s Style) BackgroundColor() tcell.Color {
+	if transparent {
+		return Transparent
+	}
+	return Themes[theme][s.backgroundColor]
+}
+
+func (s Style) ForegroundColor() tcell.Color {
+	return Themes[theme][s.foregroundColor]
+}
+
+func (s Style) SelectedColor() tcell.Color {
+	return Themes[theme][s.selectedColor]
+}
+
+func (s Style) PrefixColor() tcell.Color {
+	return Themes[theme][s.prefixColor]
+}
+
+func (s Style) LabelColor() tcell.Color {
+	return Themes[theme][s.labelColor]
+}
+
+func (s Style) PressColor() tcell.Color {
+	return Themes[theme][s.pressColor]
+}
+
+func (s Style) SrcBorderColor() tcell.Color {
+	return Themes[theme][s.src.borderColor]
+}
+
+func (s Style) DstBorderColor() tcell.Color {
+	return Themes[theme][s.dst.borderColor]
+}
+
+func (s *Style) SetSrcBorderColor(color string) *Style {
+	s.src.borderColor = color
+	return s
+}
+
+func (s *Style) SetDstBorderColor(color string) *Style {
+	s.dst.borderColor = color
+	return s
 }
