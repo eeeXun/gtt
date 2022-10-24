@@ -20,12 +20,14 @@ var (
 	srcBorderDropDown   = tview.NewDropDown()
 	dstBorderDropDown   = tview.NewDropDown()
 	styleCycle          = NewUICycle(themeDropDown, transparentDropDown, srcBorderDropDown, dstBorderDropDown)
+	keyMapMenu          = tview.NewTextView()
 	langButton          = tview.NewButton("(1)Language")
 	styleButton         = tview.NewButton("(2)Style")
-	menuButton          = tview.NewButton("(3)KeyMap")
+	keyMapButton          = tview.NewButton("(3)KeyMap")
 	translateWindow     = tview.NewFlex()
 	langWindow          = tview.NewFlex()
 	styleWindow         = tview.NewFlex()
+	keyMapWindow        = tview.NewFlex()
 	mainPage            = tview.NewPages()
 	// settings
 	config = viper.New()
@@ -40,6 +42,7 @@ func main() {
 	mainPage.AddPage("translatePage", translateWindow, true, true)
 	mainPage.AddPage("langPage", langWindow, true, false)
 	mainPage.AddPage("stylePage", styleWindow, true, false)
+	mainPage.AddPage("keyMapPage", keyMapWindow, true, false)
 
 	if err := app.SetRoot(mainPage, true).
 		EnableMouse(true).Run(); err != nil {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"strconv"
@@ -37,6 +38,31 @@ func (ui *UICycle) Decrease() {
 func (ui *UICycle) GetCurrentUI() tview.Primitive {
 	return ui.widget[ui.index]
 }
+
+const (
+	keyMapText string = `[#%[1]s]<C-c>[-]
+	Exit program.
+[#%[1]s]<Esc>[-]
+	Toggle pop out window.
+[#%[1]s]<C-j>[-]
+	Translate from left window to right window.
+[#%[1]s]<C-s>[-]
+	Swap language.
+[#%[1]s]<C-q>[-]
+	Clear all text in left window.
+[#%[1]s]<C-o>[-]
+	Play sound on left window.
+[#%[1]s]<C-p>[-]
+	Play sound on right window.
+[#%[1]s]<C-x>[-]
+	Stop play sound.
+[#%[1]s]<C-t>[-]
+	Toggle transparent.
+[#%[1]s]<Tab>, <S-Tab>[-]
+	Cycle through the pop out widget.
+[#%[1]s]<1>, <2>, <3>[-]
+	Switch pop out window.`
+)
 
 func updateBackgroundColor() {
 	// input/output
@@ -89,6 +115,9 @@ func updateBackgroundColor() {
 		tcell.StyleDefault.
 			Background(style.SelectedColor()).
 			Foreground(style.PrefixColor()))
+
+	// key map
+	keyMapMenu.SetBackgroundColor(style.BackgroundColor())
 }
 
 func updateBorderColor() {
@@ -149,10 +178,15 @@ func updateNonConfigColor() {
 		SetBackgroundColorActivated(style.PressColor()).
 		SetLabelColorActivated(style.ForegroundColor()).
 		SetBackgroundColor(style.SelectedColor())
-	menuButton.SetLabelColor(style.ForegroundColor()).
+	keyMapButton.SetLabelColor(style.ForegroundColor()).
 		SetBackgroundColorActivated(style.PressColor()).
 		SetLabelColorActivated(style.ForegroundColor()).
 		SetBackgroundColor(style.SelectedColor())
+
+	// key map
+	keyMapMenu.SetTextColor(style.ForegroundColor()).
+		SetBorderColor(style.HighLightColor()).
+		SetTitleColor(style.HighLightColor())
 }
 
 func updateAllColor() {
@@ -178,7 +212,7 @@ func attachButton() *tview.Flex {
 		AddItem(nil, 18, 1, false).
 		AddItem(styleButton, 8, 1, true).
 		AddItem(nil, 18, 1, false).
-		AddItem(menuButton, 9, 1, true).
+		AddItem(keyMapButton, 9, 1, true).
 		AddItem(nil, 0, 1, false)
 }
 
@@ -210,6 +244,13 @@ func uiInit() {
 		SetCurrentOption(IndexOf(style.DstBorderStr(), Palette))
 	dstBorderDropDown.SetBorder(true).
 		SetTitle("Destination")
+
+	// key map
+	keyMapMenu.SetBorder(true).
+		SetTitle("Key Map")
+	keyMapMenu.SetDynamicColors(true).
+		SetText(fmt.Sprintf(keyMapText,
+			fmt.Sprintf("%.6x", style.HighLightColor().TrueColor().Hex())))
 
 	// window
 	translateWindow.SetDirection(tview.FlexColumn).
@@ -247,14 +288,24 @@ func uiInit() {
 			20, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
+	keyMapWindow.SetDirection(tview.FlexRow).
+		AddItem(nil, 0, 1, false).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(nil, 0, 1, false).
+			AddItem(keyMapMenu, 64, 1, true).
+			AddItem(nil, 0, 1, false),
+			20, 1, true).
+		AddItem(attachButton(), 1, 1, false).
+		AddItem(nil, 0, 1, false)
 
 	updateAllColor()
 	updateTitle()
 
 	// handler
-	mainPage.SetInputCapture(mainpageHandler)
-	langWindow.SetInputCapture(langWindowHandler)
-	styleWindow.SetInputCapture(styleWindowHandler)
+	mainPage.SetInputCapture(mainPageHandler)
+	langWindow.SetInputCapture(popOutWindowHandler)
+	styleWindow.SetInputCapture(popOutWindowHandler)
+	keyMapWindow.SetInputCapture(popOutWindowHandler)
 	translateWindow.SetInputCapture(translatePageHandler)
 	srcLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
@@ -288,19 +339,32 @@ func uiInit() {
 			style.SetDstBorderColor(text)
 			updateBorderColor()
 		})
+	keyMapMenu.SetDoneFunc(func(key tcell.Key) {
+		switch key {
+		case tcell.KeyEsc:
+			mainPage.HidePage("keyMapPage")
+		}
+	})
 	langButton.SetSelectedFunc(func() {
 		mainPage.HidePage("stylePage")
+		mainPage.HidePage("keyMapPage")
 		mainPage.ShowPage("langPage")
 		app.SetFocus(langCycle.GetCurrentUI())
 	})
 	styleButton.SetSelectedFunc(func() {
 		mainPage.HidePage("langPage")
+		mainPage.HidePage("keyMapPage")
 		mainPage.ShowPage("stylePage")
 		app.SetFocus(styleCycle.GetCurrentUI())
 	})
+	keyMapButton.SetSelectedFunc(func() {
+		mainPage.HidePage("langPage")
+		mainPage.HidePage("stylePage")
+		mainPage.ShowPage("keyMapPage")
+	})
 }
 
-func mainpageHandler(event *tcell.EventKey) *tcell.EventKey {
+func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
 
 	switch key {
@@ -316,27 +380,24 @@ func mainpageHandler(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
-func langWindowHandler(event *tcell.EventKey) *tcell.EventKey {
-	ch := event.Rune()
-
-	switch ch {
-	case '2':
-		mainPage.HidePage("langPage")
-		mainPage.ShowPage("stylePage")
-		app.SetFocus(styleCycle.GetCurrentUI())
-	}
-
-	return event
-}
-
-func styleWindowHandler(event *tcell.EventKey) *tcell.EventKey {
+func popOutWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 	ch := event.Rune()
 
 	switch ch {
 	case '1':
 		mainPage.HidePage("stylePage")
+		mainPage.HidePage("keyMapPage")
 		mainPage.ShowPage("langPage")
 		app.SetFocus(langCycle.GetCurrentUI())
+	case '2':
+		mainPage.HidePage("langPage")
+		mainPage.HidePage("keyMapPage")
+		mainPage.ShowPage("stylePage")
+		app.SetFocus(styleCycle.GetCurrentUI())
+	case '3':
+		mainPage.HidePage("langPage")
+		mainPage.HidePage("stylePage")
+		mainPage.ShowPage("keyMapPage")
 	}
 
 	return event

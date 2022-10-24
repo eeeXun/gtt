@@ -5,9 +5,9 @@ import (
 )
 
 var (
-	AllTheme                = []string{"Gruvbox", "Nord"}
-	Palette                 = []string{"red", "green", "yellow", "blue", "purple", "cyan", "orange"}
-	Themes                  = map[string]map[string]tcell.Color{
+	AllTheme = []string{"Gruvbox", "Nord"}
+	Palette  = []string{"red", "green", "yellow", "blue", "purple", "cyan", "orange"}
+	Themes   = map[string]map[string]tcell.Color{
 		"Gruvbox": {
 			"bg":     tcell.NewHexColor(0x282828),
 			"fg":     tcell.NewHexColor(0xebdbb2),
@@ -48,6 +48,7 @@ type Style struct {
 	prefixColor     string
 	labelColor      string
 	pressColor      string
+	highLightColor  string
 	Theme           string
 	Transparent     bool
 }
@@ -60,6 +61,7 @@ func NewStyle() *Style {
 		prefixColor:     "cyan",
 		labelColor:      "yellow",
 		pressColor:      "purple",
+		highLightColor:  "orange",
 	}
 }
 
@@ -88,6 +90,10 @@ func (s Style) LabelColor() tcell.Color {
 
 func (s Style) PressColor() tcell.Color {
 	return Themes[s.Theme][s.pressColor]
+}
+
+func (s Style) HighLightColor() tcell.Color {
+	return Themes[s.Theme][s.highLightColor]
 }
 
 func (s Style) SrcBorderColor() tcell.Color {
