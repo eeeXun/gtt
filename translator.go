@@ -59,13 +59,13 @@ func (t *Translator) Translate(message string) (string, error) {
 	var data []interface{}
 	var translated string
 
-	url_str := fmt.Sprintf(
+	urlStr := fmt.Sprintf(
 		textURL,
 		LangCode[t.srcLang],
 		LangCode[t.dstLang],
 		url.QueryEscape(message),
 	)
-	res, err := http.Get(url_str)
+	res, err := http.Get(urlStr)
 	if err != nil {
 		return "", err
 	}
@@ -81,8 +81,8 @@ func (t *Translator) Translate(message string) (string, error) {
 	if len(data) > 0 {
 		result := data[0]
 		for _, lines := range result.([]interface{}) {
-			translated_line := lines.([]interface{})[0]
-			translated += fmt.Sprintf("%v", translated_line)
+			translatedLine := lines.([]interface{})[0]
+			translated += fmt.Sprintf("%v", translatedLine)
 		}
 		return translated, nil
 	}
@@ -91,12 +91,12 @@ func (t *Translator) Translate(message string) (string, error) {
 }
 
 func (t *Translator) PlaySound(lang string, message string) error {
-	url_str := fmt.Sprintf(
+	urlStr := fmt.Sprintf(
 		soundURL,
 		url.QueryEscape(message),
 		LangCode[lang],
 	)
-	res, err := http.Get(url_str)
+	res, err := http.Get(urlStr)
 	if err != nil {
 		t.soundLock.Release()
 		return err

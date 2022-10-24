@@ -57,7 +57,7 @@ func NewStyle() *Style {
 		selectedColor:   "gray",
 		prefixColor:     "cyan",
 		labelColor:      "yellow",
-		pressColor:      "cyan",
+		pressColor:      "purple",
 	}
 }
 

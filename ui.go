@@ -252,7 +252,7 @@ func uiInit() {
 	updateTitle()
 
 	// handler
-	mainPage.SetInputCapture(pagesHandler)
+	mainPage.SetInputCapture(mainpageHandler)
 	langWindow.SetInputCapture(langWindowHandler)
 	styleWindow.SetInputCapture(styleWindowHandler)
 	translateWindow.SetInputCapture(translatePageHandler)
@@ -300,11 +300,12 @@ func uiInit() {
 	})
 }
 
-func pagesHandler(event *tcell.EventKey) *tcell.EventKey {
+func mainpageHandler(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
 
 	switch key {
 	case tcell.KeyCtrlT:
+		// Toggle transparent
 		style.Transparent = !style.Transparent
 		updateBackgroundColor()
 		transparentDropDown.SetCurrentOption(
@@ -351,6 +352,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlJ:
 		message := srcBox.GetText()
 		if len(message) > 0 {
+			// Only translate when message exist
 			result, err := translator.Translate(message)
 			if err != nil {
 				dstBox.SetText(err.Error())
@@ -363,20 +365,21 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlS:
 		translator.srcLang, translator.dstLang = translator.dstLang, translator.srcLang
 		updateTitle()
-		src_text := srcBox.GetText()
-		dst_text := dstBox.GetText(false)
-		if len(dst_text) > 0 {
+		srcText := srcBox.GetText()
+		dstText := dstBox.GetText(false)
+		if len(dstText) > 0 {
 			// GetText of Box contains "\n" if it has words
-			srcBox.SetText(dst_text[:len(dst_text)-1], true)
+			srcBox.SetText(dstText[:len(dstText)-1], true)
 		} else {
-			srcBox.SetText(dst_text, true)
+			srcBox.SetText(dstText, true)
 		}
-		dstBox.SetText(src_text)
+		dstBox.SetText(srcText)
 	case tcell.KeyCtrlO:
 		// Play source sound
 		if translator.soundLock.Available() {
 			message := srcBox.GetText()
 			if len(message) > 0 {
+				// Only play when message exist
 				translator.soundLock.Acquire()
 				go func() {
 					err := translator.PlaySound(translator.srcLang, message)
@@ -392,6 +395,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		if translator.soundLock.Available() {
 			message := dstBox.GetText(false)
 			if len(message) > 0 {
+				// Only play when message exist
 				translator.soundLock.Acquire()
 				go func() {
 					err := translator.PlaySound(translator.dstLang, message)
