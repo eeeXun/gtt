@@ -196,10 +196,12 @@ func uiInit() {
 		SetCurrentOption(
 			IndexOf(strconv.FormatBool(transparent),
 				[]string{"true", "false"}))
-	srcBorderDropDown.SetOptions(Palette, nil)
+	srcBorderDropDown.SetLabel("Border Color: ").
+		SetOptions(Palette, nil)
 	srcBorderDropDown.SetBorder(true).
 		SetTitle("Source")
-	dstBorderDropDown.SetOptions(Palette, nil)
+	dstBorderDropDown.SetLabel("Border Color: ").
+		SetOptions(Palette, nil)
 	dstBorderDropDown.SetBorder(true).
 		SetTitle("Destination")
 
@@ -222,8 +224,14 @@ func uiInit() {
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
 			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-				AddItem(themeDropDown, 1, 1, true).
-				AddItem(transparentDropDown, 1, 1, false).
+				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+					AddItem(nil, 0, 1, false).
+					AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+						AddItem(themeDropDown, 1, 1, true).
+						AddItem(transparentDropDown, 1, 1, false),
+						0, 1, true).
+					AddItem(nil, 0, 1, false),
+					2, 1, true).
 				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 					AddItem(srcBorderDropDown, 32, 1, false).
 					AddItem(dstBorderDropDown, 32, 1, false),
