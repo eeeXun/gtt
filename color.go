@@ -14,7 +14,7 @@ var (
 			"fg":     tcell.NewHexColor(0xebdbb2),
 			"gray":   tcell.NewHexColor(0x665c54),
 			"red":    tcell.NewHexColor(0xfb4934),
-			"green":  tcell.NewHexColor(0xfabd2f),
+			"green":  tcell.NewHexColor(0xb8bb26),
 			"yellow": tcell.NewHexColor(0xfabd2f),
 			"blue":   tcell.NewHexColor(0x83a598),
 			"purple": tcell.NewHexColor(0xd3869b),
