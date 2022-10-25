@@ -29,6 +29,12 @@ Swap language.
 `<C-q>`
 Clear all text in left window.
 
+`<C-l>`
+Selected all text in left window.
+
+`<A-c>`
+Copy selected text in left window.
+
 `<C-o>`
 Play sound on left window.
 

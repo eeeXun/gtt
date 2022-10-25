@@ -6,6 +6,8 @@ import (
 	"github.com/rivo/tview"
 	"gtt/internal/color"
 	"gtt/internal/translate"
+	"os/exec"
+	"runtime"
 	"strconv"
 )
 
@@ -20,6 +22,10 @@ const (
 	Swap language.
 [#%[1]s]<C-q>[-]
 	Clear all text in left window.
+[#%[1]s]<C-l>[-]
+	Selected all text in left window.
+[#%[1]s]<A-c>[-]
+	Copy selected text in left window.
 [#%[1]s]<C-o>[-]
 	Play sound on left window.
 [#%[1]s]<C-p>[-]
@@ -352,6 +358,27 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 
 func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
+	mod := event.Modifiers()
+	ch := event.Rune()
+
+	// copy selection
+	if mod == tcell.ModAlt && ch == 'c' {
+		text, _, _ := srcInput.GetSelection()
+
+		// only copy when text selected
+		if len(text) > 0 {
+			switch runtime.GOOS {
+			case "linux":
+				exec.Command("sh", "-c",
+					fmt.Sprintf("echo -n '%s' | xclip -selection clipboard", text)).
+					Start()
+			case "darwin":
+				exec.Command("sh", "-c",
+					fmt.Sprintf("echo -n '%s' | pbcopy", text)).
+					Start()
+			}
+		}
+	}
 
 	switch key {
 	case tcell.KeyEsc:
