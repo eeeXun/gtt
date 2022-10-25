@@ -53,6 +53,12 @@ Cycle through the pop out widget.
 `<1>`, `<2>`, `<3>`
 Switch pop out window.
 
+## Dependencies
+
+`xclip` For Linux to copy text.
+
+`pbcopy` For macOS to copy text.
+
 ## Credit
 
 [snsd0805/GoogleTranslate-TUI](https://github.com/snsd0805/GoogleTranslate-TUI) For inspiration.
