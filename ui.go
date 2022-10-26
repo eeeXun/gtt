@@ -20,12 +20,12 @@ const (
 	Swap language.
 [#%[1]s]<C-q>[-]
 	Clear all text in left window.
-[#%[1]s]<C-l>[-]
-	Selected all text in left window.
-[#%[1]s]<A-s>[-]
+[#%[1]s]<C-y>[-]
 	Copy selected text in left window.
-[#%[1]s]<A-a>[-]
+[#%[1]s]<C-g>[-]
 	Copy all text in left window.
+[#%[1]s]<C-r>[-]
+	Copy all text in right window.
 [#%[1]s]<C-o>[-]
 	Play sound on left window.
 [#%[1]s]<C-p>[-]
@@ -358,27 +358,6 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 
 func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 	key := event.Key()
-	mod := event.Modifiers()
-	ch := event.Rune()
-
-	// copy selection
-	if mod == tcell.ModAlt && ch == 's' {
-		text, _, _ := srcInput.GetSelection()
-
-		// only copy when text selected
-		if len(text) > 0 {
-			CopyToClipboard(text)
-		}
-	}
-	// copy all text
-	if mod == tcell.ModAlt && ch == 'a' {
-		text := srcInput.GetText()
-
-		// only copy when text exist
-		if len(text) > 0 {
-			CopyToClipboard(text)
-		}
-	}
 
 	switch key {
 	case tcell.KeyEsc:
@@ -397,6 +376,30 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 	case tcell.KeyCtrlQ:
 		srcInput.SetText("", true)
+	case tcell.KeyCtrlY:
+		// copy selected text
+		text, _, _ := srcInput.GetSelection()
+
+		// only copy when text selected
+		if len(text) > 0 {
+			CopyToClipboard(text)
+		}
+	case tcell.KeyCtrlG:
+		// copy all text in Input
+		text := srcInput.GetText()
+
+		// only copy when text exist
+		if len(text) > 0 {
+			CopyToClipboard(text)
+		}
+	case tcell.KeyCtrlR:
+		// copy all text in Output
+		text := dstOutput.GetText(false)
+
+		// only copy when text exist
+		if len(text) > 0 {
+			CopyToClipboard(text[:len(text)-1])
+		}
 	case tcell.KeyCtrlS:
 		translator.SrcLang, translator.DstLang = translator.DstLang, translator.SrcLang
 		updateTitle()
