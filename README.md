@@ -29,6 +29,15 @@ Swap language.
 `<C-q>`
 Clear all text in left window.
 
+`<C-y>`
+Copy selected text in left window.
+
+`<C-g>`
+Copy all text in left window.
+
+`<C-r>`
+Copy all text in right window.
+
 `<C-o>`
 Play sound on left window.
 
@@ -46,6 +55,12 @@ Cycle through the pop out widget.
 
 `<1>`, `<2>`, `<3>`
 Switch pop out window.
+
+## Dependencies
+
+`xclip` For Linux to copy text.
+
+`pbcopy` For macOS to copy text.
 
 ## Credit
 
