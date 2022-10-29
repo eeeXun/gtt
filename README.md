@@ -12,6 +12,16 @@ Google Translate TUI
 go get && go build
 ```
 
+## Language in argument
+
+You can pass `-src` and `-dst` in argument to set source and destination language.
+
+```
+gtt -src "English" -dst "Chinese (Traditional)"
+```
+
+See language on [Google Language support](https://cloud.google.com/translate/docs/languages)
+
 ## Key Map
 
 `<C-c>`
