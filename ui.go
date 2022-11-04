@@ -161,6 +161,9 @@ func updateNonConfigColor() {
 
 	// key map
 	keyMapMenu.SetTextColor(style.ForegroundColor()).
+		SetText(fmt.Sprintf(keyMapText,
+			fmt.Sprintf("%.6x",
+				style.HighLightColor().TrueColor().Hex()))).
 		SetBorderColor(style.HighLightColor()).
 		SetTitleColor(style.HighLightColor())
 }
@@ -224,9 +227,7 @@ func uiInit() {
 	// key map
 	keyMapMenu.SetBorder(true).
 		SetTitle("Key Map")
-	keyMapMenu.SetDynamicColors(true).
-		SetText(fmt.Sprintf(keyMapText,
-			fmt.Sprintf("%.6x", style.HighLightColor().TrueColor().Hex())))
+	keyMapMenu.SetDynamicColors(true)
 
 	// window
 	translateWindow.SetDirection(tview.FlexColumn).
