@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/rivo/tview"
-	"github.com/spf13/viper"
 	"gtt/internal/color"
 	"gtt/internal/translate"
 	"gtt/internal/ui"
+
+	"github.com/rivo/tview"
+	"github.com/spf13/viper"
 )
 
 var (
