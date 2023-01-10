@@ -74,6 +74,8 @@ Switch pop out window.
 
 ## Credit
 
+[soimort/translate-shell](https://github.com/soimort/translate-shell) For translation URL.
+
 [snsd0805/GoogleTranslate-TUI](https://github.com/snsd0805/GoogleTranslate-TUI) For inspiration.
 
 [turk/free-google-translate](https://github.com/turk/free-google-translate) For Google translate in Golang.
