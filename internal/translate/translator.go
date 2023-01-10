@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&q=%s"
+	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&dt=bd&q=%s"
 	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
@@ -30,9 +30,8 @@ func NewTranslator() *Translator {
 	}
 }
 
-func (t *Translator) Translate(message string) (string, error) {
+func (t *Translator) Translate(message string) (translated string, err error) {
 	var data []interface{}
-	var translated string
 
 	urlStr := fmt.Sprintf(
 		textURL,
@@ -54,12 +53,26 @@ func (t *Translator) Translate(message string) (string, error) {
 	}
 
 	if len(data) > 0 {
-		result := data[0]
-		for _, lines := range result.([]interface{}) {
-			translatedLine := lines.([]interface{})[0]
-			translated += fmt.Sprintf("%v", translatedLine)
+		if data[1] == nil {
+			result := data[0]
+			for _, lines := range result.([]interface{}) {
+				translatedLine := lines.([]interface{})[0]
+				translated += fmt.Sprintf("%v", translatedLine)
+			}
+			return translated, nil
+		} else {
+			result := data[1]
+			for _, kinds := range result.([]interface{}) {
+				translated += fmt.Sprintf("%v\n", kinds.([]interface{})[0])
+				for _, words := range kinds.([]interface{})[2].([]interface{}) {
+					translated += fmt.Sprintf(
+						"\t%v: %v\n",
+						words.([]interface{})[0],
+						words.([]interface{})[1])
+				}
+			}
+			return translated, nil
 		}
-		return translated, nil
 	}
 
 	return "", errors.New("Translation not found")
