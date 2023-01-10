@@ -48,6 +48,14 @@ func updateBackgroundColor() {
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()))
 	dstOutput.SetBackgroundColor(style.BackgroundColor())
+	definitionOutput.SetBackgroundColor(style.BackgroundColor())
+	definitionOutput.SetTextStyle(tcell.StyleDefault.
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()))
+	translateOutput.SetBackgroundColor(style.BackgroundColor())
+	translateOutput.SetTextStyle(tcell.StyleDefault.
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()))
 
 	// dropdown
 	srcLangDropDown.SetBackgroundColor(style.BackgroundColor())
@@ -103,6 +111,10 @@ func updateBorderColor() {
 		SetTitleColor(style.SrcBorderColor())
 	dstOutput.SetBorderColor(style.DstBorderColor()).
 		SetTitleColor(style.DstBorderColor())
+	definitionOutput.SetBorderColor(style.SrcBorderColor()).
+		SetTitleColor(style.SrcBorderColor())
+	translateOutput.SetBorderColor(style.DstBorderColor()).
+		SetTitleColor(style.DstBorderColor())
 
 	// dropdown
 	srcLangDropDown.SetBorderColor(style.SrcBorderColor()).
@@ -121,6 +133,12 @@ func updateNonConfigColor() {
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
 	dstOutput.SetTextColor(style.ForegroundColor())
+	definitionOutput.SetSelectedStyle(tcell.StyleDefault.
+		Background(style.SelectedColor()).
+		Foreground(style.ForegroundColor()))
+	translateOutput.SetSelectedStyle(tcell.StyleDefault.
+		Background(style.SelectedColor()).
+		Foreground(style.ForegroundColor()))
 
 	// dropdown
 	srcLangDropDown.SetFieldBackgroundColor(style.SelectedColor()).
@@ -200,6 +218,10 @@ func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
 	dstOutput.SetBorder(true)
+	definitionOutput.SetBorder(true).
+		SetTitle("Definition")
+	translateOutput.SetBorder(true).
+		SetTitle("Translation")
 
 	// dropdown
 	srcLangDropDown.SetBorder(true)
@@ -232,8 +254,14 @@ func uiInit() {
 
 	// window
 	translateWindow.SetDirection(tview.FlexColumn).
-		AddItem(srcInput, 0, 1, true).
-		AddItem(dstOutput, 0, 1, false)
+		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+			AddItem(srcInput, 0, 1, true).
+			AddItem(definitionOutput, 0, 1, false),
+			0, 1, true).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+			AddItem(dstOutput, 0, 1, false).
+			AddItem(translateOutput, 0, 1, false),
+			0, 1, false)
 	langWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).

@@ -16,6 +16,8 @@ var (
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()
 	dstOutput           = tview.NewTextView()
+	definitionOutput    = tview.NewTextArea()
+	translateOutput     = tview.NewTextArea()
 	srcLangDropDown     = tview.NewDropDown()
 	dstLangDropDown     = tview.NewDropDown()
 	langCycle           = ui.NewUICycle(srcLangDropDown, dstLangDropDown)
