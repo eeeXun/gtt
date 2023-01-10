@@ -52,8 +52,8 @@ func updateBackgroundColor() {
 	definitionOutput.SetTextStyle(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()))
-	translateOutput.SetBackgroundColor(style.BackgroundColor())
-	translateOutput.SetTextStyle(tcell.StyleDefault.
+	partOutput.SetBackgroundColor(style.BackgroundColor())
+	partOutput.SetTextStyle(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()))
 
@@ -113,7 +113,7 @@ func updateBorderColor() {
 		SetTitleColor(style.DstBorderColor())
 	definitionOutput.SetBorderColor(style.SrcBorderColor()).
 		SetTitleColor(style.SrcBorderColor())
-	translateOutput.SetBorderColor(style.DstBorderColor()).
+	partOutput.SetBorderColor(style.DstBorderColor()).
 		SetTitleColor(style.DstBorderColor())
 
 	// dropdown
@@ -136,7 +136,7 @@ func updateNonConfigColor() {
 	definitionOutput.SetSelectedStyle(tcell.StyleDefault.
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
-	translateOutput.SetSelectedStyle(tcell.StyleDefault.
+	partOutput.SetSelectedStyle(tcell.StyleDefault.
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
 
@@ -220,8 +220,8 @@ func uiInit() {
 	dstOutput.SetBorder(true)
 	definitionOutput.SetBorder(true).
 		SetTitle("Definition")
-	translateOutput.SetBorder(true).
-		SetTitle("Translation")
+	partOutput.SetBorder(true).
+		SetTitle("Part of speech")
 
 	// dropdown
 	srcLangDropDown.SetBorder(true)
@@ -260,7 +260,7 @@ func uiInit() {
 			0, 1, true).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 			AddItem(dstOutput, 0, 1, false).
-			AddItem(translateOutput, 0, 1, false),
+			AddItem(partOutput, 0, 1, false),
 			0, 1, false)
 	langWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
