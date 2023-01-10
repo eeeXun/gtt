@@ -397,11 +397,12 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 		message := srcInput.GetText()
 		if len(message) > 0 {
 			// Only translate when message exist
-			result, err := translator.Translate(message)
+			translation, partOfSpeech, err := translator.Translate(message)
 			if err != nil {
 				dstOutput.SetText(err.Error())
 			} else {
-				dstOutput.SetText(result)
+				dstOutput.SetText(translation)
+				partOutput.SetText(partOfSpeech, false)
 			}
 		}
 	case tcell.KeyCtrlQ:

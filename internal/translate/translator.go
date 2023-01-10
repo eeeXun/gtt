@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=%s&tl=%s&dt=t&dt=bd&q=%s"
+	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&sl=%s&tl=%s&q=%s"
 	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
@@ -30,7 +30,7 @@ func NewTranslator() *Translator {
 	}
 }
 
-func (t *Translator) Translate(message string) (translated string, err error) {
+func (t *Translator) Translate(message string) (translation string, partOfSpeech string, err error) {
 	var data []interface{}
 
 	urlStr := fmt.Sprintf(
@@ -41,50 +41,52 @@ func (t *Translator) Translate(message string) (translated string, err error) {
 	)
 	res, err := http.Get(urlStr)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	if len(data) > 0 {
-		if data[1] == nil {
-			result := data[0]
-			for _, lines := range result.([]interface{}) {
-				translatedLine := lines.([]interface{})[0]
-				translated += fmt.Sprintf("%v", translatedLine)
-			}
-			return translated, nil
-		} else {
-			result := data[1]
-			for _, kinds := range result.([]interface{}) {
-				translated += fmt.Sprintf("%v\n", kinds.([]interface{})[0])
-				for _, words := range kinds.([]interface{})[2].([]interface{}) {
-					translated += fmt.Sprintf(
-						"\t%v:",
-						words.([]interface{})[0])
+		// translation
+		for _, lines := range data[0].([]interface{}) {
+			translatedLine := lines.([]interface{})[0]
+			translation += fmt.Sprintf("%v", translatedLine)
+		}
+
+		// part of speech
+		if data[1] != nil {
+			for _, parts := range data[1].([]interface{}) {
+				// part of speech
+				partOfSpeech += fmt.Sprintf("[%v]\n", parts.([]interface{})[0])
+				for _, words := range parts.([]interface{})[2].([]interface{}) {
+					// dst lang
+					partOfSpeech += fmt.Sprintf(
+						"\t%v:", words.([]interface{})[0])
+					// src lang
 					firstWord := true
 					for _, word := range words.([]interface{})[1].([]interface{}) {
 						if firstWord {
-							translated += fmt.Sprintf(" %v", word)
+							partOfSpeech += fmt.Sprintf(" %v", word)
 							firstWord = false
 						} else {
-							translated += fmt.Sprintf(", %v", word)
+							partOfSpeech += fmt.Sprintf(", %v", word)
 						}
 					}
-					translated += "\n"
+					partOfSpeech += "\n"
 				}
+				partOfSpeech += "\n"
 			}
-			return translated, nil
 		}
+		return translation, partOfSpeech, nil
 	}
 
-	return "", errors.New("Translation not found")
+	return "", "", errors.New("Translation not found")
 }
 
 func (t *Translator) PlaySound(lang string, message string) error {
