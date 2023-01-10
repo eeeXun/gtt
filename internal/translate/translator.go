@@ -66,9 +66,18 @@ func (t *Translator) Translate(message string) (translated string, err error) {
 				translated += fmt.Sprintf("%v\n", kinds.([]interface{})[0])
 				for _, words := range kinds.([]interface{})[2].([]interface{}) {
 					translated += fmt.Sprintf(
-						"\t%v: %v\n",
-						words.([]interface{})[0],
-						words.([]interface{})[1])
+						"\t%v:",
+						words.([]interface{})[0])
+					firstWord := true
+					for _, word := range words.([]interface{})[1].([]interface{}) {
+						if firstWord {
+							translated += fmt.Sprintf(" %v", word)
+							firstWord = false
+						} else {
+							translated += fmt.Sprintf(", %v", word)
+						}
+					}
+					translated += "\n"
 				}
 			}
 			return translated, nil
