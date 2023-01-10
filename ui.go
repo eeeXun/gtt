@@ -48,12 +48,12 @@ func updateBackgroundColor() {
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()))
 	dstOutput.SetBackgroundColor(style.BackgroundColor())
-	definitionOutput.SetBackgroundColor(style.BackgroundColor())
-	definitionOutput.SetTextStyle(tcell.StyleDefault.
+	defOutput.SetBackgroundColor(style.BackgroundColor())
+	defOutput.SetTextStyle(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()))
-	partOutput.SetBackgroundColor(style.BackgroundColor())
-	partOutput.SetTextStyle(tcell.StyleDefault.
+	posOutput.SetBackgroundColor(style.BackgroundColor())
+	posOutput.SetTextStyle(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()))
 
@@ -111,9 +111,9 @@ func updateBorderColor() {
 		SetTitleColor(style.SrcBorderColor())
 	dstOutput.SetBorderColor(style.DstBorderColor()).
 		SetTitleColor(style.DstBorderColor())
-	definitionOutput.SetBorderColor(style.SrcBorderColor()).
+	defOutput.SetBorderColor(style.SrcBorderColor()).
 		SetTitleColor(style.SrcBorderColor())
-	partOutput.SetBorderColor(style.DstBorderColor()).
+	posOutput.SetBorderColor(style.DstBorderColor()).
 		SetTitleColor(style.DstBorderColor())
 
 	// dropdown
@@ -133,10 +133,10 @@ func updateNonConfigColor() {
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
 	dstOutput.SetTextColor(style.ForegroundColor())
-	definitionOutput.SetSelectedStyle(tcell.StyleDefault.
+	defOutput.SetSelectedStyle(tcell.StyleDefault.
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
-	partOutput.SetSelectedStyle(tcell.StyleDefault.
+	posOutput.SetSelectedStyle(tcell.StyleDefault.
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
 
@@ -218,9 +218,9 @@ func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
 	dstOutput.SetBorder(true)
-	definitionOutput.SetBorder(true).
+	defOutput.SetBorder(true).
 		SetTitle("Definition")
-	partOutput.SetBorder(true).
+	posOutput.SetBorder(true).
 		SetTitle("Part of speech")
 
 	// dropdown
@@ -256,11 +256,11 @@ func uiInit() {
 	translateWindow.SetDirection(tview.FlexColumn).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 			AddItem(srcInput, 0, 1, true).
-			AddItem(definitionOutput, 0, 1, false),
+			AddItem(defOutput, 0, 1, false),
 			0, 1, true).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 			AddItem(dstOutput, 0, 1, false).
-			AddItem(partOutput, 0, 1, false),
+			AddItem(posOutput, 0, 1, false),
 			0, 1, false)
 	langWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
@@ -402,7 +402,7 @@ func translatePageHandler(event *tcell.EventKey) *tcell.EventKey {
 				dstOutput.SetText(err.Error())
 			} else {
 				dstOutput.SetText(translation)
-				partOutput.SetText(partOfSpeech, false)
+				posOutput.SetText(partOfSpeech, false)
 			}
 		}
 	case tcell.KeyCtrlQ:
