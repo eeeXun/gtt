@@ -35,11 +35,24 @@ const (
 	Stop play sound.
 [#%[1]s]<C-t>[-]
 	Toggle transparent.
+[#%[1]s]<C-\>[-]
+	Toggle definition & Part of speech
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
 [#%[1]s]<1>, <2>, <3>[-]
 	Switch pop out window.`
 )
+
+func updateTranslateWindow() {
+	translateWindow.Clear()
+	if hideBelow {
+		translateWindow.AddItem(translateAboveWidget, 0, 1, true)
+	} else {
+		translateWindow.SetDirection(tview.FlexRow).
+			AddItem(translateAboveWidget, 0, 1, true).
+			AddItem(translateBelowWidget, 0, 1, false)
+	}
+}
 
 func updateBackgroundColor() {
 	// input/output
@@ -263,15 +276,13 @@ func uiInit() {
 		SetTitle("Key Map")
 
 	// window
-	translateWindow.SetDirection(tview.FlexColumn).
-		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-			AddItem(srcInput, 0, 1, true).
-			AddItem(defOutput, 0, 1, false),
-			0, 1, true).
-		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-			AddItem(dstOutput, 0, 1, false).
-			AddItem(posOutput, 0, 1, false),
-			0, 1, false)
+	translateAboveWidget.SetDirection(tview.FlexColumn).
+		AddItem(srcInput, 0, 1, true).
+		AddItem(dstOutput, 0, 1, false)
+	translateBelowWidget.SetDirection(tview.FlexColumn).
+		AddItem(defOutput, 0, 1, false).
+		AddItem(posOutput, 0, 1, false)
+	updateTranslateWindow()
 	langWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
@@ -391,6 +402,9 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 		transparentDropDown.SetCurrentOption(
 			IndexOf(strconv.FormatBool(style.Transparent),
 				[]string{"true", "false"}))
+	case tcell.KeyCtrlBackslash:
+		hideBelow = !hideBelow
+		updateTranslateWindow()
 	}
 
 	return event

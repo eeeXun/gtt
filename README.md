@@ -60,6 +60,9 @@ Stop play sound.
 `<C-t>`
 Toggle transparent.
 
+`<C-\>`
+Toggle definition & Part of speech
+
 `<Tab>`, `<S-Tab>`
 Cycle through the pop out widget.
 
