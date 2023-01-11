@@ -30,9 +30,8 @@ func NewTranslator() *Translator {
 	}
 }
 
-func (t *Translator) Translate(message string) (string, error) {
+func (t *Translator) Translate(message string) (translation string, err error) {
 	var data []interface{}
-	var translated string
 
 	urlStr := fmt.Sprintf(
 		textURL,
@@ -54,12 +53,11 @@ func (t *Translator) Translate(message string) (string, error) {
 	}
 
 	if len(data) > 0 {
-		result := data[0]
-		for _, lines := range result.([]interface{}) {
+		for _, lines := range data[0].([]interface{}) {
 			translatedLine := lines.([]interface{})[0]
-			translated += fmt.Sprintf("%v", translatedLine)
+			translation += fmt.Sprintf("%v", translatedLine)
 		}
-		return translated, nil
+		return translation, nil
 	}
 
 	return "", errors.New("Translation not found")
