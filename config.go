@@ -24,7 +24,7 @@ func configInit() {
 	}
 	config.AddConfigPath("$HOME/.config/gtt")
 
-	// create config file if not exists
+	// Create config file if not exists
 	if err := config.ReadInConfig(); err != nil {
 		config.Set("transparent", false)
 		config.Set("theme", "Gruvbox")

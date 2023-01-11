@@ -45,10 +45,10 @@ func main() {
 	configInit()
 	uiInit()
 
-	mainPage.AddPage("translatePage", translateWindow, true, true)
-	mainPage.AddPage("langPage", langWindow, true, false)
-	mainPage.AddPage("stylePage", styleWindow, true, false)
-	mainPage.AddPage("keyMapPage", keyMapWindow, true, false)
+	mainPage.AddPage("translateWindow", translateWindow, true, true)
+	mainPage.AddPage("langWindow", langWindow, true, false)
+	mainPage.AddPage("styleWindow", styleWindow, true, false)
+	mainPage.AddPage("keyMapWindow", keyMapWindow, true, false)
 
 	if err := app.SetRoot(mainPage, true).
 		EnableMouse(true).Run(); err != nil {
