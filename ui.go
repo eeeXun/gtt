@@ -36,7 +36,7 @@ const (
 [#%[1]s]<C-t>[-]
 	Toggle transparent.
 [#%[1]s]<C-\>[-]
-	Toggle definition & Part of speech
+	Toggle Definition & Part of speech
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
 [#%[1]s]<1>, <2>, <3>[-]
@@ -93,6 +93,13 @@ func updateBackgroundColor() {
 			Foreground(style.PrefixColor())).
 		SetBackgroundColor(style.BackgroundColor())
 	transparentDropDown.SetListStyles(tcell.StyleDefault.
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor()),
+		tcell.StyleDefault.
+			Background(style.SelectedColor()).
+			Foreground(style.PrefixColor())).
+		SetBackgroundColor(style.BackgroundColor())
+	hideBelowDropDown.SetListStyles(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
 		Foreground(style.ForegroundColor()),
 		tcell.StyleDefault.
@@ -165,6 +172,10 @@ func updateNonConfigColor() {
 		SetFieldTextColor(style.ForegroundColor()).
 		SetPrefixTextColor(style.PrefixColor())
 	transparentDropDown.SetLabelColor(style.LabelColor()).
+		SetFieldBackgroundColor(style.SelectedColor()).
+		SetFieldTextColor(style.ForegroundColor()).
+		SetPrefixTextColor(style.PrefixColor())
+	hideBelowDropDown.SetLabelColor(style.LabelColor()).
 		SetFieldBackgroundColor(style.SelectedColor()).
 		SetFieldTextColor(style.ForegroundColor()).
 		SetPrefixTextColor(style.PrefixColor())
@@ -248,6 +259,11 @@ func uiInit() {
 	themeDropDown.SetLabel("Theme: ").
 		SetOptions(color.AllTheme, nil).
 		SetCurrentOption(IndexOf(style.Theme, color.AllTheme))
+	hideBelowDropDown.SetLabel("Hide below: ").
+		SetOptions([]string{"true", "false"}, nil).
+		SetCurrentOption(
+			IndexOf(strconv.FormatBool(hideBelow),
+				[]string{"true", "false"}))
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
@@ -302,10 +318,11 @@ func uiInit() {
 					AddItem(nil, 0, 1, false).
 					AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 						AddItem(themeDropDown, 1, 1, true).
-						AddItem(transparentDropDown, 1, 1, false),
+						AddItem(transparentDropDown, 1, 1, false).
+						AddItem(hideBelowDropDown, 0, 1, false),
 						0, 1, true).
 					AddItem(nil, 0, 1, false),
-					2, 1, true).
+					3, 1, true).
 				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 					AddItem(srcBorderDropDown, 32, 1, false).
 					AddItem(dstBorderDropDown, 32, 1, false),
@@ -356,6 +373,11 @@ func uiInit() {
 			style.Transparent, _ = strconv.ParseBool(text)
 			updateBackgroundColor()
 		})
+	hideBelowDropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(func(text string, index int) {
+			hideBelow, _ = strconv.ParseBool(text)
+			updateTranslateWindow()
+		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
 			style.SetSrcBorderColor(text)
@@ -405,6 +427,9 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlBackslash:
 		hideBelow = !hideBelow
 		updateTranslateWindow()
+		hideBelowDropDown.SetCurrentOption(
+			IndexOf(strconv.FormatBool(hideBelow),
+				[]string{"true", "false"}))
 	}
 
 	return event
