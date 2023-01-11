@@ -11,7 +11,9 @@ import (
 )
 
 const (
-	keyMapText string = `[#%[1]s]<C-c>[-]
+	popOutWindowHeight int    = 20
+	langStrMaxLength   int    = 32
+	keyMapText         string = `[#%[1]s]<C-c>[-]
 	Exit program.
 [#%[1]s]<Esc>[-]
 	Toggle pop out window.
@@ -50,48 +52,21 @@ func updateBackgroundColor() {
 	dstOutput.SetBackgroundColor(style.BackgroundColor())
 
 	// dropdown
-	srcLangDropDown.SetListStyles(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()),
-		tcell.StyleDefault.
-			Background(style.SelectedColor()).
-			Foreground(style.PrefixColor())).
-		SetBackgroundColor(style.BackgroundColor())
-	dstLangDropDown.SetListStyles(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()),
-		tcell.StyleDefault.
-			Background(style.SelectedColor()).
-			Foreground(style.PrefixColor())).
-		SetBackgroundColor(style.BackgroundColor())
-	themeDropDown.SetListStyles(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()),
-		tcell.StyleDefault.
-			Background(style.SelectedColor()).
-			Foreground(style.PrefixColor())).
-		SetBackgroundColor(style.BackgroundColor())
-	transparentDropDown.SetListStyles(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()),
-		tcell.StyleDefault.
-			Background(style.SelectedColor()).
-			Foreground(style.PrefixColor())).
-		SetBackgroundColor(style.BackgroundColor())
-	srcBorderDropDown.SetListStyles(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()),
-		tcell.StyleDefault.
-			Background(style.SelectedColor()).
-			Foreground(style.PrefixColor())).
-		SetBackgroundColor(style.BackgroundColor())
-	dstBorderDropDown.SetListStyles(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()),
-		tcell.StyleDefault.
-			Background(style.SelectedColor()).
-			Foreground(style.PrefixColor())).
-		SetBackgroundColor(style.BackgroundColor())
+	for _, dropdown := range []*tview.DropDown{
+		srcLangDropDown,
+		dstLangDropDown,
+		themeDropDown,
+		transparentDropDown,
+		srcBorderDropDown,
+		dstBorderDropDown} {
+		dropdown.SetListStyles(tcell.StyleDefault.
+			Background(style.BackgroundColor()).
+			Foreground(style.ForegroundColor()),
+			tcell.StyleDefault.
+				Background(style.SelectedColor()).
+				Foreground(style.PrefixColor())).
+			SetBackgroundColor(style.BackgroundColor())
+	}
 
 	// key map
 	keyMapMenu.SetBackgroundColor(style.BackgroundColor())
@@ -105,14 +80,14 @@ func updateBorderColor() {
 		SetTitleColor(style.DstBorderColor())
 
 	// dropdown
-	srcLangDropDown.SetBorderColor(style.SrcBorderColor()).
-		SetTitleColor(style.SrcBorderColor())
-	dstLangDropDown.SetBorderColor(style.DstBorderColor()).
-		SetTitleColor(style.DstBorderColor())
-	srcBorderDropDown.SetBorderColor(style.SrcBorderColor()).
-		SetTitleColor(style.SrcBorderColor())
-	dstBorderDropDown.SetBorderColor(style.DstBorderColor()).
-		SetTitleColor(style.DstBorderColor())
+	for _, srcDropDown := range []*tview.DropDown{srcLangDropDown, srcBorderDropDown} {
+		srcDropDown.SetBorderColor(style.SrcBorderColor()).
+			SetTitleColor(style.SrcBorderColor())
+	}
+	for _, dstDropDown := range []*tview.DropDown{dstLangDropDown, dstBorderDropDown} {
+		dstDropDown.SetBorderColor(style.DstBorderColor()).
+			SetTitleColor(style.DstBorderColor())
+	}
 }
 
 func updateNonConfigColor() {
@@ -123,42 +98,29 @@ func updateNonConfigColor() {
 	dstOutput.SetTextColor(style.ForegroundColor())
 
 	// dropdown
-	srcLangDropDown.SetFieldBackgroundColor(style.SelectedColor()).
-		SetFieldTextColor(style.ForegroundColor()).
-		SetPrefixTextColor(style.PrefixColor())
-	dstLangDropDown.SetFieldBackgroundColor(style.SelectedColor()).
-		SetFieldTextColor(style.ForegroundColor()).
-		SetPrefixTextColor(style.PrefixColor())
-	themeDropDown.SetLabelColor(style.LabelColor()).
-		SetFieldBackgroundColor(style.SelectedColor()).
-		SetFieldTextColor(style.ForegroundColor()).
-		SetPrefixTextColor(style.PrefixColor())
-	transparentDropDown.SetLabelColor(style.LabelColor()).
-		SetFieldBackgroundColor(style.SelectedColor()).
-		SetFieldTextColor(style.ForegroundColor()).
-		SetPrefixTextColor(style.PrefixColor())
-	srcBorderDropDown.SetLabelColor(style.LabelColor()).
-		SetFieldBackgroundColor(style.SelectedColor()).
-		SetFieldTextColor(style.ForegroundColor()).
-		SetPrefixTextColor(style.PrefixColor())
-	dstBorderDropDown.SetLabelColor(style.LabelColor()).
-		SetFieldBackgroundColor(style.SelectedColor()).
-		SetFieldTextColor(style.ForegroundColor()).
-		SetPrefixTextColor(style.PrefixColor())
+	for _, noLabelDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
+		noLabelDropDown.SetFieldBackgroundColor(style.SelectedColor()).
+			SetFieldTextColor(style.ForegroundColor()).
+			SetPrefixTextColor(style.PrefixColor())
+	}
+	for _, labelDropDown := range []*tview.DropDown{
+		themeDropDown,
+		transparentDropDown,
+		srcBorderDropDown,
+		dstBorderDropDown} {
+		labelDropDown.SetLabelColor(style.LabelColor()).
+			SetFieldBackgroundColor(style.SelectedColor()).
+			SetFieldTextColor(style.ForegroundColor()).
+			SetPrefixTextColor(style.PrefixColor())
+	}
 
 	// button
-	langButton.SetLabelColor(style.ForegroundColor()).
-		SetBackgroundColorActivated(style.PressColor()).
-		SetLabelColorActivated(style.ForegroundColor()).
-		SetBackgroundColor(style.SelectedColor())
-	styleButton.SetLabelColor(style.ForegroundColor()).
-		SetBackgroundColorActivated(style.PressColor()).
-		SetLabelColorActivated(style.ForegroundColor()).
-		SetBackgroundColor(style.SelectedColor())
-	keyMapButton.SetLabelColor(style.ForegroundColor()).
-		SetBackgroundColorActivated(style.PressColor()).
-		SetLabelColorActivated(style.ForegroundColor()).
-		SetBackgroundColor(style.SelectedColor())
+	for _, button := range []*tview.Button{langButton, styleButton, keyMapButton} {
+		button.SetLabelColor(style.ForegroundColor()).
+			SetBackgroundColorActivated(style.PressColor()).
+			SetLabelColorActivated(style.ForegroundColor()).
+			SetBackgroundColor(style.SelectedColor())
+	}
 
 	// key map
 	keyMapMenu.SetTextColor(style.ForegroundColor()).
@@ -206,10 +168,10 @@ func uiInit() {
 	dstOutput.SetBorder(true)
 
 	// dropdown
-	srcLangDropDown.SetOptions(translate.Lang, nil).
-		SetBorder(true)
-	dstLangDropDown.SetOptions(translate.Lang, nil).
-		SetBorder(true)
+	for _, langDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
+		langDropDown.SetOptions(translate.Lang, nil).
+			SetBorder(true)
+	}
 	themeDropDown.SetLabel("Theme: ").
 		SetOptions(color.AllTheme, nil).
 		SetCurrentOption(IndexOf(style.Theme, color.AllTheme))
@@ -248,10 +210,10 @@ func uiInit() {
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
-			AddItem(srcLangDropDown, 32, 1, true).
-			AddItem(dstLangDropDown, 32, 1, false).
+			AddItem(srcLangDropDown, langStrMaxLength, 1, true).
+			AddItem(dstLangDropDown, langStrMaxLength, 1, false).
 			AddItem(nil, 0, 1, false),
-			20, 1, true).
+			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	styleWindow.SetDirection(tview.FlexRow).
@@ -262,27 +224,27 @@ func uiInit() {
 				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 					AddItem(nil, 0, 1, false).
 					AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-						AddItem(themeDropDown, 1, 1, true).
-						AddItem(transparentDropDown, 1, 1, false),
+						AddItem(themeDropDown, 0, 1, true).
+						AddItem(transparentDropDown, 0, 1, false),
 						0, 1, true).
 					AddItem(nil, 0, 1, false),
 					2, 1, true).
 				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-					AddItem(srcBorderDropDown, 32, 1, false).
-					AddItem(dstBorderDropDown, 32, 1, false),
+					AddItem(srcBorderDropDown, 0, 1, false).
+					AddItem(dstBorderDropDown, 0, 1, false),
 					0, 1, false),
-				64, 1, true).
+				2*langStrMaxLength, 1, true).
 			AddItem(nil, 0, 1, false),
-			20, 1, true).
+			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	keyMapWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
-			AddItem(keyMapMenu, 64, 1, true).
+			AddItem(keyMapMenu, 2*langStrMaxLength, 1, true).
 			AddItem(nil, 0, 1, false),
-			20, 1, true).
+			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 
