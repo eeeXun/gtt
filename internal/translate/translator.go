@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&dt=md&dt=ex&sl=%s&tl=%s&q=%s"
+	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&dt=md&dt=ex&dt=ss&sl=%s&tl=%s&q=%s"
 	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
@@ -89,13 +89,36 @@ func (t *Translator) Translate(message string) (
 
 		// definition = data[12]
 		if len(data) >= 13 && data[12] != nil {
-			for _, parts := range data[12].([]interface{}) {
+			// for _, parts := range data[12].([]interface{}) {
+			for partsIndex, parts := range data[12].([]interface{}) {
+				synonymIndex := 0
 				definition += fmt.Sprintf("[%v]\n", parts.([]interface{})[0])
 				for _, sentences := range parts.([]interface{})[1].([]interface{}) {
 					definition += fmt.Sprintf("\t- %v\n", sentences.([]interface{})[0])
 					// Get example sentence
 					if len(sentences.([]interface{})) >= 3 && sentences.([]interface{})[2] != nil {
 						definition += fmt.Sprintf("\t\t\"%v\"\n", sentences.([]interface{})[2])
+					}
+					// synonym = data[11]
+					if data[11] != nil && len(data[11].([]interface{})) > partsIndex {
+						for len(data[11].([]interface{})[partsIndex].([]interface{})) > synonymIndex &&
+							len(data[11].([]interface{})[partsIndex].([]interface{})[1].([]interface{})[synonymIndex].([]interface{})) != 2 {
+							synonymIndex++
+						}
+						definition += "\t\t*Synonyms: "
+						synonyms := data[11].([]interface{})[partsIndex].([]interface{})[1].([]interface{})[synonymIndex].([]interface{})[0].([]interface{})
+						// panic(synonyms)
+						firstWord := true
+						for _, synonym := range synonyms {
+							if firstWord {
+								definition += fmt.Sprintf("%v", synonym)
+								firstWord = false
+							} else {
+								definition += fmt.Sprintf(", %v", synonym)
+							}
+						}
+						synonymIndex++
+						definition += "\n"
 					}
 				}
 			}
