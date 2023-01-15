@@ -11,20 +11,25 @@ var (
 	// Translate
 	translator = translate.NewTranslator()
 	// UI
-	app                  = tview.NewApplication()
-	srcInput             = tview.NewTextArea()
-	dstOutput            = tview.NewTextView()
-	defOutput            = tview.NewTextArea()
-	posOutput            = tview.NewTextArea()
-	srcLangDropDown      = tview.NewDropDown()
-	dstLangDropDown      = tview.NewDropDown()
-	langCycle            = ui.NewUICycle(srcLangDropDown, dstLangDropDown)
-	themeDropDown        = tview.NewDropDown()
-	transparentDropDown  = tview.NewDropDown()
-	hideBelowDropDown    = tview.NewDropDown()
-	srcBorderDropDown    = tview.NewDropDown()
-	dstBorderDropDown    = tview.NewDropDown()
-	styleCycle           = ui.NewUICycle(themeDropDown, transparentDropDown, hideBelowDropDown, srcBorderDropDown, dstBorderDropDown)
+	app                 = tview.NewApplication()
+	srcInput            = tview.NewTextArea()
+	dstOutput           = tview.NewTextView()
+	defOutput           = tview.NewTextArea()
+	posOutput           = tview.NewTextArea()
+	srcLangDropDown     = tview.NewDropDown()
+	dstLangDropDown     = tview.NewDropDown()
+	langCycle           = ui.NewUICycle(srcLangDropDown, dstLangDropDown)
+	themeDropDown       = tview.NewDropDown()
+	transparentDropDown = tview.NewDropDown()
+	hideBelowDropDown   = tview.NewDropDown()
+	srcBorderDropDown   = tview.NewDropDown()
+	dstBorderDropDown   = tview.NewDropDown()
+	styleCycle          = ui.NewUICycle(
+		themeDropDown,
+		transparentDropDown,
+		hideBelowDropDown,
+		srcBorderDropDown,
+		dstBorderDropDown)
 	keyMapMenu           = tview.NewTextView()
 	langButton           = tview.NewButton("(1)Language")
 	styleButton          = tview.NewButton("(2)Style")

@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&sl=%s&tl=%s&q=%s"
+	textURL  = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&dt=md&dt=ex&sl=%s&tl=%s&q=%s"
 	soundURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
@@ -30,7 +30,11 @@ func NewTranslator() *Translator {
 	}
 }
 
-func (t *Translator) Translate(message string) (translation string, partOfSpeech string, err error) {
+func (t *Translator) Translate(message string) (
+	translation string,
+	definition string,
+	partOfSpeech string,
+	err error) {
 	var data []interface{}
 
 	urlStr := fmt.Sprintf(
@@ -41,25 +45,25 @@ func (t *Translator) Translate(message string) (translation string, partOfSpeech
 	)
 	res, err := http.Get(urlStr)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
 	if len(data) > 0 {
-		// translation
+		// translation = data[0]
 		for _, lines := range data[0].([]interface{}) {
 			translatedLine := lines.([]interface{})[0]
 			translation += fmt.Sprintf("%v", translatedLine)
 		}
 
-		// part of speech
+		// part of speech = data[1]
 		if data[1] != nil {
 			for _, parts := range data[1].([]interface{}) {
 				// part of speech
@@ -80,13 +84,26 @@ func (t *Translator) Translate(message string) (translation string, partOfSpeech
 					}
 					partOfSpeech += "\n"
 				}
-				partOfSpeech += "\n"
 			}
 		}
-		return translation, partOfSpeech, nil
+
+		// definition = data[12]
+		if len(data) >= 13 && data[12] != nil {
+			for _, parts := range data[12].([]interface{}) {
+				definition += fmt.Sprintf("[%v]\n", parts.([]interface{})[0])
+				for _, sentences := range parts.([]interface{})[1].([]interface{}) {
+					definition += fmt.Sprintf("\t- %v\n", sentences.([]interface{})[0])
+					// Get example sentence
+					if len(sentences.([]interface{})) >= 3 && sentences.([]interface{})[2] != nil {
+						definition += fmt.Sprintf("\t\t- \"%v\"\n", sentences.([]interface{})[2])
+					}
+				}
+			}
+		}
+		return translation, definition, partOfSpeech, nil
 	}
 
-	return "", "", errors.New("Translation not found")
+	return "", "", "", errors.New("Translation not found")
 }
 
 func (t *Translator) PlaySound(lang string, message string) error {
