@@ -95,7 +95,7 @@ func (t *Translator) Translate(message string) (
 					definition += fmt.Sprintf("\t- %v\n", sentences.([]interface{})[0])
 					// Get example sentence
 					if len(sentences.([]interface{})) >= 3 && sentences.([]interface{})[2] != nil {
-						definition += fmt.Sprintf("\t\t- \"%v\"\n", sentences.([]interface{})[2])
+						definition += fmt.Sprintf("\t\t\"%v\"\n", sentences.([]interface{})[2])
 					}
 				}
 			}
