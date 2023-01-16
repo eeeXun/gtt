@@ -199,10 +199,8 @@ func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
 	dstOutput.SetBorder(true)
-	defOutput.SetBorder(true).
-		SetTitle("Definition")
-	posOutput.SetBorder(true).
-		SetTitle("Part of speech")
+	defOutput.SetBorder(true).SetTitle("Definition")
+	posOutput.SetBorder(true).SetTitle("Part of speech")
 
 	// dropdown
 	for _, langDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
