@@ -18,11 +18,11 @@ const (
 [#%[1]s]<Esc>[-]
 	Toggle pop out window.
 [#%[1]s]<C-j>[-]
-	Translate from left window to right window.
+	Translate from source to destination window.
 [#%[1]s]<C-s>[-]
 	Swap language.
 [#%[1]s]<C-q>[-]
-	Clear all text in left window.
+	Clear all text in source of translation window.
 [#%[1]s]<C-y>[-]
 	Copy selected text.
 [#%[1]s]<C-g>[-]
@@ -30,9 +30,9 @@ const (
 [#%[1]s]<C-r>[-]
 	Copy all text in destination of translation window.
 [#%[1]s]<C-o>[-]
-	Play sound on left window.
+	Play sound on source of translation window.
 [#%[1]s]<C-p>[-]
-	Play sound on right window.
+	Play sound on destination of translation window.
 [#%[1]s]<C-x>[-]
 	Stop play sound.
 [#%[1]s]<C-t>[-]

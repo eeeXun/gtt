@@ -31,13 +31,13 @@ Exit program.
 Toggle pop out window.
 
 `<C-j>`
-Translate from left window to right window.
+Translate from source to destination window.
 
 `<C-s>`
 Swap language.
 
 `<C-q>`
-Clear all text in left window.
+Clear all text in source of translation window.
 
 `<C-y>`
 Copy selected text.
@@ -49,10 +49,10 @@ Copy all text in source of translation window.
 Copy all text in destination of translation window.
 
 `<C-o>`
-Play sound on left window.
+Play sound on source of translation window.
 
 `<C-p>`
-Play sound on right window.
+Play sound on destination of translation window.
 
 `<C-x>`
 Stop play sound.
