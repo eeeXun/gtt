@@ -24,11 +24,11 @@ const (
 [#%[1]s]<C-q>[-]
 	Clear all text in left window.
 [#%[1]s]<C-y>[-]
-	Copy selected text in left window.
+	Copy selected text.
 [#%[1]s]<C-g>[-]
-	Copy all text in left window.
+	Copy all text in source of translation window.
 [#%[1]s]<C-r>[-]
-	Copy all text in right window.
+	Copy all text in destination of translation window.
 [#%[1]s]<C-o>[-]
 	Play sound on left window.
 [#%[1]s]<C-p>[-]
@@ -299,6 +299,25 @@ func uiInit() {
 	// handler
 	mainPage.SetInputCapture(mainPageHandler)
 	translateWindow.SetInputCapture(translateWindowHandler)
+	for _, widget := range []*tview.TextArea{srcInput, defOutput, posOutput} {
+		// fix for loop problem
+		// https://github.com/golang/go/discussions/56010
+		widget := widget
+		widget.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+			key := event.Key()
+			switch key {
+			case tcell.KeyCtrlY:
+				// copy selected text
+				text, _, _ := widget.GetSelection()
+
+				// only copy when text selected
+				if len(text) > 0 {
+					CopyToClipboard(text)
+				}
+			}
+			return event
+		})
+	}
 	langWindow.SetInputCapture(popOutWindowHandler)
 	styleWindow.SetInputCapture(popOutWindowHandler)
 	keyMapWindow.SetInputCapture(popOutWindowHandler)
@@ -408,14 +427,6 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 	case tcell.KeyCtrlQ:
 		srcInput.SetText("", true)
-	case tcell.KeyCtrlY:
-		// copy selected text
-		text, _, _ := srcInput.GetSelection()
-
-		// only copy when text selected
-		if len(text) > 0 {
-			CopyToClipboard(text)
-		}
 	case tcell.KeyCtrlG:
 		// copy all text in Input
 		text := srcInput.GetText()

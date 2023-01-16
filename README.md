@@ -40,13 +40,13 @@ Swap language.
 Clear all text in left window.
 
 `<C-y>`
-Copy selected text in left window.
+Copy selected text.
 
 `<C-g>`
-Copy all text in left window.
+Copy all text in source of translation window.
 
 `<C-r>`
-Copy all text in right window.
+Copy all text in destination of translation window.
 
 `<C-o>`
 Play sound on left window.
