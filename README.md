@@ -4,7 +4,7 @@ Google Translate TUI
 
 ## ScreenShot
 
-![screenshot](https://i.imgur.com/ECtL7ac.gif)
+![screenshot](https://imgur.com/b935CfI.gif)
 
 ## Install
 
