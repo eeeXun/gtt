@@ -63,14 +63,14 @@ func updateBackgroundColor() {
 		Foreground(style.ForegroundColor())).
 		SetBackgroundColor(style.BackgroundColor())
 	dstOutput.SetBackgroundColor(style.BackgroundColor())
-	defOutput.SetBackgroundColor(style.BackgroundColor())
 	defOutput.SetTextStyle(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()))
-	posOutput.SetBackgroundColor(style.BackgroundColor())
+		Foreground(style.ForegroundColor())).
+		SetBackgroundColor(style.BackgroundColor())
 	posOutput.SetTextStyle(tcell.StyleDefault.
 		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor()))
+		Foreground(style.ForegroundColor())).
+		SetBackgroundColor(style.BackgroundColor())
 
 	// dropdown
 	for _, dropdown := range []*tview.DropDown{
