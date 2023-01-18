@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"gtt/internal/translate"
 	"gtt/internal/ui"
 
@@ -8,6 +9,11 @@ import (
 )
 
 var (
+	// version
+	version string
+	// argument
+	srcLangArg *string = flag.String("src", "", "Set source language")
+	dstLangArg *string = flag.String("dst", "", "Set destination language")
 	// Translate
 	translator = translate.NewTranslator()
 	// UI
@@ -44,20 +50,28 @@ var (
 )
 
 func main() {
-	SetTermTitle("GTT")
-	configInit()
-	uiInit()
+	showVersion := flag.Bool("version", false, "Show version")
+	flag.Parse()
 
-	mainPage.AddPage("translateWindow", translateWindow, true, true)
-	mainPage.AddPage("langWindow", langWindow, true, false)
-	mainPage.AddPage("styleWindow", styleWindow, true, false)
-	mainPage.AddPage("keyMapWindow", keyMapWindow, true, false)
+	switch {
+	case *showVersion:
+		print(version, "\n")
+	default:
+		SetTermTitle("GTT")
+		configInit()
+		uiInit()
 
-	if err := app.SetRoot(mainPage, true).
-		EnableMouse(true).Run(); err != nil {
-		panic(err)
+		mainPage.AddPage("translateWindow", translateWindow, true, true)
+		mainPage.AddPage("langWindow", langWindow, true, false)
+		mainPage.AddPage("styleWindow", styleWindow, true, false)
+		mainPage.AddPage("keyMapWindow", keyMapWindow, true, false)
+
+		if err := app.SetRoot(mainPage, true).
+			EnableMouse(true).Run(); err != nil {
+			panic(err)
+		}
+
+		// Check if config need to update
+		defer updateConfig()
 	}
-
-	// Check if config need to update
-	defer updateConfig()
 }

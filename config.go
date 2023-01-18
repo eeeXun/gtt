@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"gtt/internal/color"
 	"os"
 
@@ -9,9 +8,6 @@ import (
 )
 
 var (
-	// argument
-	srcLangArg *string = flag.String("src", "", "Source Language")
-	dstLangArg *string = flag.String("dst", "", "Destination Language")
 	// settings
 	config    = viper.New()
 	style     = color.NewStyle()
@@ -48,7 +44,6 @@ func configInit() {
 	}
 
 	// setup
-	flag.Parse()
 	if len(*srcLangArg) > 0 {
 		translator.SrcLang = *srcLangArg
 	} else {
