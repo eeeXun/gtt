@@ -1,12 +1,10 @@
 package main
 
 import (
-	"gtt/internal/color"
 	"gtt/internal/translate"
 	"gtt/internal/ui"
 
 	"github.com/rivo/tview"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -16,26 +14,33 @@ var (
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()
 	dstOutput           = tview.NewTextView()
+	defOutput           = tview.NewTextArea()
+	posOutput           = tview.NewTextArea()
 	srcLangDropDown     = tview.NewDropDown()
 	dstLangDropDown     = tview.NewDropDown()
 	langCycle           = ui.NewUICycle(srcLangDropDown, dstLangDropDown)
 	themeDropDown       = tview.NewDropDown()
 	transparentDropDown = tview.NewDropDown()
+	hideBelowDropDown   = tview.NewDropDown()
 	srcBorderDropDown   = tview.NewDropDown()
 	dstBorderDropDown   = tview.NewDropDown()
-	styleCycle          = ui.NewUICycle(themeDropDown, transparentDropDown, srcBorderDropDown, dstBorderDropDown)
-	keyMapMenu          = tview.NewTextView()
-	langButton          = tview.NewButton("(1)Language")
-	styleButton         = tview.NewButton("(2)Style")
-	keyMapButton        = tview.NewButton("(3)KeyMap")
-	translateWindow     = tview.NewFlex()
-	langWindow          = tview.NewFlex()
-	styleWindow         = tview.NewFlex()
-	keyMapWindow        = tview.NewFlex()
-	mainPage            = tview.NewPages()
-	// settings
-	config = viper.New()
-	style  = color.NewStyle()
+	styleCycle          = ui.NewUICycle(
+		themeDropDown,
+		transparentDropDown,
+		hideBelowDropDown,
+		srcBorderDropDown,
+		dstBorderDropDown)
+	keyMapMenu           = tview.NewTextView()
+	langButton           = tview.NewButton("(1)Language")
+	styleButton          = tview.NewButton("(2)Style")
+	keyMapButton         = tview.NewButton("(3)KeyMap")
+	translateWindow      = tview.NewFlex()
+	translateAboveWidget = tview.NewFlex()
+	translateBelowWidget = tview.NewFlex()
+	langWindow           = tview.NewFlex()
+	styleWindow          = tview.NewFlex()
+	keyMapWindow         = tview.NewFlex()
+	mainPage             = tview.NewPages()
 )
 
 func main() {

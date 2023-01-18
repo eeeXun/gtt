@@ -4,7 +4,7 @@ Google Translate TUI
 
 ## ScreenShot
 
-![screenshot](https://i.imgur.com/ECtL7ac.gif)
+![screenshot](https://imgur.com/b935CfI.gif)
 
 ## Install
 
@@ -31,34 +31,37 @@ Exit program.
 Toggle pop out window.
 
 `<C-j>`
-Translate from left window to right window.
+Translate from source to destination window.
 
 `<C-s>`
 Swap language.
 
 `<C-q>`
-Clear all text in left window.
+Clear all text in source of translation window.
 
 `<C-y>`
-Copy selected text in left window.
+Copy selected text.
 
 `<C-g>`
-Copy all text in left window.
+Copy all text in source of translation window.
 
 `<C-r>`
-Copy all text in right window.
+Copy all text in destination of translation window.
 
 `<C-o>`
-Play sound on left window.
+Play sound on source of translation window.
 
 `<C-p>`
-Play sound on right window.
+Play sound on destination of translation window.
 
 `<C-x>`
 Stop play sound.
 
 `<C-t>`
 Toggle transparent.
+
+`<C-\>`
+Toggle Definition & Part of speech
 
 `<Tab>`, `<S-Tab>`
 Cycle through the pop out widget.
@@ -73,6 +76,8 @@ Switch pop out window.
 `pbcopy` For macOS to copy text.
 
 ## Credit
+
+[soimort/translate-shell](https://github.com/soimort/translate-shell) For translation URL.
 
 [snsd0805/GoogleTranslate-TUI](https://github.com/snsd0805/GoogleTranslate-TUI) For inspiration.
 

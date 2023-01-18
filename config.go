@@ -2,12 +2,20 @@ package main
 
 import (
 	"flag"
+	"gtt/internal/color"
 	"os"
+
+	"github.com/spf13/viper"
 )
 
 var (
+	// argument
 	srcLangArg *string = flag.String("src", "", "Source Language")
 	dstLangArg *string = flag.String("dst", "", "Destination Language")
+	// settings
+	config    = viper.New()
+	style     = color.NewStyle()
+	hideBelow bool
 )
 
 // Search XDG_CONFIG_HOME or $HOME/.config
@@ -32,6 +40,7 @@ func configInit() {
 		config.Set("source.borderColor", "red")
 		config.Set("destination.language", "Chinese (Traditional)")
 		config.Set("destination.borderColor", "blue")
+		config.Set("hide_below", false)
 		if _, err = os.Stat(defaultConfigPath); os.IsNotExist(err) {
 			os.MkdirAll(defaultConfigPath, os.ModePerm)
 		}
@@ -50,6 +59,7 @@ func configInit() {
 	} else {
 		translator.DstLang = config.GetString("destination.language")
 	}
+	hideBelow = config.GetBool("hide_below")
 	style.Theme = config.GetString("theme")
 	style.Transparent = config.GetBool("transparent")
 	style.SetSrcBorderColor(config.GetString("source.borderColor")).
@@ -71,6 +81,10 @@ func updateConfig() {
 		config.GetString("destination.language") != translator.DstLang {
 		changed = true
 		config.Set("destination.language", translator.DstLang)
+	}
+	if config.GetBool("hide_below") != hideBelow {
+		changed = true
+		config.Set("hide_below", hideBelow)
 	}
 	if config.GetString("theme") != style.Theme {
 		changed = true

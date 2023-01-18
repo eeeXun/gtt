@@ -18,30 +18,43 @@ const (
 [#%[1]s]<Esc>[-]
 	Toggle pop out window.
 [#%[1]s]<C-j>[-]
-	Translate from left window to right window.
+	Translate from source to destination window.
 [#%[1]s]<C-s>[-]
 	Swap language.
 [#%[1]s]<C-q>[-]
-	Clear all text in left window.
+	Clear all text in source of translation window.
 [#%[1]s]<C-y>[-]
-	Copy selected text in left window.
+	Copy selected text.
 [#%[1]s]<C-g>[-]
-	Copy all text in left window.
+	Copy all text in source of translation window.
 [#%[1]s]<C-r>[-]
-	Copy all text in right window.
+	Copy all text in destination of translation window.
 [#%[1]s]<C-o>[-]
-	Play sound on left window.
+	Play sound on source of translation window.
 [#%[1]s]<C-p>[-]
-	Play sound on right window.
+	Play sound on destination of translation window.
 [#%[1]s]<C-x>[-]
 	Stop play sound.
 [#%[1]s]<C-t>[-]
 	Toggle transparent.
+[#%[1]s]<C-\>[-]
+	Toggle Definition & Part of speech
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
 [#%[1]s]<1>, <2>, <3>[-]
 	Switch pop out window.`
 )
+
+func updateTranslateWindow() {
+	translateWindow.Clear()
+	if hideBelow {
+		translateWindow.AddItem(translateAboveWidget, 0, 1, true)
+	} else {
+		translateWindow.SetDirection(tview.FlexRow).
+			AddItem(translateAboveWidget, 0, 1, true).
+			AddItem(translateBelowWidget, 0, 1, false)
+	}
+}
 
 func updateBackgroundColor() {
 	// input/output
@@ -50,6 +63,14 @@ func updateBackgroundColor() {
 		Foreground(style.ForegroundColor())).
 		SetBackgroundColor(style.BackgroundColor())
 	dstOutput.SetBackgroundColor(style.BackgroundColor())
+	defOutput.SetTextStyle(tcell.StyleDefault.
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor())).
+		SetBackgroundColor(style.BackgroundColor())
+	posOutput.SetTextStyle(tcell.StyleDefault.
+		Background(style.BackgroundColor()).
+		Foreground(style.ForegroundColor())).
+		SetBackgroundColor(style.BackgroundColor())
 
 	// dropdown
 	for _, dropdown := range []*tview.DropDown{
@@ -57,6 +78,7 @@ func updateBackgroundColor() {
 		dstLangDropDown,
 		themeDropDown,
 		transparentDropDown,
+		hideBelowDropDown,
 		srcBorderDropDown,
 		dstBorderDropDown} {
 		dropdown.SetListStyles(tcell.StyleDefault.
@@ -78,6 +100,10 @@ func updateBorderColor() {
 		SetTitleColor(style.SrcBorderColor())
 	dstOutput.SetBorderColor(style.DstBorderColor()).
 		SetTitleColor(style.DstBorderColor())
+	defOutput.SetBorderColor(style.SrcBorderColor()).
+		SetTitleColor(style.SrcBorderColor())
+	posOutput.SetBorderColor(style.DstBorderColor()).
+		SetTitleColor(style.DstBorderColor())
 
 	// dropdown
 	for _, srcDropDown := range []*tview.DropDown{srcLangDropDown, srcBorderDropDown} {
@@ -96,6 +122,12 @@ func updateNonConfigColor() {
 		Background(style.SelectedColor()).
 		Foreground(style.ForegroundColor()))
 	dstOutput.SetTextColor(style.ForegroundColor())
+	defOutput.SetSelectedStyle(tcell.StyleDefault.
+		Background(style.SelectedColor()).
+		Foreground(style.ForegroundColor()))
+	posOutput.SetSelectedStyle(tcell.StyleDefault.
+		Background(style.SelectedColor()).
+		Foreground(style.ForegroundColor()))
 
 	// dropdown
 	for _, noLabelDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
@@ -106,6 +138,7 @@ func updateNonConfigColor() {
 	for _, labelDropDown := range []*tview.DropDown{
 		themeDropDown,
 		transparentDropDown,
+		hideBelowDropDown,
 		srcBorderDropDown,
 		dstBorderDropDown} {
 		labelDropDown.SetLabelColor(style.LabelColor()).
@@ -166,6 +199,8 @@ func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
 	dstOutput.SetBorder(true)
+	defOutput.SetBorder(true).SetTitle("Definition")
+	posOutput.SetBorder(true).SetTitle("Part of speech")
 
 	// dropdown
 	for _, langDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
@@ -175,6 +210,11 @@ func uiInit() {
 	themeDropDown.SetLabel("Theme: ").
 		SetOptions(color.AllTheme, nil).
 		SetCurrentOption(IndexOf(style.Theme, color.AllTheme))
+	hideBelowDropDown.SetLabel("Hide below: ").
+		SetOptions([]string{"true", "false"}, nil).
+		SetCurrentOption(
+			IndexOf(strconv.FormatBool(hideBelow),
+				[]string{"true", "false"}))
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
@@ -203,9 +243,13 @@ func uiInit() {
 		SetTitle("Key Map")
 
 	// window
-	translateWindow.SetDirection(tview.FlexColumn).
+	translateAboveWidget.SetDirection(tview.FlexColumn).
 		AddItem(srcInput, 0, 1, true).
 		AddItem(dstOutput, 0, 1, false)
+	translateBelowWidget.SetDirection(tview.FlexColumn).
+		AddItem(defOutput, 0, 1, false).
+		AddItem(posOutput, 0, 1, false)
+	updateTranslateWindow()
 	langWindow.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
@@ -225,10 +269,11 @@ func uiInit() {
 					AddItem(nil, 0, 1, false).
 					AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 						AddItem(themeDropDown, 0, 1, true).
-						AddItem(transparentDropDown, 0, 1, false),
+						AddItem(transparentDropDown, 0, 1, false).
+						AddItem(hideBelowDropDown, 0, 1, false),
 						0, 1, true).
 					AddItem(nil, 0, 1, false),
-					2, 1, true).
+					3, 1, true).
 				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 					AddItem(srcBorderDropDown, 0, 1, false).
 					AddItem(dstBorderDropDown, 0, 1, false),
@@ -254,6 +299,25 @@ func uiInit() {
 	// handler
 	mainPage.SetInputCapture(mainPageHandler)
 	translateWindow.SetInputCapture(translateWindowHandler)
+	for _, widget := range []*tview.TextArea{srcInput, defOutput, posOutput} {
+		// fix for loop problem
+		// https://github.com/golang/go/discussions/56010
+		widget := widget
+		widget.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+			key := event.Key()
+			switch key {
+			case tcell.KeyCtrlY:
+				// copy selected text
+				text, _, _ := widget.GetSelection()
+
+				// only copy when text selected
+				if len(text) > 0 {
+					CopyToClipboard(text)
+				}
+			}
+			return event
+		})
+	}
 	langWindow.SetInputCapture(popOutWindowHandler)
 	styleWindow.SetInputCapture(popOutWindowHandler)
 	keyMapWindow.SetInputCapture(popOutWindowHandler)
@@ -278,6 +342,11 @@ func uiInit() {
 		SetSelectedFunc(func(text string, index int) {
 			style.Transparent, _ = strconv.ParseBool(text)
 			updateBackgroundColor()
+		})
+	hideBelowDropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(func(text string, index int) {
+			hideBelow, _ = strconv.ParseBool(text)
+			updateTranslateWindow()
 		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
@@ -325,6 +394,12 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 		transparentDropDown.SetCurrentOption(
 			IndexOf(strconv.FormatBool(style.Transparent),
 				[]string{"true", "false"}))
+	case tcell.KeyCtrlBackslash:
+		hideBelow = !hideBelow
+		updateTranslateWindow()
+		hideBelowDropDown.SetCurrentOption(
+			IndexOf(strconv.FormatBool(hideBelow),
+				[]string{"true", "false"}))
 	}
 
 	return event
@@ -341,23 +416,17 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		message := srcInput.GetText()
 		// Only translate when message exist
 		if len(message) > 0 {
-			translation, err := translator.Translate(message)
+			translation, definition, partOfSpeech, err := translator.Translate(message)
 			if err != nil {
 				dstOutput.SetText(err.Error())
 			} else {
 				dstOutput.SetText(translation)
+				defOutput.SetText(definition, false)
+				posOutput.SetText(partOfSpeech, false)
 			}
 		}
 	case tcell.KeyCtrlQ:
 		srcInput.SetText("", true)
-	case tcell.KeyCtrlY:
-		// copy selected text
-		text, _, _ := srcInput.GetSelection()
-
-		// only copy when text selected
-		if len(text) > 0 {
-			CopyToClipboard(text)
-		}
 	case tcell.KeyCtrlG:
 		// copy all text in Input
 		text := srcInput.GetText()
