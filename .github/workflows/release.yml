@@ -1,0 +1,41 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '^1.19'
+
+      - name: Install dependencies
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install libasound2-dev
+
+      - name: Build
+        run: |
+          [ -z $version ] && version=$(git describe --tags)
+          mkdir -p dist
+          go get
+          go build -ldflags="-s -w -X main.version=$version"
+          tar -czf "dist/gtt-$(go env GOOS)-$(go env GOARCH).tar.gz" gtt --remove-files
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
