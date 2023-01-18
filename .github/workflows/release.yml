@@ -33,7 +33,8 @@ jobs:
           mkdir -p dist
           go get
           go build -ldflags="-s -w -X main.version=$version"
-          tar -czf "dist/gtt-$(go env GOOS)-$(go env GOARCH).tar.gz" gtt --remove-files
+          tar -czf "dist/gtt-$(go env GOOS)-$(go env GOARCH).tar.gz" gtt
+          rm gtt
 
       - name: Release
         uses: softprops/action-gh-release@v1
