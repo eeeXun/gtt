@@ -29,5 +29,9 @@ func CopyToClipboard(text string) {
 		exec.Command("sh", "-c",
 			fmt.Sprintf("echo -n '%s' | pbcopy", text)).
 			Start()
+	case "windows":
+		exec.Command("cmd", "/c",
+			fmt.Sprintf("echo %s | clip", text)).
+			Start()
 	}
 }
