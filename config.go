@@ -12,6 +12,16 @@ var (
 	config    = viper.New()
 	style     = color.NewStyle()
 	hideBelow bool
+	// default config
+	defaultConfig = map[string]interface{}{
+		"transparent":             false,
+		"theme":                   "Gruvbox",
+		"source.language":         "English",
+		"source.borderColor":      "red",
+		"destination.language":    "Chinese (Traditional)",
+		"destination.borderColor": "blue",
+		"hide_below":              false,
+	}
 )
 
 // Search XDG_CONFIG_HOME or $HOME/.config
@@ -29,18 +39,26 @@ func configInit() {
 	config.AddConfigPath("$HOME/.config/gtt")
 
 	// Create config file if not exists
+	// Otherwise check if config value is missing
 	if err := config.ReadInConfig(); err != nil {
-		config.Set("transparent", false)
-		config.Set("theme", "Gruvbox")
-		config.Set("source.language", "English")
-		config.Set("source.borderColor", "red")
-		config.Set("destination.language", "Chinese (Traditional)")
-		config.Set("destination.borderColor", "blue")
-		config.Set("hide_below", false)
+		for key, value := range defaultConfig {
+			config.Set(key, value)
+		}
 		if _, err = os.Stat(defaultConfigPath); os.IsNotExist(err) {
 			os.MkdirAll(defaultConfigPath, os.ModePerm)
 		}
 		config.SafeWriteConfig()
+	} else {
+		missing := false
+		for key, value := range defaultConfig {
+			if config.Get(key) == nil {
+				config.Set(key, value)
+				missing = true
+			}
+		}
+		if missing {
+			config.WriteConfig()
+		}
 	}
 
 	// setup
