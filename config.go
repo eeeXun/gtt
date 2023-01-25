@@ -12,22 +12,23 @@ var (
 	config    = viper.New()
 	style     = color.NewStyle()
 	hideBelow bool
-	// default config
-	defaultConfig = map[string]interface{}{
-		"transparent":                 false,
-		"theme":                       "Gruvbox",
-		"source.borderColor":          "red",
-		"destination.borderColor":     "blue",
-		"source.google.language":      "English",
-		"destination.google.language": "Chinese (Traditional)",
-		"hide_below":                  false,
-		"translator":                  "google",
-	}
 )
 
 // Search XDG_CONFIG_HOME or $HOME/.config
 func configInit() {
-	var defaultConfigPath string
+	var (
+		defaultConfigPath string
+		defaultConfig     = map[string]interface{}{
+			"transparent":                 false,
+			"theme":                       "Gruvbox",
+			"source.borderColor":          "red",
+			"destination.borderColor":     "blue",
+			"source.google.language":      "English",
+			"destination.google.language": "Chinese (Traditional)",
+			"hide_below":                  false,
+			"translator":                  "google",
+		}
+	)
 
 	config.SetConfigName("gtt")
 	config.SetConfigType("yaml")
