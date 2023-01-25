@@ -1,8 +1,8 @@
-package translate
+package google
 
 // https://cloud.google.com/translate/docs/languages
 var (
-	Lang = []string{
+	lang = []string{
 		"Afrikaans",
 		"Albanian",
 		"Amharic",
@@ -113,7 +113,7 @@ var (
 		"Yoruba",
 		"Zulu",
 	}
-	LangCode = map[string]string{
+	langCode = map[string]string{
 		"Afrikaans":                     "af",
 		"Albanian":                      "sq",
 		"Amharic":                       "am",

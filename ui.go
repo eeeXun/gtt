@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"gtt/internal/color"
-	"gtt/internal/translate"
 	"strconv"
 
 	"github.com/gdamore/tcell/v2"
@@ -172,16 +171,14 @@ func updateAllColor() {
 
 // Update title and option
 func updateTitle() {
-	srcInput.SetTitle(translator.SrcLang)
-	dstOutput.SetTitle(translator.DstLang)
+	srcInput.SetTitle(translator.GetSrcLang())
+	dstOutput.SetTitle(translator.GetDstLang())
 	srcLangDropDown.SetCurrentOption(
-		IndexOf(translator.SrcLang,
-			translate.Lang)).
-		SetTitle(translator.SrcLang)
+		IndexOf(translator.GetSrcLang(), translator.GetAllLang())).
+		SetTitle(translator.GetSrcLang())
 	dstLangDropDown.SetCurrentOption(
-		IndexOf(translator.DstLang,
-			translate.Lang)).
-		SetTitle(translator.DstLang)
+		IndexOf(translator.GetDstLang(), translator.GetAllLang())).
+		SetTitle(translator.GetDstLang())
 }
 
 func attachButton() *tview.Flex {
@@ -204,7 +201,7 @@ func uiInit() {
 
 	// dropdown
 	for _, langDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
-		langDropDown.SetOptions(translate.Lang, nil).
+		langDropDown.SetOptions(translator.GetAllLang(), nil).
 			SetBorder(true)
 	}
 	themeDropDown.SetLabel("Theme: ").
@@ -323,13 +320,13 @@ func uiInit() {
 	keyMapWindow.SetInputCapture(popOutWindowHandler)
 	srcLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			translator.SrcLang = text
+			translator.SetSrcLang(text)
 			srcInput.SetTitle(text)
 			srcLangDropDown.SetTitle(text)
 		})
 	dstLangDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			translator.DstLang = text
+			translator.SetDstLang(text)
 			dstOutput.SetTitle(text)
 			dstLangDropDown.SetTitle(text)
 		})
@@ -444,7 +441,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 			CopyToClipboard(text[:len(text)-1])
 		}
 	case tcell.KeyCtrlS:
-		translator.SrcLang, translator.DstLang = translator.DstLang, translator.SrcLang
+		translator.SwapLang()
 		updateTitle()
 		srcText := srcInput.GetText()
 		dstText := dstOutput.GetText(false)
@@ -457,13 +454,13 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		dstOutput.SetText(srcText)
 	case tcell.KeyCtrlO:
 		// Play source sound
-		if translator.SoundLock.Available() {
+		if translator.LockAvailable() {
 			message := srcInput.GetText()
 			// Only play when message exist
 			if len(message) > 0 {
-				translator.SoundLock.Acquire()
+				translator.LockAcquire()
 				go func() {
-					err := translator.PlaySound(translator.SrcLang, message)
+					err := translator.PlayTTS(translator.GetSrcLang(), message)
 					if err != nil {
 						srcInput.SetText(err.Error(), true)
 					}
@@ -473,13 +470,13 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 	case tcell.KeyCtrlP:
 		// Play destination sound
-		if translator.SoundLock.Available() {
+		if translator.LockAvailable() {
 			message := dstOutput.GetText(false)
 			// Only play when message exist
 			if len(message) > 0 {
-				translator.SoundLock.Acquire()
+				translator.LockAcquire()
 				go func() {
-					err := translator.PlaySound(translator.DstLang, message)
+					err := translator.PlayTTS(translator.GetDstLang(), message)
 					if err != nil {
 						dstOutput.SetText(err.Error())
 					}
@@ -488,7 +485,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 	case tcell.KeyCtrlX:
 		// Stop play sound
-		translator.SoundLock.Stop = true
+		translator.StopTTS()
 	}
 
 	return event

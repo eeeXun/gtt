@@ -14,13 +14,14 @@ var (
 	hideBelow bool
 	// default config
 	defaultConfig = map[string]interface{}{
-		"transparent":             false,
-		"theme":                   "Gruvbox",
-		"source.language":         "English",
-		"source.borderColor":      "red",
-		"destination.language":    "Chinese (Traditional)",
-		"destination.borderColor": "blue",
-		"hide_below":              false,
+		"transparent":                 false,
+		"theme":                       "Gruvbox",
+		"source.borderColor":          "red",
+		"destination.borderColor":     "blue",
+		"source.google.language":      "English",
+		"destination.google.language": "Chinese (Traditional)",
+		"hide_below":                  false,
+		"translator":                  "google",
 	}
 )
 
@@ -62,15 +63,19 @@ func configInit() {
 	}
 
 	// setup
-	if len(*srcLangArg) > 0 {
-		translator.SrcLang = *srcLangArg
-	} else {
-		translator.SrcLang = config.GetString("source.language")
-	}
-	if len(*dstLangArg) > 0 {
-		translator.DstLang = *dstLangArg
-	} else {
-		translator.DstLang = config.GetString("destination.language")
+	switch config.GetString("translator") {
+	case "google":
+		translator = googleTranslate
+		if len(*srcLangArg) > 0 {
+			translator.SetSrcLang(*srcLangArg)
+		} else {
+			translator.SetSrcLang(config.GetString("source.google.language"))
+		}
+		if len(*dstLangArg) > 0 {
+			translator.SetDstLang(*dstLangArg)
+		} else {
+			translator.SetDstLang(config.GetString("destination.google.language"))
+		}
 	}
 	hideBelow = config.GetBool("hide_below")
 	style.Theme = config.GetString("theme")
@@ -85,15 +90,15 @@ func updateConfig() {
 
 	// Source language is not passed in argument
 	if len(*srcLangArg) == 0 &&
-		config.GetString("source.language") != translator.SrcLang {
+		config.GetString("source.google.language") != googleTranslate.GetSrcLang() {
 		changed = true
-		config.Set("source.language", translator.SrcLang)
+		config.Set("source.google.language", googleTranslate.GetSrcLang())
 	}
 	// Destination language is not passed in argument
 	if len(*dstLangArg) == 0 &&
-		config.GetString("destination.language") != translator.DstLang {
+		config.GetString("destination.google.language") != googleTranslate.GetDstLang() {
 		changed = true
-		config.Set("destination.language", translator.DstLang)
+		config.Set("destination.google.language", googleTranslate.GetDstLang())
 	}
 	if config.GetBool("hide_below") != hideBelow {
 		changed = true

@@ -15,7 +15,8 @@ var (
 	srcLangArg *string = flag.String("src", "", "Set source language")
 	dstLangArg *string = flag.String("dst", "", "Set destination language")
 	// Translate
-	translator = translate.NewTranslator()
+	translator      translate.Translator
+	googleTranslate = translate.NewGoogleTranslate()
 	// UI
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()
