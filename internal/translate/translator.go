@@ -2,7 +2,7 @@ package translate
 
 import (
 	"gtt/internal/lock"
-	"gtt/internal/translate/google"
+	"gtt/internal/translate/googletranslate"
 )
 
 type Translator interface {
@@ -25,8 +25,8 @@ type Translator interface {
 	PlayTTS(lang string, message string) error
 }
 
-func NewGoogleTranslate() *google.GoogleTranslate {
-	return &google.GoogleTranslate{
+func NewGoogleTranslate() *googletranslate.GoogleTranslate {
+	return &googletranslate.GoogleTranslate{
 		SoundLock: lock.NewLock(),
 	}
 }

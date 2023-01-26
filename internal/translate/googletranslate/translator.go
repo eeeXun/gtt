@@ -1,4 +1,4 @@
-package google
+package googletranslate
 
 import (
 	"encoding/json"
