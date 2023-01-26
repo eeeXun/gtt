@@ -15,8 +15,11 @@ var (
 	srcLangArg *string = flag.String("src", "", "Set source language")
 	dstLangArg *string = flag.String("dst", "", "Set destination language")
 	// Translate
-	translator      translate.Translator
-	googleTranslate = translate.NewGoogleTranslate()
+	translator  translate.Translator
+	translators = map[string]translate.Translator{
+		"LibreTranslate":  translate.NewLibreTranslate(),
+		"GoogleTranslate": translate.NewGoogleTranslate(),
+	}
 	// UI
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()

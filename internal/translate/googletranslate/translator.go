@@ -65,7 +65,6 @@ func (t *GoogleTranslate) Translate(message string) (
 	if err != nil {
 		return "", "", "", err
 	}
-
 	if err = json.Unmarshal(body, &data); err != nil {
 		return "", "", "", err
 	}
