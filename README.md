@@ -1,6 +1,6 @@
 # GTT
 
-Google Translate TUI
+Support: `ArgosTranslate`, `GoogleTranslate`
 
 ## ScreenShot
 
@@ -20,7 +20,7 @@ You can pass `-src` and `-dst` in argument to set source and destination languag
 gtt -src "English" -dst "Chinese (Traditional)"
 ```
 
-See language on [Google Language support](https://cloud.google.com/translate/docs/languages)
+See language on [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`, [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
 
 ## Key Map
 
