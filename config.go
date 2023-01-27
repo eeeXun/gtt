@@ -4,12 +4,11 @@ import (
 	"gtt/internal/color"
 	"os"
 
-	"github.com/spf13/viper"
+	config "github.com/spf13/viper"
 )
 
 var (
 	// settings
-	config    = viper.New()
 	style     = color.NewStyle()
 	hideBelow bool
 	// default config
