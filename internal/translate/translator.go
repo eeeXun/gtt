@@ -11,6 +11,8 @@ var (
 )
 
 type Translator interface {
+	// engine name
+	GetEngineName() string
 	// text
 	GetAllLang() []string
 	GetSrcLang() string
@@ -32,12 +34,14 @@ type Translator interface {
 
 func NewGoogleTranslate() *googletranslate.GoogleTranslate {
 	return &googletranslate.GoogleTranslate{
-		SoundLock: lock.NewLock(),
+		EngineName: "GoogleTranslate",
+		SoundLock:  lock.NewLock(),
 	}
 }
 
 func NewLibreTranslate() *libretranslate.LibreTranslate {
 	return &libretranslate.LibreTranslate{
-		SoundLock: lock.NewLock(),
+		EngineName: "LibreTranslate",
+		SoundLock:  lock.NewLock(),
 	}
 }

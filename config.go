@@ -107,6 +107,10 @@ func updateConfig() {
 			}
 		}
 	}
+	if config.GetString("translator") != translator.GetEngineName() {
+		changed = true
+		config.Set("translator", translator.GetEngineName())
+	}
 	if config.GetBool("hide_below") != hideBelow {
 		changed = true
 		config.Set("hide_below", hideBelow)

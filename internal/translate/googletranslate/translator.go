@@ -15,9 +15,14 @@ const (
 )
 
 type GoogleTranslate struct {
-	srcLang   string
-	dstLang   string
-	SoundLock *lock.Lock
+	srcLang    string
+	dstLang    string
+	EngineName string
+	SoundLock  *lock.Lock
+}
+
+func (t *GoogleTranslate) GetEngineName() string {
+	return t.EngineName
 }
 
 func (t *GoogleTranslate) GetAllLang() []string {

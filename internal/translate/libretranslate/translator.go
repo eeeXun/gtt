@@ -15,9 +15,14 @@ const (
 )
 
 type LibreTranslate struct {
-	srcLang   string
-	dstLang   string
-	SoundLock *lock.Lock
+	srcLang    string
+	dstLang    string
+	EngineName string
+	SoundLock  *lock.Lock
+}
+
+func (t *LibreTranslate) GetEngineName() string {
+	return t.EngineName
 }
 
 func (t *LibreTranslate) GetAllLang() []string {

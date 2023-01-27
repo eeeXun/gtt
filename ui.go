@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gtt/internal/color"
+	"gtt/internal/translate"
 	"strconv"
 
 	"github.com/gdamore/tcell/v2"
@@ -73,6 +74,7 @@ func updateBackgroundColor() {
 
 	// dropdown
 	for _, dropdown := range []*tview.DropDown{
+		translatorDropDown,
 		srcLangDropDown,
 		dstLangDropDown,
 		themeDropDown,
@@ -135,6 +137,7 @@ func updateNonConfigColor() {
 			SetPrefixTextColor(style.PrefixColor())
 	}
 	for _, labelDropDown := range []*tview.DropDown{
+		translatorDropDown,
 		themeDropDown,
 		transparentDropDown,
 		hideBelowDropDown,
@@ -163,14 +166,30 @@ func updateNonConfigColor() {
 		SetTitleColor(style.HighLightColor())
 }
 
+// SetSelectedFunc of DropDown need to update when options change
+func updateLangDropDown() {
+	srcLangDropDown.SetOptions(translator.GetAllLang(),
+		func(text string, index int) {
+			translator.SetSrcLang(text)
+			srcInput.SetTitle(text)
+			srcLangDropDown.SetTitle(text)
+		})
+	dstLangDropDown.SetOptions(translator.GetAllLang(),
+		func(text string, index int) {
+			translator.SetDstLang(text)
+			dstOutput.SetTitle(text)
+			dstLangDropDown.SetTitle(text)
+		})
+}
+
 func updateAllColor() {
 	updateBackgroundColor()
 	updateBorderColor()
 	updateNonConfigColor()
 }
 
-// Update title and option
-func updateTitle() {
+// Update language title and option
+func updateCurrentLang() {
 	srcInput.SetTitle(translator.GetSrcLang())
 	dstOutput.SetTitle(translator.GetDstLang())
 	srcLangDropDown.SetCurrentOption(
@@ -200,10 +219,11 @@ func uiInit() {
 	posOutput.SetBorder(true).SetTitle("Part of speech")
 
 	// dropdown
-	for _, langDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
-		langDropDown.SetOptions(translator.GetAllLang(), nil).
-			SetBorder(true)
-	}
+	translatorDropDown.SetLabel("Translator: ").
+		SetOptions(translate.AllTranslator, nil).
+		SetCurrentOption(IndexOf(translator.GetEngineName(), translate.AllTranslator))
+	srcLangDropDown.SetBorder(true)
+	dstLangDropDown.SetBorder(true)
 	themeDropDown.SetLabel("Theme: ").
 		SetOptions(color.AllTheme, nil).
 		SetCurrentOption(IndexOf(style.Theme, color.AllTheme))
@@ -251,8 +271,19 @@ func uiInit() {
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
-			AddItem(srcLangDropDown, langStrMaxLength, 1, true).
-			AddItem(dstLangDropDown, langStrMaxLength, 1, false).
+			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+					AddItem(nil, 0, 1, false).
+					AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+						AddItem(translatorDropDown, 0, 1, true),
+						0, 2, true).
+					AddItem(nil, 0, 1, false),
+					1, 1, true).
+				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+					AddItem(srcLangDropDown, langStrMaxLength, 1, false).
+					AddItem(dstLangDropDown, langStrMaxLength, 1, false),
+					0, 1, false),
+				2*langStrMaxLength, 1, true).
 			AddItem(nil, 0, 1, false),
 			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
@@ -291,7 +322,8 @@ func uiInit() {
 		AddItem(nil, 0, 1, false)
 
 	updateAllColor()
-	updateTitle()
+	updateLangDropDown()
+	updateCurrentLang()
 
 	// handler
 	mainPage.SetInputCapture(mainPageHandler)
@@ -318,18 +350,14 @@ func uiInit() {
 	langWindow.SetInputCapture(popOutWindowHandler)
 	styleWindow.SetInputCapture(popOutWindowHandler)
 	keyMapWindow.SetInputCapture(popOutWindowHandler)
-	srcLangDropDown.SetDoneFunc(langDropDownHandler).
+	translatorDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			translator.SetSrcLang(text)
-			srcInput.SetTitle(text)
-			srcLangDropDown.SetTitle(text)
+			translator = translators[text]
+			updateLangDropDown()
+			updateCurrentLang()
 		})
-	dstLangDropDown.SetDoneFunc(langDropDownHandler).
-		SetSelectedFunc(func(text string, index int) {
-			translator.SetDstLang(text)
-			dstOutput.SetTitle(text)
-			dstLangDropDown.SetTitle(text)
-		})
+	srcLangDropDown.SetDoneFunc(langDropDownHandler)
+	dstLangDropDown.SetDoneFunc(langDropDownHandler)
 	themeDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
 			style.Theme = text
@@ -442,7 +470,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 	case tcell.KeyCtrlS:
 		translator.SwapLang()
-		updateTitle()
+		updateCurrentLang()
 		srcText := srcInput.GetText()
 		dstText := dstOutput.GetText(false)
 		if len(dstText) > 0 {
