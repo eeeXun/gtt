@@ -17,7 +17,7 @@ var (
 	// Translate
 	translator  translate.Translator
 	translators = map[string]translate.Translator{
-		"LibreTranslate":  translate.NewLibreTranslate(),
+		"ArgosTranslate":  translate.NewLibreTranslate(),
 		"GoogleTranslate": translate.NewGoogleTranslate(),
 	}
 	// UI

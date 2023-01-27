@@ -2,12 +2,12 @@ package translate
 
 import (
 	"gtt/internal/lock"
+	"gtt/internal/translate/argostranslate"
 	"gtt/internal/translate/googletranslate"
-	"gtt/internal/translate/libretranslate"
 )
 
 var (
-	AllTranslator = []string{"LibreTranslate", "GoogleTranslate"}
+	AllTranslator = []string{"ArgosTranslate", "GoogleTranslate"}
 )
 
 type Translator interface {
@@ -39,9 +39,9 @@ func NewGoogleTranslate() *googletranslate.GoogleTranslate {
 	}
 }
 
-func NewLibreTranslate() *libretranslate.LibreTranslate {
-	return &libretranslate.LibreTranslate{
-		EngineName: "LibreTranslate",
+func NewLibreTranslate() *argostranslate.ArgosTranslate {
+	return &argostranslate.ArgosTranslate{
+		EngineName: "ArgosTranslate",
 		SoundLock:  lock.NewLock(),
 	}
 }

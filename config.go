@@ -24,12 +24,12 @@ func configInit() {
 			"theme":                                "Gruvbox",
 			"source.borderColor":                   "red",
 			"destination.borderColor":              "blue",
+			"source.language.argostranslate":       "English",
+			"destination.language.argostranslate":  "English",
 			"source.language.googletranslate":      "English",
 			"destination.language.googletranslate": "English",
-			"source.language.libretranslate":       "English",
-			"destination.language.libretranslate":  "English",
 			"hide_below":                           false,
-			"translator":                           "LibreTranslate",
+			"translator":                           "ArgosTranslate",
 		}
 	)
 

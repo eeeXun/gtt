@@ -1,4 +1,4 @@
-package libretranslate
+package argostranslate
 
 import (
 	"bytes"
@@ -14,42 +14,42 @@ const (
 	textURL = "https://translate.argosopentech.com/translate"
 )
 
-type LibreTranslate struct {
+type ArgosTranslate struct {
 	srcLang    string
 	dstLang    string
 	EngineName string
 	SoundLock  *lock.Lock
 }
 
-func (t *LibreTranslate) GetEngineName() string {
+func (t *ArgosTranslate) GetEngineName() string {
 	return t.EngineName
 }
 
-func (t *LibreTranslate) GetAllLang() []string {
+func (t *ArgosTranslate) GetAllLang() []string {
 	return lang
 }
 
-func (t *LibreTranslate) GetSrcLang() string {
+func (t *ArgosTranslate) GetSrcLang() string {
 	return t.srcLang
 }
 
-func (t *LibreTranslate) GetDstLang() string {
+func (t *ArgosTranslate) GetDstLang() string {
 	return t.dstLang
 }
 
-func (t *LibreTranslate) SetSrcLang(srcLang string) {
+func (t *ArgosTranslate) SetSrcLang(srcLang string) {
 	t.srcLang = srcLang
 }
 
-func (t *LibreTranslate) SetDstLang(dstLang string) {
+func (t *ArgosTranslate) SetDstLang(dstLang string) {
 	t.dstLang = dstLang
 }
 
-func (t *LibreTranslate) SwapLang() {
+func (t *ArgosTranslate) SwapLang() {
 	t.srcLang, t.dstLang = t.dstLang, t.srcLang
 }
 
-func (t *LibreTranslate) Translate(message string) (
+func (t *ArgosTranslate) Translate(message string) (
 	translation string,
 	definition string,
 	partOfSpeech string,
