@@ -24,10 +24,10 @@ func configInit() {
 			"theme":                                "Gruvbox",
 			"source.borderColor":                   "red",
 			"destination.borderColor":              "blue",
-			"source.googletranslate.language":      "English",
-			"destination.googletranslate.language": "Chinese (Traditional)",
-			"source.libretranslate.language":       "English",
-			"destination.libretranslate.language":  "Chinese",
+			"source.language.googletranslate":      "English",
+			"destination.language.googletranslate": "English",
+			"source.language.libretranslate":       "English",
+			"destination.language.libretranslate":  "English",
 			"hide_below":                           false,
 			"translator":                           "LibreTranslate",
 		}
@@ -68,8 +68,8 @@ func configInit() {
 
 	// setup
 	for t_str, t := range translators {
-		t.SetSrcLang(config.GetString(fmt.Sprintf("source.%s.language", t_str)))
-		t.SetDstLang(config.GetString(fmt.Sprintf("destination.%s.language", t_str)))
+		t.SetSrcLang(config.GetString(fmt.Sprintf("source.language.%s", t_str)))
+		t.SetDstLang(config.GetString(fmt.Sprintf("destination.language.%s", t_str)))
 	}
 	translator = translators[config.GetString("translator")]
 	hideBelow = config.GetBool("hide_below")
@@ -93,17 +93,17 @@ func updateConfig() {
 	// Source language is not passed in argument
 	if len(*srcLangArg) == 0 {
 		for t_str, t := range translators {
-			if config.GetString(fmt.Sprintf("source.%s.language", t_str)) != t.GetSrcLang() {
+			if config.GetString(fmt.Sprintf("source.language.%s", t_str)) != t.GetSrcLang() {
 				changed = true
-				config.Set(fmt.Sprintf("source.%s.language", t_str), t.GetSrcLang())
+				config.Set(fmt.Sprintf("source.language.%s", t_str), t.GetSrcLang())
 			}
 		}
 	}
 	if len(*dstLangArg) == 0 {
 		for t_str, t := range translators {
-			if config.GetString(fmt.Sprintf("destination.%s.language", t_str)) != t.GetDstLang() {
+			if config.GetString(fmt.Sprintf("destination.language.%s", t_str)) != t.GetDstLang() {
 				changed = true
-				config.Set(fmt.Sprintf("destination.%s.language", t_str), t.GetDstLang())
+				config.Set(fmt.Sprintf("destination.language.%s", t_str), t.GetDstLang())
 			}
 		}
 	}
