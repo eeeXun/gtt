@@ -1,4 +1,4 @@
-package translate
+package lock
 
 type Lock struct {
 	Stop        bool

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gtt/internal/color"
 	"os"
 
@@ -11,21 +12,25 @@ var (
 	// settings
 	style     = color.NewStyle()
 	hideBelow bool
-	// default config
-	defaultConfig = map[string]interface{}{
-		"transparent":             false,
-		"theme":                   "Gruvbox",
-		"source.language":         "English",
-		"source.borderColor":      "red",
-		"destination.language":    "Chinese (Traditional)",
-		"destination.borderColor": "blue",
-		"hide_below":              false,
-	}
 )
 
 // Search XDG_CONFIG_HOME or $HOME/.config
 func configInit() {
-	var defaultConfigPath string
+	var (
+		defaultConfigPath string
+		defaultConfig     = map[string]interface{}{
+			"transparent":                          false,
+			"theme":                                "Gruvbox",
+			"source.borderColor":                   "red",
+			"destination.borderColor":              "blue",
+			"source.language.argostranslate":       "English",
+			"destination.language.argostranslate":  "English",
+			"source.language.googletranslate":      "English",
+			"destination.language.googletranslate": "English",
+			"hide_below":                           false,
+			"translator":                           "ArgosTranslate",
+		}
+	)
 
 	config.SetConfigName("gtt")
 	config.SetConfigType("yaml")
@@ -61,21 +66,23 @@ func configInit() {
 	}
 
 	// setup
-	if len(*srcLangArg) > 0 {
-		translator.SrcLang = *srcLangArg
-	} else {
-		translator.SrcLang = config.GetString("source.language")
+	for t_str, t := range translators {
+		t.SetSrcLang(config.GetString(fmt.Sprintf("source.language.%s", t_str)))
+		t.SetDstLang(config.GetString(fmt.Sprintf("destination.language.%s", t_str)))
 	}
-	if len(*dstLangArg) > 0 {
-		translator.DstLang = *dstLangArg
-	} else {
-		translator.DstLang = config.GetString("destination.language")
-	}
+	translator = translators[config.GetString("translator")]
 	hideBelow = config.GetBool("hide_below")
 	style.Theme = config.GetString("theme")
 	style.Transparent = config.GetBool("transparent")
 	style.SetSrcBorderColor(config.GetString("source.borderColor")).
 		SetDstBorderColor(config.GetString("destination.borderColor"))
+	// set argument language
+	if len(*srcLangArg) > 0 {
+		translator.SetSrcLang(*srcLangArg)
+	}
+	if len(*dstLangArg) > 0 {
+		translator.SetDstLang(*dstLangArg)
+	}
 }
 
 // Check if need to modify config file when quit program
@@ -83,16 +90,25 @@ func updateConfig() {
 	changed := false
 
 	// Source language is not passed in argument
-	if len(*srcLangArg) == 0 &&
-		config.GetString("source.language") != translator.SrcLang {
-		changed = true
-		config.Set("source.language", translator.SrcLang)
+	if len(*srcLangArg) == 0 {
+		for t_str, t := range translators {
+			if config.GetString(fmt.Sprintf("source.language.%s", t_str)) != t.GetSrcLang() {
+				changed = true
+				config.Set(fmt.Sprintf("source.language.%s", t_str), t.GetSrcLang())
+			}
+		}
 	}
-	// Destination language is not passed in argument
-	if len(*dstLangArg) == 0 &&
-		config.GetString("destination.language") != translator.DstLang {
+	if len(*dstLangArg) == 0 {
+		for t_str, t := range translators {
+			if config.GetString(fmt.Sprintf("destination.language.%s", t_str)) != t.GetDstLang() {
+				changed = true
+				config.Set(fmt.Sprintf("destination.language.%s", t_str), t.GetDstLang())
+			}
+		}
+	}
+	if config.GetString("translator") != translator.GetEngineName() {
 		changed = true
-		config.Set("destination.language", translator.DstLang)
+		config.Set("translator", translator.GetEngineName())
 	}
 	if config.GetBool("hide_below") != hideBelow {
 		changed = true

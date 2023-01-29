@@ -15,16 +15,21 @@ var (
 	srcLangArg *string = flag.String("src", "", "Set source language")
 	dstLangArg *string = flag.String("dst", "", "Set destination language")
 	// Translate
-	translator = translate.NewTranslator()
+	translator  translate.Translator
+	translators = map[string]translate.Translator{
+		"ArgosTranslate":  translate.NewLibreTranslate(),
+		"GoogleTranslate": translate.NewGoogleTranslate(),
+	}
 	// UI
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()
 	dstOutput           = tview.NewTextView()
 	defOutput           = tview.NewTextArea()
 	posOutput           = tview.NewTextArea()
+	translatorDropDown  = tview.NewDropDown()
 	srcLangDropDown     = tview.NewDropDown()
 	dstLangDropDown     = tview.NewDropDown()
-	langCycle           = ui.NewUICycle(srcLangDropDown, dstLangDropDown)
+	langCycle           = ui.NewUICycle(translatorDropDown, srcLangDropDown, dstLangDropDown)
 	themeDropDown       = tview.NewDropDown()
 	transparentDropDown = tview.NewDropDown()
 	hideBelowDropDown   = tview.NewDropDown()
