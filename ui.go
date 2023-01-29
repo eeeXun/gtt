@@ -45,6 +45,13 @@ const (
 	Switch pop out window.`
 )
 
+type Item struct {
+	item       tview.Primitive
+	fixedSize  int
+	proportion int
+	focus      bool
+}
+
 func updateTranslateWindow() {
 	translateWindow.Clear()
 	if hideBelow {
@@ -211,6 +218,21 @@ func attachButton() *tview.Flex {
 		AddItem(nil, 0, 1, false)
 }
 
+// If center is true, it will center the items
+func attachItems(center bool, direction int, items ...Item) *tview.Flex {
+	container := tview.NewFlex().SetDirection(direction)
+	if center {
+		container.AddItem(nil, 0, 1, false)
+	}
+	for _, item := range items {
+		container.AddItem(item.item, item.fixedSize, item.proportion, item.focus)
+	}
+	if center {
+		container.AddItem(nil, 0, 1, false)
+	}
+	return container
+}
+
 func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
@@ -269,54 +291,44 @@ func uiInit() {
 	updateTranslateWindow()
 	langPopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
-		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-			AddItem(nil, 0, 1, false).
-			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-					AddItem(nil, 0, 1, false).
-					AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-						AddItem(translatorDropDown, 0, 1, true),
-						0, 2, true).
-					AddItem(nil, 0, 1, false),
-					1, 1, true).
-				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-					AddItem(srcLangDropDown, langStrMaxLength, 1, false).
-					AddItem(dstLangDropDown, langStrMaxLength, 1, false),
-					0, 1, false),
-				2*langStrMaxLength, 1, true).
-			AddItem(nil, 0, 1, false),
+		AddItem(attachItems(true, tview.FlexColumn,
+			Item{item: attachItems(false, tview.FlexRow,
+				Item{item: attachItems(true, tview.FlexColumn,
+					Item{item: attachItems(false, tview.FlexRow,
+						Item{item: translatorDropDown, fixedSize: 0, proportion: 1, focus: true}),
+						fixedSize: 0, proportion: 2, focus: true}),
+					fixedSize: 1, proportion: 1, focus: true},
+				Item{item: attachItems(false, tview.FlexColumn,
+					Item{item: srcLangDropDown, fixedSize: 0, proportion: 1, focus: false},
+					Item{item: dstLangDropDown, fixedSize: 0, proportion: 1, focus: false}),
+					fixedSize: 0, proportion: 1, focus: false}),
+				fixedSize: 2 * langStrMaxLength, proportion: 1, focus: true}),
 			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	stylePopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
-		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-			AddItem(nil, 0, 1, false).
-			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-					AddItem(nil, 0, 1, false).
-					AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-						AddItem(themeDropDown, 0, 1, true).
-						AddItem(transparentDropDown, 0, 1, false).
-						AddItem(hideBelowDropDown, 0, 1, false),
-						0, 1, true).
-					AddItem(nil, 0, 1, false),
-					3, 1, true).
-				AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-					AddItem(srcBorderDropDown, 0, 1, false).
-					AddItem(dstBorderDropDown, 0, 1, false),
-					0, 1, false),
-				2*langStrMaxLength, 1, true).
-			AddItem(nil, 0, 1, false),
+		AddItem(attachItems(true, tview.FlexColumn,
+			Item{item: attachItems(false, tview.FlexRow,
+				Item{item: attachItems(true, tview.FlexColumn,
+					Item{item: attachItems(false, tview.FlexRow,
+						Item{item: themeDropDown, fixedSize: 0, proportion: 1, focus: true},
+						Item{item: transparentDropDown, fixedSize: 0, proportion: 1, focus: false},
+						Item{item: hideBelowDropDown, fixedSize: 0, proportion: 1, focus: false}),
+						fixedSize: 0, proportion: 1, focus: true}),
+					fixedSize: 3, proportion: 1, focus: true},
+				Item{item: attachItems(false, tview.FlexColumn,
+					Item{item: srcBorderDropDown, fixedSize: 0, proportion: 1, focus: false},
+					Item{item: dstBorderDropDown, fixedSize: 0, proportion: 1, focus: false}),
+					fixedSize: 0, proportion: 1, focus: false}),
+				fixedSize: 2 * langStrMaxLength, proportion: 1, focus: true}),
 			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	keyMapPopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
-		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-			AddItem(nil, 0, 1, false).
-			AddItem(keyMapMenu, 2*langStrMaxLength, 1, true).
-			AddItem(nil, 0, 1, false),
+		AddItem(attachItems(true, tview.FlexColumn,
+			Item{item: keyMapMenu, fixedSize: 2 * langStrMaxLength, proportion: 1, focus: true}),
 			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
