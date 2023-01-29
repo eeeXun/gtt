@@ -48,9 +48,9 @@ var (
 	translateWindow      = tview.NewFlex()
 	translateAboveWidget = tview.NewFlex()
 	translateBelowWidget = tview.NewFlex()
-	langWindow           = tview.NewFlex()
-	styleWindow          = tview.NewFlex()
-	keyMapWindow         = tview.NewFlex()
+	langPopOut           = tview.NewFlex()
+	stylePopOut          = tview.NewFlex()
+	keyMapPopOut         = tview.NewFlex()
 	mainPage             = tview.NewPages()
 )
 
@@ -67,9 +67,9 @@ func main() {
 		uiInit()
 
 		mainPage.AddPage("translateWindow", translateWindow, true, true)
-		mainPage.AddPage("langWindow", langWindow, true, false)
-		mainPage.AddPage("styleWindow", styleWindow, true, false)
-		mainPage.AddPage("keyMapWindow", keyMapWindow, true, false)
+		mainPage.AddPage("langPopOut", langPopOut, true, false)
+		mainPage.AddPage("stylePopOut", stylePopOut, true, false)
+		mainPage.AddPage("keyMapPopOut", keyMapPopOut, true, false)
 
 		if err := app.SetRoot(mainPage, true).
 			EnableMouse(true).Run(); err != nil {

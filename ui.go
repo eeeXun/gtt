@@ -267,7 +267,7 @@ func uiInit() {
 		AddItem(defOutput, 0, 1, false).
 		AddItem(posOutput, 0, 1, false)
 	updateTranslateWindow()
-	langWindow.SetDirection(tview.FlexRow).
+	langPopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
@@ -288,7 +288,7 @@ func uiInit() {
 			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
-	styleWindow.SetDirection(tview.FlexRow).
+	stylePopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
@@ -311,7 +311,7 @@ func uiInit() {
 			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
-	keyMapWindow.SetDirection(tview.FlexRow).
+	keyMapPopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(nil, 0, 1, false).
@@ -347,9 +347,9 @@ func uiInit() {
 			return event
 		})
 	}
-	langWindow.SetInputCapture(popOutWindowHandler)
-	styleWindow.SetInputCapture(popOutWindowHandler)
-	keyMapWindow.SetInputCapture(popOutWindowHandler)
+	langPopOut.SetInputCapture(popOutHandler)
+	stylePopOut.SetInputCapture(popOutHandler)
+	keyMapPopOut.SetInputCapture(popOutHandler)
 	translatorDropDown.SetDoneFunc(langDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
 			translator = translators[text]
@@ -386,25 +386,25 @@ func uiInit() {
 	keyMapMenu.SetDoneFunc(func(key tcell.Key) {
 		switch key {
 		case tcell.KeyEsc:
-			mainPage.HidePage("keyMapWindow")
+			mainPage.HidePage("keyMapPopOut")
 		}
 	})
 	langButton.SetSelectedFunc(func() {
-		mainPage.HidePage("styleWindow")
-		mainPage.HidePage("keyMapWindow")
-		mainPage.ShowPage("langWindow")
+		mainPage.HidePage("stylePopOut")
+		mainPage.HidePage("keyMapPopOut")
+		mainPage.ShowPage("langPopOut")
 		app.SetFocus(langCycle.GetCurrentUI())
 	})
 	styleButton.SetSelectedFunc(func() {
-		mainPage.HidePage("langWindow")
-		mainPage.HidePage("keyMapWindow")
-		mainPage.ShowPage("styleWindow")
+		mainPage.HidePage("langPopOut")
+		mainPage.HidePage("keyMapPopOut")
+		mainPage.ShowPage("stylePopOut")
 		app.SetFocus(styleCycle.GetCurrentUI())
 	})
 	keyMapButton.SetSelectedFunc(func() {
-		mainPage.HidePage("langWindow")
-		mainPage.HidePage("styleWindow")
-		mainPage.ShowPage("keyMapWindow")
+		mainPage.HidePage("langPopOut")
+		mainPage.HidePage("stylePopOut")
+		mainPage.ShowPage("keyMapPopOut")
 	})
 }
 
@@ -435,7 +435,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 
 	switch key {
 	case tcell.KeyEsc:
-		mainPage.ShowPage("langWindow")
+		mainPage.ShowPage("langPopOut")
 		app.SetFocus(langCycle.GetCurrentUI())
 	case tcell.KeyCtrlJ:
 		message := srcInput.GetText()
@@ -519,24 +519,24 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
-func popOutWindowHandler(event *tcell.EventKey) *tcell.EventKey {
+func popOutHandler(event *tcell.EventKey) *tcell.EventKey {
 	ch := event.Rune()
 
 	switch ch {
 	case '1':
-		mainPage.HidePage("styleWindow")
-		mainPage.HidePage("keyMapWindow")
-		mainPage.ShowPage("langWindow")
+		mainPage.HidePage("stylePopOut")
+		mainPage.HidePage("keyMapPopOut")
+		mainPage.ShowPage("langPopOut")
 		app.SetFocus(langCycle.GetCurrentUI())
 	case '2':
-		mainPage.HidePage("langWindow")
-		mainPage.HidePage("keyMapWindow")
-		mainPage.ShowPage("styleWindow")
+		mainPage.HidePage("langPopOut")
+		mainPage.HidePage("keyMapPopOut")
+		mainPage.ShowPage("stylePopOut")
 		app.SetFocus(styleCycle.GetCurrentUI())
 	case '3':
-		mainPage.HidePage("langWindow")
-		mainPage.HidePage("styleWindow")
-		mainPage.ShowPage("keyMapWindow")
+		mainPage.HidePage("langPopOut")
+		mainPage.HidePage("stylePopOut")
+		mainPage.ShowPage("keyMapPopOut")
 	}
 
 	return event
@@ -551,7 +551,7 @@ func langDropDownHandler(key tcell.Key) {
 		langCycle.Decrease()
 		app.SetFocus(langCycle.GetCurrentUI())
 	case tcell.KeyEsc:
-		mainPage.HidePage("langWindow")
+		mainPage.HidePage("langPopOut")
 	}
 }
 
@@ -564,6 +564,6 @@ func styleDropDownHandler(key tcell.Key) {
 		styleCycle.Decrease()
 		app.SetFocus(styleCycle.GetCurrentUI())
 	case tcell.KeyEsc:
-		mainPage.HidePage("styleWindow")
+		mainPage.HidePage("stylePopOut")
 	}
 }
