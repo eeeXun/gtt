@@ -23,7 +23,7 @@ func CopyToClipboard(text string) {
 	switch runtime.GOOS {
 	case "linux":
 		exec.Command("sh", "-c",
-			fmt.Sprintf("echo -n '%s' | xclip -selection clipboard", text)).
+			fmt.Sprintf("if [ $(echo $XDG_SESSION_TYPE) == x11 ]; then copy='xclip -selection clipboard'; else copy='wl-copy'; fi; echo -n '%s' | $copy", text)).
 			Start()
 	case "darwin":
 		exec.Command("sh", "-c",
