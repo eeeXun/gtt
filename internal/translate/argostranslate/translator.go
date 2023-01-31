@@ -8,6 +8,7 @@ import (
 	"gtt/internal/lock"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 const (
@@ -61,7 +62,10 @@ func (t *ArgosTranslate) Translate(message string) (
 		bytes.NewBuffer([]byte(fmt.Sprintf(`{
 			"q": "%s",
 			"source": "%s",
-			"target": "%s" }`, message, langCode[t.srcLang], langCode[t.dstLang]))))
+			"target": "%s" }`,
+			strings.Replace(message, "\n", `\n`, -1),
+			langCode[t.srcLang],
+			langCode[t.dstLang]))))
 	if err != nil {
 		return "", "", "", err
 	}
