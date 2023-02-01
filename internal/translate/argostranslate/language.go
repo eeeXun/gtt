@@ -3,6 +3,7 @@ package argostranslate
 var (
 	lang = []string{
 		"Arabic",
+		"Auto",
 		"Chinese",
 		"English",
 		"French",
@@ -22,6 +23,7 @@ var (
 	}
 	langCode = map[string]string{
 		"Arabic":     "ar",
+		"Auto":       "auto",
 		"Chinese":    "zh",
 		"English":    "en",
 		"French":     "fr",
