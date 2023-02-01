@@ -98,6 +98,7 @@ func updateConfig() {
 			}
 		}
 	}
+	// Destination language is not passed in argument
 	if len(*dstLangArg) == 0 {
 		for t_str, t := range translators {
 			if config.GetString(fmt.Sprintf("destination.language.%s", t_str)) != t.GetDstLang() {
