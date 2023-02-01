@@ -8,7 +8,7 @@ var (
 		"Amharic",
 		"Arabic",
 		"Armenian",
-        	"Auto",
+		"Auto",
 		"Azerbaijani",
 		"Basque",
 		"Belarusian",
