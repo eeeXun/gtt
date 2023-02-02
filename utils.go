@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"runtime"
 )
@@ -22,9 +23,15 @@ func SetTermTitle(title string) {
 func CopyToClipboard(text string) {
 	switch runtime.GOOS {
 	case "linux":
+    	if os.Getenv("XDG_SESSION_TYPE") == "x11" {
 		exec.Command("sh", "-c",
-			fmt.Sprintf("if [ $(echo $XDG_SESSION_TYPE) == x11 ]; then copy='xclip -selection clipboard'; else copy='wl-copy'; fi; echo -n '%s' | $copy", text)).
+			fmt.Sprintf("echo -n '%s' | xclip -selection clipboard", text)).
 			Start()
+    	} else if os.Getenv("XDG_SESSION_TYPE") == "wayland" {
+        exec.Command("sh", "-c",
+			fmt.Sprintf("echo -n '%s' | wl-copy", text)).
+			Start()
+    	}
 	case "darwin":
 		exec.Command("sh", "-c",
 			fmt.Sprintf("echo -n '%s' | pbcopy", text)).
