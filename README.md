@@ -71,9 +71,9 @@ Switch pop out window.
 
 ## Dependencies
 
-`xclip` for Linux/X11 to copy text.
+[`xclip`](https://github.com/astrand/xclip) for Linux/X11 to copy text.
 
-`wl-clipboard` for Linux/Wayland to copy text.
+[`wl-clipboard`](https://github.com/bugaevc/wl-clipboard) for Linux/Wayland to copy text.
 
 `pbcopy` For macOS to copy text.
 
