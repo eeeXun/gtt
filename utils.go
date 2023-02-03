@@ -23,16 +23,16 @@ func SetTermTitle(title string) {
 func CopyToClipboard(text string) {
 	switch runtime.GOOS {
 	case "linux":
-	switch os.Getenv("XDG_SESSION_TYPE") {
-        case "x11":
-        	exec.Command("sh", "-c",
-			fmt.Sprintf("echo -n '%s' | xclip -selection clipboard", text)).
-			Start()
-        case "wayland":
-        	exec.Command("sh", "-c",
-			fmt.Sprintf("echo -n '%s' | wl-copy", text)).
-			Start()
-        }
+		switch os.Getenv("XDG_SESSION_TYPE") {
+		case "x11":
+			exec.Command("sh", "-c",
+				fmt.Sprintf("echo -n '%s' | xclip -selection clipboard", text)).
+				Start()
+		case "wayland":
+			exec.Command("sh", "-c",
+				fmt.Sprintf("echo -n '%s' | wl-copy", text)).
+				Start()
+		}
 	case "darwin":
 		exec.Command("sh", "-c",
 			fmt.Sprintf("echo -n '%s' | pbcopy", text)).
