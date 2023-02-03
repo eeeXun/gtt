@@ -16,10 +16,7 @@ var (
 	dstLangArg *string = flag.String("dst", "", "Set destination language")
 	// Translate
 	translator  translate.Translator
-	translators = map[string]translate.Translator{
-		"ArgosTranslate":  translate.NewArgosTranslate(),
-		"GoogleTranslate": translate.NewGoogleTranslate(),
-	}
+	translators = make(map[string]translate.Translator, len(translate.AllTranslator))
 	// UI
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()

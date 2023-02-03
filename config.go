@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gtt/internal/color"
+	"gtt/internal/translate"
 	"os"
 
 	config "github.com/spf13/viper"
@@ -66,9 +67,12 @@ func configInit() {
 	}
 
 	// setup
-	for t_str, t := range translators {
-		t.SetSrcLang(config.GetString(fmt.Sprintf("source.language.%s", t_str)))
-		t.SetDstLang(config.GetString(fmt.Sprintf("destination.language.%s", t_str)))
+	for _, name := range translate.AllTranslator {
+		translators[name] = translate.NewTranslator(name)
+		translators[name].SetSrcLang(
+			config.GetString(fmt.Sprintf("source.language.%s", name)))
+		translators[name].SetDstLang(
+			config.GetString(fmt.Sprintf("destination.language.%s", name)))
 	}
 	translator = translators[config.GetString("translator")]
 	hideBelow = config.GetBool("hide_below")

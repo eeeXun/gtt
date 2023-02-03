@@ -32,16 +32,21 @@ type Translator interface {
 	PlayTTS(lang string, message string) error
 }
 
-func NewArgosTranslate() *argostranslate.ArgosTranslate {
-	return &argostranslate.ArgosTranslate{
-		EngineName: "ArgosTranslate",
-		SoundLock:  lock.NewLock(),
-	}
-}
+func NewTranslator(name string) Translator {
+	var translator Translator
 
-func NewGoogleTranslate() *googletranslate.GoogleTranslate {
-	return &googletranslate.GoogleTranslate{
-		EngineName: "GoogleTranslate",
-		SoundLock:  lock.NewLock(),
+	switch name {
+	case "ArgosTranslate":
+		translator = &argostranslate.ArgosTranslate{
+			EngineName: "ArgosTranslate",
+			SoundLock:  lock.NewLock(),
+		}
+	case "GoogleTranslate":
+		translator = &googletranslate.GoogleTranslate{
+			EngineName: "GoogleTranslate",
+			SoundLock:  lock.NewLock(),
+		}
 	}
+
+	return translator
 }
