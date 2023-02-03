@@ -25,11 +25,11 @@ func CopyToClipboard(text string) {
 	case "linux":
 	switch os.Getenv("XDG_SESSION_TYPE") {
         case "x11":
-        exec.Command("sh", "-c",
+        	exec.Command("sh", "-c",
 			fmt.Sprintf("echo -n '%s' | xclip -selection clipboard", text)).
 			Start()
         case "wayland":
-        exec.Command("sh", "-c",
+        	exec.Command("sh", "-c",
 			fmt.Sprintf("echo -n '%s' | wl-copy", text)).
 			Start()
         }
