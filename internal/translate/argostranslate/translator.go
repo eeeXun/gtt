@@ -1,14 +1,13 @@
 package argostranslate
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"gtt/internal/lock"
 	"io/ioutil"
 	"net/http"
-	"strings"
+	"net/url"
 )
 
 const (
@@ -57,15 +56,12 @@ func (t *ArgosTranslate) Translate(message string) (
 	err error) {
 	var data interface{}
 
-	res, err := http.Post(textURL,
-		"application/json",
-		bytes.NewBuffer([]byte(fmt.Sprintf(`{
-			"q": "%s",
-			"source": "%s",
-			"target": "%s" }`,
-			strings.Replace(message, "\n", `\n`, -1),
-			langCode[t.srcLang],
-			langCode[t.dstLang]))))
+	res, err := http.PostForm(textURL,
+		url.Values{
+			"q":      {message},
+			"source": {langCode[t.srcLang]},
+			"target": {langCode[t.dstLang]},
+		})
 	if err != nil {
 		return "", "", "", err
 	}
