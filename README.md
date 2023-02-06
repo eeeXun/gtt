@@ -1,6 +1,8 @@
 # GTT
 
-Support: `ArgosTranslate`, `GoogleTranslate`
+Support:
+[`ArgosTranslate`](https://translate.argosopentech.com/),
+[`GoogleTranslate`](https://translate.google.com/)
 
 ## ScreenShot
 
