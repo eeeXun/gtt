@@ -26,7 +26,7 @@ var (
 	translatorDropDown  = tview.NewDropDown()
 	srcLangDropDown     = tview.NewDropDown()
 	dstLangDropDown     = tview.NewDropDown()
-	langCycle           = ui.NewUICycle(translatorDropDown, srcLangDropDown, dstLangDropDown)
+	langCycle           = ui.NewUICycle(srcLangDropDown, dstLangDropDown, translatorDropDown)
 	themeDropDown       = tview.NewDropDown()
 	transparentDropDown = tview.NewDropDown()
 	hideBelowDropDown   = tview.NewDropDown()

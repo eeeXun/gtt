@@ -173,6 +173,12 @@ func updateNonConfigColor() {
 		SetTitleColor(style.HighLightColor())
 }
 
+func updateAllColor() {
+	updateBackgroundColor()
+	updateBorderColor()
+	updateNonConfigColor()
+}
+
 // SetSelectedFunc of DropDown need to update when options change
 func updateLangDropDown() {
 	srcLangDropDown.SetOptions(translator.GetAllLang(),
@@ -187,12 +193,6 @@ func updateLangDropDown() {
 			dstOutput.SetTitle(text)
 			dstLangDropDown.SetTitle(text)
 		})
-}
-
-func updateAllColor() {
-	updateBackgroundColor()
-	updateBorderColor()
-	updateNonConfigColor()
 }
 
 // Update language title and option
@@ -295,13 +295,13 @@ func uiInit() {
 			Item{item: attachItems(false, tview.FlexRow,
 				Item{item: attachItems(true, tview.FlexColumn,
 					Item{item: attachItems(false, tview.FlexRow,
-						Item{item: translatorDropDown, fixedSize: 0, proportion: 1, focus: true}),
-						fixedSize: 0, proportion: 2, focus: true}),
-					fixedSize: 1, proportion: 1, focus: true},
+						Item{item: translatorDropDown, fixedSize: 0, proportion: 1, focus: false}),
+						fixedSize: 0, proportion: 2, focus: false}),
+					fixedSize: 1, proportion: 1, focus: false},
 				Item{item: attachItems(false, tview.FlexColumn,
-					Item{item: srcLangDropDown, fixedSize: 0, proportion: 1, focus: false},
+					Item{item: srcLangDropDown, fixedSize: 0, proportion: 1, focus: true},
 					Item{item: dstLangDropDown, fixedSize: 0, proportion: 1, focus: false}),
-					fixedSize: 0, proportion: 1, focus: false}),
+					fixedSize: 0, proportion: 1, focus: true}),
 				fixedSize: 2 * langStrMaxLength, proportion: 1, focus: true}),
 			popOutWindowHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
