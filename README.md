@@ -10,8 +10,22 @@ Support:
 
 ## Install
 
+### From source
+
 ```
 go get && go build
+```
+
+### Arch Linux (AUR)
+
+```
+yay -S gtt-bin
+```
+
+### Run on Docker
+
+```
+docker run -it eeexun/gtt
 ```
 
 ## Language in argument
