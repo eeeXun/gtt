@@ -10,16 +10,20 @@ Support:
 
 ## Install
 
-### From source
-
-```
-go get && go build
-```
-
 ### Arch Linux (AUR)
 
 ```
 yay -S gtt-bin
+```
+
+### Prebuild
+
+Binary file is available in [Release Page](https://github.com/eeeXun/GTT/releases) for Linux and macOS on x86_64.
+
+### From source
+
+```
+go get && go build
 ```
 
 ### Run on Docker
