@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"gtt/internal/lock"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+
+	"github.com/eeeXun/gtt/internal/lock"
 )
 
 const (

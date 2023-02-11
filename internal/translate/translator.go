@@ -1,9 +1,9 @@
 package translate
 
 import (
-	"gtt/internal/lock"
-	"gtt/internal/translate/argostranslate"
-	"gtt/internal/translate/googletranslate"
+	"github.com/eeeXun/gtt/internal/lock"
+	"github.com/eeeXun/gtt/internal/translate/argostranslate"
+	"github.com/eeeXun/gtt/internal/translate/googletranslate"
 )
 
 var (

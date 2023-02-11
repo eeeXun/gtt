@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"gtt/internal/color"
-	"gtt/internal/translate"
 	"strconv"
 
+	"github.com/eeeXun/gtt/internal/color"
+	"github.com/eeeXun/gtt/internal/translate"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )

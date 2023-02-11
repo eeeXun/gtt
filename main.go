@@ -2,9 +2,9 @@ package main
 
 import (
 	"flag"
-	"gtt/internal/translate"
-	"gtt/internal/ui"
 
+	"github.com/eeeXun/gtt/internal/translate"
+	"github.com/eeeXun/gtt/internal/ui"
 	"github.com/rivo/tview"
 )
 
@@ -59,7 +59,7 @@ func main() {
 	case *showVersion:
 		print(version, "\n")
 	default:
-		SetTermTitle("GTT")
+		SetTermTitle("gtt")
 		configInit()
 		uiInit()
 

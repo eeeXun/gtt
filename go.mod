@@ -1,4 +1,4 @@
-module gtt
+module github.com/eeeXun/gtt
 
 go 1.19
 

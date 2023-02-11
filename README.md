@@ -1,4 +1,6 @@
-# GTT
+# gtt
+
+Google Translate TUI (Originally)
 
 Support:
 [`ArgosTranslate`](https://translate.argosopentech.com/),
@@ -18,12 +20,12 @@ yay -S gtt-bin
 
 ### Prebuild
 
-Binary file is available in [Release Page](https://github.com/eeeXun/GTT/releases) for Linux and macOS on x86_64.
+Binary file is available in [Release Page](https://github.com/eeeXun/gtt/releases) for Linux and macOS on x86_64.
 
 ### From source
 
 ```
-go get && go build
+go install github.com/eeeXun/gtt@latest
 ```
 
 ### Run on Docker
