@@ -1,0 +1,34 @@
+name: aur
+
+on:
+  workflow_run:
+    workflows: ["release"]
+    types:
+      - completed
+
+jobs:
+  aur:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set env VERSION
+        run: |
+          git fetch --tags
+          echo "VERSION=$(git describe --tags)" >> $GITHUB_ENV
+
+      - name: Replace PKGVER, SHA256SUMS_X86_64 in PKGBUILD
+        run: |
+          sed -i "s/PKGVER/$(echo ${{ env.VERSION }} | cut -c2-)/g" build/PKGBUILD
+          wget https://github.com/eeeXun/gtt/releases/download/${{ env.VERSION }}/gtt-linux-amd64.tar.gz
+          sed -i "s/SHA256SUMS_X86_64/$(sha256sum gtt-linux-amd64.tar.gz | awk '{print $1}')/g" build/PKGBUILD
+
+      - name: Publish to the AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
+        with:
+          pkgname: gtt-bin
+          pkgbuild: build/PKGBUILD
+          commit_message: Update to ${{ env.VERSION }}
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}

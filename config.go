@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"gtt/internal/color"
-	"gtt/internal/translate"
 	"os"
 
+	"github.com/eeeXun/gtt/internal/color"
+	"github.com/eeeXun/gtt/internal/translate"
 	config "github.com/spf13/viper"
 )
 

@@ -2,9 +2,9 @@ package main
 
 import (
 	"flag"
-	"gtt/internal/translate"
-	"gtt/internal/ui"
 
+	"github.com/eeeXun/gtt/internal/translate"
+	"github.com/eeeXun/gtt/internal/ui"
 	"github.com/rivo/tview"
 )
 
@@ -26,7 +26,7 @@ var (
 	translatorDropDown  = tview.NewDropDown()
 	srcLangDropDown     = tview.NewDropDown()
 	dstLangDropDown     = tview.NewDropDown()
-	langCycle           = ui.NewUICycle(translatorDropDown, srcLangDropDown, dstLangDropDown)
+	langCycle           = ui.NewUICycle(srcLangDropDown, dstLangDropDown, translatorDropDown)
 	themeDropDown       = tview.NewDropDown()
 	transparentDropDown = tview.NewDropDown()
 	hideBelowDropDown   = tview.NewDropDown()
@@ -59,7 +59,7 @@ func main() {
 	case *showVersion:
 		print(version, "\n")
 	default:
-		SetTermTitle("GTT")
+		SetTermTitle("gtt")
 		configInit()
 		uiInit()
 

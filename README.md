@@ -1,4 +1,6 @@
-# GTT
+# gtt
+
+Google Translate TUI (Originally)
 
 Support:
 [`ApertiumTranslate`](https://www.apertium.org/),
@@ -11,8 +13,26 @@ Support:
 
 ## Install
 
+### Arch Linux (AUR)
+
 ```
-go get && go build
+yay -S gtt-bin
+```
+
+### Prebuild
+
+Binary file is available in [Release Page](https://github.com/eeeXun/gtt/releases) for Linux and macOS on x86_64.
+
+### From source
+
+```
+go install github.com/eeeXun/gtt@latest
+```
+
+### Run on Docker
+
+```
+docker run -it eeexun/gtt
 ```
 
 ## Language in argument
