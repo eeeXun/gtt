@@ -20,16 +20,12 @@ type Translator interface {
 	SetSrcLang(srcLang string)
 	SetDstLang(dstLang string)
 	SwapLang()
-	Translate(message string) (
-		translation string,
-		definition string,
-		partOfSpeech string,
-		err error)
+	Translate(message string) (translation, definition, partOfSpeech string, err error)
 	// text to speech
 	LockAvailable() bool
 	LockAcquire()
 	StopTTS()
-	PlayTTS(lang string, message string) error
+	PlayTTS(lang, message string) error
 }
 
 func NewTranslator(name string) Translator {

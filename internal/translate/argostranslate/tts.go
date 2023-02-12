@@ -16,7 +16,7 @@ func (t *ArgosTranslate) StopTTS() {
 	t.SoundLock.Stop = true
 }
 
-func (t *ArgosTranslate) PlayTTS(lang string, message string) error {
+func (t *ArgosTranslate) PlayTTS(lang, message string) error {
 	t.SoundLock.Release()
 	return errors.New(t.EngineName + " does not support text to speech")
 }

@@ -26,7 +26,7 @@ func (t *GoogleTranslate) StopTTS() {
 	t.SoundLock.Stop = true
 }
 
-func (t *GoogleTranslate) PlayTTS(lang string, message string) error {
+func (t *GoogleTranslate) PlayTTS(lang, message string) error {
 	urlStr := fmt.Sprintf(
 		ttsURL,
 		url.QueryEscape(message),

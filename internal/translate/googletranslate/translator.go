@@ -50,11 +50,7 @@ func (t *GoogleTranslate) SwapLang() {
 	t.srcLang, t.dstLang = t.dstLang, t.srcLang
 }
 
-func (t *GoogleTranslate) Translate(message string) (
-	translation string,
-	definition string,
-	partOfSpeech string,
-	err error) {
+func (t *GoogleTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
 	var data []interface{}
 
 	urlStr := fmt.Sprintf(

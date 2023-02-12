@@ -50,11 +50,7 @@ func (t *ArgosTranslate) SwapLang() {
 	t.srcLang, t.dstLang = t.dstLang, t.srcLang
 }
 
-func (t *ArgosTranslate) Translate(message string) (
-	translation string,
-	definition string,
-	partOfSpeech string,
-	err error) {
+func (t *ArgosTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
 	var data interface{}
 
 	res, err := http.PostForm(textURL,
