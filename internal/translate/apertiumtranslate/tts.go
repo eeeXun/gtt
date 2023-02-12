@@ -16,7 +16,7 @@ func (t *ApertiumTranslate) StopTTS() {
 	t.SoundLock.Stop = true
 }
 
-func (t *ApertiumTranslate) PlayTTS(lang string, message string) error {
+func (t *ApertiumTranslate) PlayTTS(lang, message string) error {
 	t.SoundLock.Release()
 	return errors.New(t.EngineName + " does not support text to speech")
 }
