@@ -51,7 +51,7 @@ func (t *ApertiumTranslate) SwapLang() {
 }
 
 func (t *ApertiumTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
-	var data interface{}
+	var data map[string]interface{}
 
 	urlStr := fmt.Sprintf(
 		textURL,
@@ -71,11 +71,11 @@ func (t *ApertiumTranslate) Translate(message string) (translation, definition, 
 		return "", "", "", err
 	}
 
-	if len(data.(map[string]interface{})) > 0 {
+	if len(data) > 0 {
 		switch res.StatusCode {
 		case 200:
 			translation += fmt.Sprintf("%v",
-				data.(map[string]interface{})["responseData"].(map[string]interface{})["translatedText"])
+				data["responseData"].(map[string]interface{})["translatedText"])
 		default:
 			return "", "", "", errors.New(
 				fmt.Sprintf("%s does not support translate from %s to %s.\nSee available pair on %s",
