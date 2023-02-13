@@ -30,6 +30,8 @@ func configInit() {
 			"destination.language.argostranslate":    "English",
 			"source.language.googletranslate":        "English",
 			"destination.language.googletranslate":   "English",
+			"source.language.reversotranslate":       "English",
+			"destination.language.reversotranslate":  "English",
 			"hide_below":                             false,
 			"translator":                             "ArgosTranslate",
 		}
