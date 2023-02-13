@@ -20,16 +20,18 @@ func configInit() {
 	var (
 		defaultConfigPath string
 		defaultConfig     = map[string]interface{}{
-			"transparent":                          false,
-			"theme":                                "Gruvbox",
-			"source.borderColor":                   "red",
-			"destination.borderColor":              "blue",
-			"source.language.argostranslate":       "English",
-			"destination.language.argostranslate":  "English",
-			"source.language.googletranslate":      "English",
-			"destination.language.googletranslate": "English",
-			"hide_below":                           false,
-			"translator":                           "ArgosTranslate",
+			"transparent":                            false,
+			"theme":                                  "Gruvbox",
+			"source.borderColor":                     "red",
+			"destination.borderColor":                "blue",
+			"source.language.apertiumtranslate":      "English",
+			"destination.language.apertiumtranslate": "English",
+			"source.language.argostranslate":         "English",
+			"destination.language.argostranslate":    "English",
+			"source.language.googletranslate":        "English",
+			"destination.language.googletranslate":   "English",
+			"hide_below":                             false,
+			"translator":                             "ArgosTranslate",
 		}
 	)
 

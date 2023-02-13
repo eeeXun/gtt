@@ -3,6 +3,7 @@
 Google Translate TUI (Originally)
 
 Support:
+[`ApertiumTranslate`](https://www.apertium.org/),
 [`ArgosTranslate`](https://translate.argosopentech.com/),
 [`GoogleTranslate`](https://translate.google.com/)
 
@@ -42,7 +43,10 @@ You can pass `-src` and `-dst` in argument to set source and destination languag
 gtt -src "English" -dst "Chinese (Traditional)"
 ```
 
-See language on [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`, [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
+See language on
+[Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`,
+[argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`,
+[Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`.
 
 ## Key Map
 
