@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/eeeXun/gtt/internal/color"
+	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
 	config "github.com/spf13/viper"
 )
 
 var (
 	// settings
-	style     = color.NewStyle()
+	uiStyle   = style.NewStyle()
 	hideBelow bool
 )
 
@@ -78,9 +78,9 @@ func configInit() {
 	}
 	translator = translators[config.GetString("translator")]
 	hideBelow = config.GetBool("hide_below")
-	style.Theme = config.GetString("theme")
-	style.Transparent = config.GetBool("transparent")
-	style.SetSrcBorderColor(config.GetString("source.borderColor")).
+	uiStyle.Theme = config.GetString("theme")
+	uiStyle.Transparent = config.GetBool("transparent")
+	uiStyle.SetSrcBorderColor(config.GetString("source.borderColor")).
 		SetDstBorderColor(config.GetString("destination.borderColor"))
 	// set argument language
 	if len(*srcLangArg) > 0 {
@@ -121,21 +121,21 @@ func updateConfig() {
 		changed = true
 		config.Set("hide_below", hideBelow)
 	}
-	if config.GetString("theme") != style.Theme {
+	if config.GetString("theme") != uiStyle.Theme {
 		changed = true
-		config.Set("theme", style.Theme)
+		config.Set("theme", uiStyle.Theme)
 	}
-	if config.GetBool("transparent") != style.Transparent {
+	if config.GetBool("transparent") != uiStyle.Transparent {
 		changed = true
-		config.Set("transparent", style.Transparent)
+		config.Set("transparent", uiStyle.Transparent)
 	}
-	if config.GetString("source.borderColor") != style.SrcBorderStr() {
+	if config.GetString("source.borderColor") != uiStyle.SrcBorderStr() {
 		changed = true
-		config.Set("source.borderColor", style.SrcBorderStr())
+		config.Set("source.borderColor", uiStyle.SrcBorderStr())
 	}
-	if config.GetString("destination.borderColor") != style.DstBorderStr() {
+	if config.GetString("destination.borderColor") != uiStyle.DstBorderStr() {
 		changed = true
-		config.Set("destination.borderColor", style.DstBorderStr())
+		config.Set("destination.borderColor", uiStyle.DstBorderStr())
 	}
 
 	if changed {

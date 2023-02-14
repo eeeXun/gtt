@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/eeeXun/gtt/internal/color"
+	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
@@ -66,18 +66,18 @@ func updateTranslateWindow() {
 func updateBackgroundColor() {
 	// input/output
 	srcInput.SetTextStyle(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor())).
-		SetBackgroundColor(style.BackgroundColor())
-	dstOutput.SetBackgroundColor(style.BackgroundColor())
+		Background(uiStyle.BackgroundColor()).
+		Foreground(uiStyle.ForegroundColor())).
+		SetBackgroundColor(uiStyle.BackgroundColor())
+	dstOutput.SetBackgroundColor(uiStyle.BackgroundColor())
 	defOutput.SetTextStyle(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor())).
-		SetBackgroundColor(style.BackgroundColor())
+		Background(uiStyle.BackgroundColor()).
+		Foreground(uiStyle.ForegroundColor())).
+		SetBackgroundColor(uiStyle.BackgroundColor())
 	posOutput.SetTextStyle(tcell.StyleDefault.
-		Background(style.BackgroundColor()).
-		Foreground(style.ForegroundColor())).
-		SetBackgroundColor(style.BackgroundColor())
+		Background(uiStyle.BackgroundColor()).
+		Foreground(uiStyle.ForegroundColor())).
+		SetBackgroundColor(uiStyle.BackgroundColor())
 
 	// dropdown
 	for _, dropdown := range []*tview.DropDown{
@@ -90,58 +90,58 @@ func updateBackgroundColor() {
 		srcBorderDropDown,
 		dstBorderDropDown} {
 		dropdown.SetListStyles(tcell.StyleDefault.
-			Background(style.BackgroundColor()).
-			Foreground(style.ForegroundColor()),
+			Background(uiStyle.BackgroundColor()).
+			Foreground(uiStyle.ForegroundColor()),
 			tcell.StyleDefault.
-				Background(style.SelectedColor()).
-				Foreground(style.PrefixColor())).
-			SetBackgroundColor(style.BackgroundColor())
+				Background(uiStyle.SelectedColor()).
+				Foreground(uiStyle.PrefixColor())).
+			SetBackgroundColor(uiStyle.BackgroundColor())
 	}
 
 	// key map
-	keyMapMenu.SetBackgroundColor(style.BackgroundColor())
+	keyMapMenu.SetBackgroundColor(uiStyle.BackgroundColor())
 }
 
 func updateBorderColor() {
 	// input/output
-	srcInput.SetBorderColor(style.SrcBorderColor()).
-		SetTitleColor(style.SrcBorderColor())
-	dstOutput.SetBorderColor(style.DstBorderColor()).
-		SetTitleColor(style.DstBorderColor())
-	defOutput.SetBorderColor(style.SrcBorderColor()).
-		SetTitleColor(style.SrcBorderColor())
-	posOutput.SetBorderColor(style.DstBorderColor()).
-		SetTitleColor(style.DstBorderColor())
+	srcInput.SetBorderColor(uiStyle.SrcBorderColor()).
+		SetTitleColor(uiStyle.SrcBorderColor())
+	dstOutput.SetBorderColor(uiStyle.DstBorderColor()).
+		SetTitleColor(uiStyle.DstBorderColor())
+	defOutput.SetBorderColor(uiStyle.SrcBorderColor()).
+		SetTitleColor(uiStyle.SrcBorderColor())
+	posOutput.SetBorderColor(uiStyle.DstBorderColor()).
+		SetTitleColor(uiStyle.DstBorderColor())
 
 	// dropdown
 	for _, srcDropDown := range []*tview.DropDown{srcLangDropDown, srcBorderDropDown} {
-		srcDropDown.SetBorderColor(style.SrcBorderColor()).
-			SetTitleColor(style.SrcBorderColor())
+		srcDropDown.SetBorderColor(uiStyle.SrcBorderColor()).
+			SetTitleColor(uiStyle.SrcBorderColor())
 	}
 	for _, dstDropDown := range []*tview.DropDown{dstLangDropDown, dstBorderDropDown} {
-		dstDropDown.SetBorderColor(style.DstBorderColor()).
-			SetTitleColor(style.DstBorderColor())
+		dstDropDown.SetBorderColor(uiStyle.DstBorderColor()).
+			SetTitleColor(uiStyle.DstBorderColor())
 	}
 }
 
 func updateNonConfigColor() {
 	// input/output
 	srcInput.SetSelectedStyle(tcell.StyleDefault.
-		Background(style.SelectedColor()).
-		Foreground(style.ForegroundColor()))
-	dstOutput.SetTextColor(style.ForegroundColor())
+		Background(uiStyle.SelectedColor()).
+		Foreground(uiStyle.ForegroundColor()))
+	dstOutput.SetTextColor(uiStyle.ForegroundColor())
 	defOutput.SetSelectedStyle(tcell.StyleDefault.
-		Background(style.SelectedColor()).
-		Foreground(style.ForegroundColor()))
+		Background(uiStyle.SelectedColor()).
+		Foreground(uiStyle.ForegroundColor()))
 	posOutput.SetSelectedStyle(tcell.StyleDefault.
-		Background(style.SelectedColor()).
-		Foreground(style.ForegroundColor()))
+		Background(uiStyle.SelectedColor()).
+		Foreground(uiStyle.ForegroundColor()))
 
 	// dropdown
 	for _, noLabelDropDown := range []*tview.DropDown{srcLangDropDown, dstLangDropDown} {
-		noLabelDropDown.SetFieldBackgroundColor(style.SelectedColor()).
-			SetFieldTextColor(style.ForegroundColor()).
-			SetPrefixTextColor(style.PrefixColor())
+		noLabelDropDown.SetFieldBackgroundColor(uiStyle.SelectedColor()).
+			SetFieldTextColor(uiStyle.ForegroundColor()).
+			SetPrefixTextColor(uiStyle.PrefixColor())
 	}
 	for _, labelDropDown := range []*tview.DropDown{
 		translatorDropDown,
@@ -150,27 +150,27 @@ func updateNonConfigColor() {
 		hideBelowDropDown,
 		srcBorderDropDown,
 		dstBorderDropDown} {
-		labelDropDown.SetLabelColor(style.LabelColor()).
-			SetFieldBackgroundColor(style.SelectedColor()).
-			SetFieldTextColor(style.ForegroundColor()).
-			SetPrefixTextColor(style.PrefixColor())
+		labelDropDown.SetLabelColor(uiStyle.LabelColor()).
+			SetFieldBackgroundColor(uiStyle.SelectedColor()).
+			SetFieldTextColor(uiStyle.ForegroundColor()).
+			SetPrefixTextColor(uiStyle.PrefixColor())
 	}
 
 	// button
 	for _, button := range []*tview.Button{langButton, styleButton, keyMapButton} {
-		button.SetLabelColor(style.ForegroundColor()).
-			SetBackgroundColorActivated(style.PressColor()).
-			SetLabelColorActivated(style.ForegroundColor()).
-			SetBackgroundColor(style.SelectedColor())
+		button.SetLabelColor(uiStyle.ForegroundColor()).
+			SetBackgroundColorActivated(uiStyle.PressColor()).
+			SetLabelColorActivated(uiStyle.ForegroundColor()).
+			SetBackgroundColor(uiStyle.SelectedColor())
 	}
 
 	// key map
-	keyMapMenu.SetTextColor(style.ForegroundColor()).
+	keyMapMenu.SetTextColor(uiStyle.ForegroundColor()).
 		SetText(fmt.Sprintf(keyMapText,
 			fmt.Sprintf("%.6x",
-				style.HighLightColor().TrueColor().Hex()))).
-		SetBorderColor(style.HighLightColor()).
-		SetTitleColor(style.HighLightColor())
+				uiStyle.HighLightColor().TrueColor().Hex()))).
+		SetBorderColor(uiStyle.HighLightColor()).
+		SetTitleColor(uiStyle.HighLightColor())
 }
 
 func updateAllColor() {
@@ -247,8 +247,8 @@ func uiInit() {
 	srcLangDropDown.SetBorder(true)
 	dstLangDropDown.SetBorder(true)
 	themeDropDown.SetLabel("Theme: ").
-		SetOptions(color.AllTheme, nil).
-		SetCurrentOption(IndexOf(style.Theme, color.AllTheme))
+		SetOptions(style.AllTheme, nil).
+		SetCurrentOption(IndexOf(uiStyle.Theme, style.AllTheme))
 	hideBelowDropDown.SetLabel("Hide below: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
@@ -257,27 +257,27 @@ func uiInit() {
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
-			IndexOf(strconv.FormatBool(style.Transparent),
+			IndexOf(strconv.FormatBool(uiStyle.Transparent),
 				[]string{"true", "false"}))
 	srcBorderDropDown.SetLabel("Border Color: ").
-		SetOptions(color.Palette, nil).
+		SetOptions(style.Palette, nil).
 		SetCurrentOption(
-			IndexOf(style.SrcBorderStr(),
-				color.Palette)).
+			IndexOf(uiStyle.SrcBorderStr(),
+				style.Palette)).
 		SetBorder(true).
 		SetTitle("Source")
 	dstBorderDropDown.SetLabel("Border Color: ").
-		SetOptions(color.Palette, nil).
+		SetOptions(style.Palette, nil).
 		SetCurrentOption(
-			IndexOf(style.DstBorderStr(),
-				color.Palette)).
+			IndexOf(uiStyle.DstBorderStr(),
+				style.Palette)).
 		SetBorder(true).
 		SetTitle("Destination")
 
 	// key map
 	keyMapMenu.SetDynamicColors(true).
 		SetText(fmt.Sprintf(keyMapText,
-			fmt.Sprintf("%.6x", style.HighLightColor().TrueColor().Hex()))).
+			fmt.Sprintf("%.6x", uiStyle.HighLightColor().TrueColor().Hex()))).
 		SetBorder(true).
 		SetTitle("Key Map")
 
@@ -372,12 +372,12 @@ func uiInit() {
 	dstLangDropDown.SetDoneFunc(langDropDownHandler)
 	themeDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			style.Theme = text
+			uiStyle.Theme = text
 			updateAllColor()
 		})
 	transparentDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			style.Transparent, _ = strconv.ParseBool(text)
+			uiStyle.Transparent, _ = strconv.ParseBool(text)
 			updateBackgroundColor()
 		})
 	hideBelowDropDown.SetDoneFunc(styleDropDownHandler).
@@ -387,12 +387,12 @@ func uiInit() {
 		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			style.SetSrcBorderColor(text)
+			uiStyle.SetSrcBorderColor(text)
 			updateBorderColor()
 		})
 	dstBorderDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			style.SetDstBorderColor(text)
+			uiStyle.SetDstBorderColor(text)
 			updateBorderColor()
 		})
 	keyMapMenu.SetDoneFunc(func(key tcell.Key) {
@@ -426,10 +426,10 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 	switch key {
 	case tcell.KeyCtrlT:
 		// Toggle transparent
-		style.Transparent = !style.Transparent
+		uiStyle.Transparent = !uiStyle.Transparent
 		updateBackgroundColor()
 		transparentDropDown.SetCurrentOption(
-			IndexOf(strconv.FormatBool(style.Transparent),
+			IndexOf(strconv.FormatBool(uiStyle.Transparent),
 				[]string{"true", "false"}))
 	case tcell.KeyCtrlBackslash:
 		hideBelow = !hideBelow
