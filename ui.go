@@ -54,7 +54,7 @@ type Item struct {
 
 func updateTranslateWindow() {
 	translateWindow.Clear()
-	if hideBelow {
+	if uiStyle.HideBelow {
 		translateWindow.AddItem(translateAboveWidget, 0, 1, true)
 	} else {
 		translateWindow.SetDirection(tview.FlexRow).
@@ -252,7 +252,7 @@ func uiInit() {
 	hideBelowDropDown.SetLabel("Hide below: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
-			IndexOf(strconv.FormatBool(hideBelow),
+			IndexOf(strconv.FormatBool(uiStyle.HideBelow),
 				[]string{"true", "false"}))
 	transparentDropDown.SetLabel("Transparent: ").
 		SetOptions([]string{"true", "false"}, nil).
@@ -382,7 +382,7 @@ func uiInit() {
 		})
 	hideBelowDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
-			hideBelow, _ = strconv.ParseBool(text)
+			uiStyle.HideBelow, _ = strconv.ParseBool(text)
 			updateTranslateWindow()
 		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
@@ -432,10 +432,10 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 			IndexOf(strconv.FormatBool(uiStyle.Transparent),
 				[]string{"true", "false"}))
 	case tcell.KeyCtrlBackslash:
-		hideBelow = !hideBelow
+		uiStyle.HideBelow = !uiStyle.HideBelow
 		updateTranslateWindow()
 		hideBelowDropDown.SetCurrentOption(
-			IndexOf(strconv.FormatBool(hideBelow),
+			IndexOf(strconv.FormatBool(uiStyle.HideBelow),
 				[]string{"true", "false"}))
 	}
 

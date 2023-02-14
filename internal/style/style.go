@@ -5,6 +5,9 @@ import (
 )
 
 type style struct {
+	HideBelow       bool
+	Transparent     bool
+	Theme           string
 	srcBorderColor  string
 	dstBorderColor  string
 	backgroundColor string
@@ -14,8 +17,6 @@ type style struct {
 	labelColor      string
 	pressColor      string
 	highLightColor  string
-	Theme           string
-	Transparent     bool
 }
 
 func NewStyle() *style {

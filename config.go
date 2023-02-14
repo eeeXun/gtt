@@ -4,15 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
 	config "github.com/spf13/viper"
-)
-
-var (
-	// settings
-	uiStyle   = style.NewStyle()
-	hideBelow bool
 )
 
 // Search XDG_CONFIG_HOME or $HOME/.config
@@ -77,8 +70,8 @@ func configInit() {
 			config.GetString(fmt.Sprintf("destination.language.%s", name)))
 	}
 	translator = translators[config.GetString("translator")]
-	hideBelow = config.GetBool("hide_below")
 	uiStyle.Theme = config.GetString("theme")
+	uiStyle.HideBelow = config.GetBool("hide_below")
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.borderColor")).
 		SetDstBorderColor(config.GetString("destination.borderColor"))
@@ -117,9 +110,9 @@ func updateConfig() {
 		changed = true
 		config.Set("translator", translator.GetEngineName())
 	}
-	if config.GetBool("hide_below") != hideBelow {
+	if config.GetBool("hide_below") != uiStyle.HideBelow {
 		changed = true
-		config.Set("hide_below", hideBelow)
+		config.Set("hide_below", uiStyle.HideBelow)
 	}
 	if config.GetString("theme") != uiStyle.Theme {
 		changed = true
