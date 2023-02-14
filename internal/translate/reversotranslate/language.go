@@ -57,4 +57,21 @@ var (
 		"Turkish":              "tur",
 		"Ukrainian":            "ukr",
 	}
+	voiceName = map[string]string{
+		"Arabic":     "Mehdi22k",
+		"Chinese":    "Lulu22k",
+		"Dutch":      "Femke22k",
+		"English":    "Heather22k",
+		"French":     "Alice22k",
+		"German":     "Claudia22k",
+		"Hebrew":     "he-IL-Asaf",
+		"Italian":    "Chiara22k",
+		"Japanese":   "Sakura22k",
+		"Polish":     "Ania22k",
+		"Portuguese": "Celia22k",
+		"Romanian":   "ro-RO-Andrei",
+		"Russian":    "Alyona22k",
+		"Spanish":    "Ines22k",
+		"Turkish":    "Ipek22k",
+	}
 )
