@@ -70,10 +70,11 @@ func (t *ArgosTranslate) Translate(message string) (translation, definition, par
 		return "", "", "", err
 	}
 
-	if len(data) > 0 {
-		translation += fmt.Sprintf("%v", data["translatedText"])
-
-		return translation, definition, partOfSpeech, nil
+	if len(data) <= 0 {
+		return "", "", "", errors.New("Translation not found")
 	}
-	return "", "", "", errors.New("Translation not found")
+
+	translation += fmt.Sprintf("%v", data["translatedText"])
+
+	return translation, definition, partOfSpeech, nil
 }

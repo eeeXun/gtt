@@ -71,22 +71,23 @@ func (t *ApertiumTranslate) Translate(message string) (translation, definition, 
 		return "", "", "", err
 	}
 
-	if len(data) > 0 {
-		switch res.StatusCode {
-		case 200:
-			translation += fmt.Sprintf("%v",
-				data["responseData"].(map[string]interface{})["translatedText"])
-		default:
-			return "", "", "", errors.New(
-				fmt.Sprintf("%s does not support translate from %s to %s.\nSee available pair on %s",
-					t.EngineName,
-					t.srcLang,
-					t.dstLang,
-					"https://www.apertium.org/",
-				))
-		}
-
-		return translation, definition, partOfSpeech, nil
+	if len(data) <= 0 {
+		return "", "", "", errors.New("Translation not found")
 	}
-	return "", "", "", errors.New("Translation not found")
+
+	switch res.StatusCode {
+	case 200:
+		translation += fmt.Sprintf("%v",
+			data["responseData"].(map[string]interface{})["translatedText"])
+	default:
+		return "", "", "", errors.New(
+			fmt.Sprintf("%s does not support translate from %s to %s.\nSee available pair on %s",
+				t.EngineName,
+				t.srcLang,
+				t.dstLang,
+				"https://www.apertium.org/",
+			))
+	}
+
+	return translation, definition, partOfSpeech, nil
 }
