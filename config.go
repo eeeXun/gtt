@@ -13,17 +13,17 @@ func configInit() {
 	var (
 		defaultConfigPath string
 		defaultConfig     = map[string]interface{}{
+			"hide_below":                             false,
 			"transparent":                            false,
 			"theme":                                  "Gruvbox",
-			"source.borderColor":                     "red",
-			"destination.borderColor":                "blue",
+			"source.border_color":                    "red",
+			"destination.border_color":               "blue",
 			"source.language.apertiumtranslate":      "English",
 			"destination.language.apertiumtranslate": "English",
 			"source.language.argostranslate":         "English",
 			"destination.language.argostranslate":    "English",
 			"source.language.googletranslate":        "English",
 			"destination.language.googletranslate":   "English",
-			"hide_below":                             false,
 			"translator":                             "ArgosTranslate",
 		}
 	)
@@ -73,8 +73,8 @@ func configInit() {
 	uiStyle.Theme = config.GetString("theme")
 	uiStyle.HideBelow = config.GetBool("hide_below")
 	uiStyle.Transparent = config.GetBool("transparent")
-	uiStyle.SetSrcBorderColor(config.GetString("source.borderColor")).
-		SetDstBorderColor(config.GetString("destination.borderColor"))
+	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
+		SetDstBorderColor(config.GetString("destination.border_color"))
 	// set argument language
 	if len(*srcLangArg) > 0 {
 		translator.SetSrcLang(*srcLangArg)
@@ -122,13 +122,13 @@ func updateConfig() {
 		changed = true
 		config.Set("transparent", uiStyle.Transparent)
 	}
-	if config.GetString("source.borderColor") != uiStyle.SrcBorderStr() {
+	if config.GetString("source.border_color") != uiStyle.SrcBorderStr() {
 		changed = true
-		config.Set("source.borderColor", uiStyle.SrcBorderStr())
+		config.Set("source.border_color", uiStyle.SrcBorderStr())
 	}
-	if config.GetString("destination.borderColor") != uiStyle.DstBorderStr() {
+	if config.GetString("destination.border_color") != uiStyle.DstBorderStr() {
 		changed = true
-		config.Set("destination.borderColor", uiStyle.DstBorderStr())
+		config.Set("destination.border_color", uiStyle.DstBorderStr())
 	}
 
 	if changed {
