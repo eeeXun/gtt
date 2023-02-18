@@ -87,8 +87,9 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 		return "", "", "", errors.New("Translation not found")
 	}
 
+	// translation
 	translation += fmt.Sprintf("%v", data["translation"].([]interface{})[0])
-
+	// definition and part of speech
 	for _, results := range data["contextResults"].(map[string]interface{})["results"].([]interface{}) {
 		results := results.(map[string]interface{})
 		// definition
