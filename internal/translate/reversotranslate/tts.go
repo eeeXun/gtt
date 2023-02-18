@@ -1,11 +1,23 @@
 // echo 'nice' | base64
-// curl -A "Mozilla/4.0" \
-// 	"https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=Heather22k?voiceSpeed=80&inputText=bmljZQ==" \
-// 	--output a.mp
+//
+//	curl -A "Mozilla/4.0" \
+//		"https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=Heather22k?voiceSpeed=80&inputText=bmljZQ==" \
+//		--output a.mp
 package reversotranslate
 
+import (
+	"encoding/base64"
+	"errors"
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/hajimehoshi/go-mp3"
+	"github.com/hajimehoshi/oto/v2"
+)
+
 const (
-	ttsURL = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
+	ttsURL = "https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=%s?voiceSpeed=80&inputText=%s"
 )
 
 func (t *ReversoTranslate) LockAvailable() bool {
@@ -21,42 +33,48 @@ func (t *ReversoTranslate) StopTTS() {
 }
 
 func (t *ReversoTranslate) PlayTTS(lang, message string) error {
-	// urlStr := fmt.Sprintf(
-	// 	ttsURL,
-	// 	url.QueryEscape(message),
-	// 	langCode[lang],
-	// )
-	// res, err := http.Get(urlStr)
-	// if err != nil {
-	// 	t.SoundLock.Release()
-	// 	return err
-	// }
-	// decoder, err := mp3.NewDecoder(res.Body)
-	// if err != nil {
-	// 	t.SoundLock.Release()
-	// 	return err
-	// }
-	// otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
-	// if err != nil {
-	// 	t.SoundLock.Release()
-	// 	return err
-	// }
-	// <-readyChan
-	// player := otoCtx.NewPlayer(decoder)
-	// player.Play()
-	// for player.IsPlaying() {
-	// 	if t.SoundLock.Stop {
-	// 		t.SoundLock.Release()
-	// 		return nil
-	// 	} else {
-	// 		time.Sleep(time.Millisecond)
-	// 	}
-	// }
-	// if err = player.Close(); err != nil {
-	// 	t.SoundLock.Release()
-	// 	return err
-	// }
-	//
+	name, ok := voiceName[lang]
+	if !ok {
+		return errors.New(t.EngineName + " does not support text to speech of " + lang)
+	}
+	urlStr := fmt.Sprintf(
+		ttsURL,
+		name,
+		base64.StdEncoding.EncodeToString([]byte(message)),
+	)
+	req, _ := http.NewRequest("GET", urlStr, nil)
+	req.Header.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.SoundLock.Release()
+		return err
+	}
+	decoder, err := mp3.NewDecoder(res.Body)
+	if err != nil {
+		t.SoundLock.Release()
+		return err
+	}
+	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
+	if err != nil {
+		t.SoundLock.Release()
+		return err
+	}
+	<-readyChan
+	player := otoCtx.NewPlayer(decoder)
+	player.Play()
+	for player.IsPlaying() {
+		if t.SoundLock.Stop {
+			t.SoundLock.Release()
+			return nil
+		} else {
+			time.Sleep(time.Millisecond)
+		}
+	}
+	if err = player.Close(); err != nil {
+		t.SoundLock.Release()
+		return err
+	}
+
 	t.SoundLock.Release()
 	return nil
 }
