@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 
 	"github.com/eeeXun/gtt/internal/lock"
 )
@@ -87,6 +88,25 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 	}
 
 	translation += fmt.Sprintf("%v", data["translation"].([]interface{})[0])
+
+	for _, results := range data["contextResults"].(map[string]interface{})["results"].([]interface{}) {
+		results := results.(map[string]interface{})
+		// definition
+		srcExample := results["sourceExamples"].([]interface{})
+		dstExample := results["targetExamples"].([]interface{})
+		if len(srcExample) > 0 && len(dstExample) > 0 {
+			for i := 0; i < len(srcExample) && i < len(dstExample); i++ {
+				definition += fmt.Sprintf("- %v\n\t\"%v\"\n", srcExample[i], dstExample[i])
+			}
+		}
+		// part of speech
+		if results["partOfSpeech"] == nil {
+			partOfSpeech += fmt.Sprintf("%v\n", results["translation"])
+		} else {
+			partOfSpeech += fmt.Sprintf("%v [%v]\n", results["translation"], results["partOfSpeech"])
+		}
+	}
+	definition = regexp.MustCompile("<(|/)em>").ReplaceAllString(definition, "")
 
 	return translation, definition, partOfSpeech, nil
 }

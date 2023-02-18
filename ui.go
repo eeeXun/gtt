@@ -237,7 +237,7 @@ func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
 	dstOutput.SetBorder(true)
-	defOutput.SetBorder(true).SetTitle("Definition")
+	defOutput.SetBorder(true).SetTitle("Definition/Example")
 	posOutput.SetBorder(true).SetTitle("Part of speech")
 
 	// dropdown
