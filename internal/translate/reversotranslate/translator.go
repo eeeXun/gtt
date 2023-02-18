@@ -82,10 +82,11 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 		return "", "", "", err
 	}
 
-	if len(data) > 0 {
-		translation += fmt.Sprintf("%v", data)
-
-		return translation, definition, partOfSpeech, nil
+	if len(data) <= 0 {
+		return "", "", "", errors.New("Translation not found")
 	}
-	return "", "", "", errors.New("Translation not found")
+
+	translation += fmt.Sprintf("%v", data["translation"].([]interface{})[0])
+
+	return translation, definition, partOfSpeech, nil
 }

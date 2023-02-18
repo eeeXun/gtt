@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 
+	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
 	"github.com/eeeXun/gtt/internal/ui"
 	"github.com/rivo/tview"
@@ -17,6 +18,8 @@ var (
 	// Translate
 	translator  translate.Translator
 	translators = make(map[string]translate.Translator, len(translate.AllTranslator))
+	// UI style
+	uiStyle = style.NewStyle()
 	// UI
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()

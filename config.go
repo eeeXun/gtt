@@ -4,15 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/eeeXun/gtt/internal/color"
 	"github.com/eeeXun/gtt/internal/translate"
 	config "github.com/spf13/viper"
-)
-
-var (
-	// settings
-	style     = color.NewStyle()
-	hideBelow bool
 )
 
 // Search XDG_CONFIG_HOME or $HOME/.config
@@ -20,10 +13,11 @@ func configInit() {
 	var (
 		defaultConfigPath string
 		defaultConfig     = map[string]interface{}{
+			"hide_below":                             false,
 			"transparent":                            false,
 			"theme":                                  "Gruvbox",
-			"source.borderColor":                     "red",
-			"destination.borderColor":                "blue",
+			"source.border_color":                    "red",
+			"destination.border_color":               "blue",
 			"source.language.apertiumtranslate":      "English",
 			"destination.language.apertiumtranslate": "English",
 			"source.language.argostranslate":         "English",
@@ -32,7 +26,6 @@ func configInit() {
 			"destination.language.googletranslate":   "English",
 			"source.language.reversotranslate":       "English",
 			"destination.language.reversotranslate":  "English",
-			"hide_below":                             false,
 			"translator":                             "ArgosTranslate",
 		}
 	)
@@ -79,11 +72,11 @@ func configInit() {
 			config.GetString(fmt.Sprintf("destination.language.%s", name)))
 	}
 	translator = translators[config.GetString("translator")]
-	hideBelow = config.GetBool("hide_below")
-	style.Theme = config.GetString("theme")
-	style.Transparent = config.GetBool("transparent")
-	style.SetSrcBorderColor(config.GetString("source.borderColor")).
-		SetDstBorderColor(config.GetString("destination.borderColor"))
+	uiStyle.Theme = config.GetString("theme")
+	uiStyle.HideBelow = config.GetBool("hide_below")
+	uiStyle.Transparent = config.GetBool("transparent")
+	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
+		SetDstBorderColor(config.GetString("destination.border_color"))
 	// set argument language
 	if len(*srcLangArg) > 0 {
 		translator.SetSrcLang(*srcLangArg)
@@ -119,25 +112,25 @@ func updateConfig() {
 		changed = true
 		config.Set("translator", translator.GetEngineName())
 	}
-	if config.GetBool("hide_below") != hideBelow {
+	if config.GetBool("hide_below") != uiStyle.HideBelow {
 		changed = true
-		config.Set("hide_below", hideBelow)
+		config.Set("hide_below", uiStyle.HideBelow)
 	}
-	if config.GetString("theme") != style.Theme {
+	if config.GetString("theme") != uiStyle.Theme {
 		changed = true
-		config.Set("theme", style.Theme)
+		config.Set("theme", uiStyle.Theme)
 	}
-	if config.GetBool("transparent") != style.Transparent {
+	if config.GetBool("transparent") != uiStyle.Transparent {
 		changed = true
-		config.Set("transparent", style.Transparent)
+		config.Set("transparent", uiStyle.Transparent)
 	}
-	if config.GetString("source.borderColor") != style.SrcBorderStr() {
+	if config.GetString("source.border_color") != uiStyle.SrcBorderStr() {
 		changed = true
-		config.Set("source.borderColor", style.SrcBorderStr())
+		config.Set("source.border_color", uiStyle.SrcBorderStr())
 	}
-	if config.GetString("destination.borderColor") != style.DstBorderStr() {
+	if config.GetString("destination.border_color") != uiStyle.DstBorderStr() {
 		changed = true
-		config.Set("destination.borderColor", style.DstBorderStr())
+		config.Set("destination.border_color", uiStyle.DstBorderStr())
 	}
 
 	if changed {

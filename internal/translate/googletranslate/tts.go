@@ -54,9 +54,8 @@ func (t *GoogleTranslate) PlayTTS(lang, message string) error {
 		if t.SoundLock.Stop {
 			t.SoundLock.Release()
 			return nil
-		} else {
-			time.Sleep(time.Millisecond)
 		}
+		time.Sleep(time.Millisecond)
 	}
 	if err = player.Close(); err != nil {
 		t.SoundLock.Release()

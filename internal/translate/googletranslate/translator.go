@@ -71,58 +71,57 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 		return "", "", "", err
 	}
 
-	if len(data) > 0 {
-		// translation = data[0]
-		for _, lines := range data[0].([]interface{}) {
-			translatedLine := lines.([]interface{})[0]
-			translation += fmt.Sprintf("%v", translatedLine)
-		}
-
-		// part of speech = data[1]
-		if data[1] != nil {
-			for _, parts := range data[1].([]interface{}) {
-				// part of speech
-				part := parts.([]interface{})[0]
-				partOfSpeech += fmt.Sprintf("[%v]\n", part)
-				for _, words := range parts.([]interface{})[2].([]interface{}) {
-					// dst lang
-					dstWord := words.([]interface{})[0]
-					partOfSpeech += fmt.Sprintf("\t%v:", dstWord)
-					// src lang
-					firstWord := true
-					for _, word := range words.([]interface{})[1].([]interface{}) {
-						if firstWord {
-							partOfSpeech += fmt.Sprintf(" %v", word)
-							firstWord = false
-						} else {
-							partOfSpeech += fmt.Sprintf(", %v", word)
-						}
-					}
-					partOfSpeech += "\n"
-				}
-			}
-		}
-
-		// definition = data[12]
-		if len(data) >= 13 && data[12] != nil {
-			for _, parts := range data[12].([]interface{}) {
-				// part of speech
-				part := parts.([]interface{})[0]
-				definition += fmt.Sprintf("[%v]\n", part)
-				for _, sentences := range parts.([]interface{})[1].([]interface{}) {
-					// definition
-					def := sentences.([]interface{})[0]
-					definition += fmt.Sprintf("\t- %v\n", def)
-					// example sentence
-					if len(sentences.([]interface{})) >= 3 && sentences.([]interface{})[2] != nil {
-						example := sentences.([]interface{})[2]
-						definition += fmt.Sprintf("\t\t\"%v\"\n", example)
-					}
-				}
-			}
-		}
-		return translation, definition, partOfSpeech, nil
+	if len(data) <= 0 {
+		return "", "", "", errors.New("Translation not found")
 	}
 
-	return "", "", "", errors.New("Translation not found")
+	// translation = data[0]
+	for _, lines := range data[0].([]interface{}) {
+		translatedLine := lines.([]interface{})[0]
+		translation += fmt.Sprintf("%v", translatedLine)
+	}
+	// part of speech = data[1]
+	if data[1] != nil {
+		for _, parts := range data[1].([]interface{}) {
+			// part of speech
+			part := parts.([]interface{})[0]
+			partOfSpeech += fmt.Sprintf("[%v]\n", part)
+			for _, words := range parts.([]interface{})[2].([]interface{}) {
+				// dst lang
+				dstWord := words.([]interface{})[0]
+				partOfSpeech += fmt.Sprintf("\t%v:", dstWord)
+				// src lang
+				firstWord := true
+				for _, word := range words.([]interface{})[1].([]interface{}) {
+					if firstWord {
+						partOfSpeech += fmt.Sprintf(" %v", word)
+						firstWord = false
+					} else {
+						partOfSpeech += fmt.Sprintf(", %v", word)
+					}
+				}
+				partOfSpeech += "\n"
+			}
+		}
+	}
+	// definition = data[12]
+	if len(data) >= 13 && data[12] != nil {
+		for _, parts := range data[12].([]interface{}) {
+			// part of speech
+			part := parts.([]interface{})[0]
+			definition += fmt.Sprintf("[%v]\n", part)
+			for _, sentences := range parts.([]interface{})[1].([]interface{}) {
+				// definition
+				def := sentences.([]interface{})[0]
+				definition += fmt.Sprintf("\t- %v\n", def)
+				// example sentence
+				if len(sentences.([]interface{})) >= 3 && sentences.([]interface{})[2] != nil {
+					example := sentences.([]interface{})[2]
+					definition += fmt.Sprintf("\t\t\"%v\"\n", example)
+				}
+			}
+		}
+	}
+
+	return translation, definition, partOfSpeech, nil
 }

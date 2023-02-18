@@ -51,7 +51,7 @@ func (t *ArgosTranslate) SwapLang() {
 }
 
 func (t *ArgosTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
-	var data interface{}
+	var data map[string]interface{}
 
 	res, err := http.PostForm(textURL,
 		url.Values{
@@ -70,11 +70,11 @@ func (t *ArgosTranslate) Translate(message string) (translation, definition, par
 		return "", "", "", err
 	}
 
-	if len(data.(map[string]interface{})) > 0 {
-		translation += fmt.Sprintf("%v",
-			data.(map[string]interface{})["translatedText"])
-
-		return translation, definition, partOfSpeech, nil
+	if len(data) <= 0 {
+		return "", "", "", errors.New("Translation not found")
 	}
-	return "", "", "", errors.New("Translation not found")
+
+	translation += fmt.Sprintf("%v", data["translatedText"])
+
+	return translation, definition, partOfSpeech, nil
 }
