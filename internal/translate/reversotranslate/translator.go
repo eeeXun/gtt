@@ -63,7 +63,7 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 			"sentenceSplitter":  "true",
 			"origin":            "translation.web",
 			"contextResults":    "true",
-			"languageDetection": "true",
+			"languageDetection": "false",
 		},
 	})
 	req, _ := http.NewRequest("POST",
