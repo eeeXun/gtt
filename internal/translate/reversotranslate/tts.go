@@ -1,8 +1,3 @@
-// echo 'nice' | base64
-//
-//	curl -A "Mozilla/4.0" \
-//		"https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=Heather22k?voiceSpeed=80&inputText=bmljZQ==" \
-//		--output a.mp
 package reversotranslate
 
 import (
