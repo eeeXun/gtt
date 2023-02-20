@@ -62,9 +62,9 @@ func main() {
 	case *showVersion:
 		print(version, "\n")
 	default:
-		SetTermTitle("gtt")
 		configInit()
 		uiInit()
+		SetTermTitle(translator.GetEngineName())
 
 		mainPage.AddPage("translateWindow", translateWindow, true, true)
 		mainPage.AddPage("langPopOut", langPopOut, true, false)

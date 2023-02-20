@@ -367,6 +367,7 @@ func uiInit() {
 			translator = translators[text]
 			updateLangDropDown()
 			updateCurrentLang()
+			SetTermTitle(translator.GetEngineName())
 		})
 	srcLangDropDown.SetDoneFunc(langDropDownHandler)
 	dstLangDropDown.SetDoneFunc(langDropDownHandler)

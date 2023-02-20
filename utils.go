@@ -16,8 +16,8 @@ func IndexOf(candidate string, arr []string) int {
 	return -1
 }
 
-func SetTermTitle(title string) {
-	print("\033]0;", title, "\007")
+func SetTermTitle(name string) {
+	fmt.Printf("\033]0;gtt - %s\007", name)
 }
 
 func CopyToClipboard(text string) {
