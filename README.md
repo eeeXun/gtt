@@ -90,7 +90,7 @@ Stop play sound.
 Toggle transparent.
 
 `<C-\>`
-Toggle Definition & Part of speech
+Toggle Definition/Example & Part of speech
 
 `<Tab>`, `<S-Tab>`
 Cycle through the pop out widget.
