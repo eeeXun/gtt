@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	textURL = "https://api.reverso.net/translate/v1/translation"
+	textURL   = "https://api.reverso.net/translate/v1/translation"
+	userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
 )
 
 type ReversoTranslate struct {
@@ -70,7 +71,7 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 		textURL,
 		bytes.NewBuffer([]byte(userData)))
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
+	req.Header.Add("User-Agent", userAgent)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", "", "", err

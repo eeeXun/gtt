@@ -38,7 +38,7 @@ func (t *ReversoTranslate) PlayTTS(lang, message string) error {
 		base64.StdEncoding.EncodeToString([]byte(message)),
 	)
 	req, _ := http.NewRequest("GET", urlStr, nil)
-	req.Header.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
+	req.Header.Add("User-Agent", userAgent)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		t.SoundLock.Release()
