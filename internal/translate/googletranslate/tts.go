@@ -27,6 +27,8 @@ func (t *GoogleTranslate) StopTTS() {
 }
 
 func (t *GoogleTranslate) PlayTTS(lang, message string) error {
+	defer t.SoundLock.Release()
+
 	urlStr := fmt.Sprintf(
 		ttsURL,
 		url.QueryEscape(message),
@@ -34,17 +36,14 @@ func (t *GoogleTranslate) PlayTTS(lang, message string) error {
 	)
 	res, err := http.Get(urlStr)
 	if err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 	decoder, err := mp3.NewDecoder(res.Body)
 	if err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
 	if err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 	<-readyChan
@@ -52,16 +51,13 @@ func (t *GoogleTranslate) PlayTTS(lang, message string) error {
 	player.Play()
 	for player.IsPlaying() {
 		if t.SoundLock.Stop {
-			t.SoundLock.Release()
 			return nil
 		}
 		time.Sleep(time.Millisecond)
 	}
 	if err = player.Close(); err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 
-	t.SoundLock.Release()
 	return nil
 }

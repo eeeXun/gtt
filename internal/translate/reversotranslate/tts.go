@@ -28,6 +28,8 @@ func (t *ReversoTranslate) StopTTS() {
 }
 
 func (t *ReversoTranslate) PlayTTS(lang, message string) error {
+	defer t.SoundLock.Release()
+
 	name, ok := voiceName[lang]
 	if !ok {
 		return errors.New(t.EngineName + " does not support text to speech of " + lang)
@@ -41,17 +43,14 @@ func (t *ReversoTranslate) PlayTTS(lang, message string) error {
 	req.Header.Add("User-Agent", userAgent)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 	decoder, err := mp3.NewDecoder(res.Body)
 	if err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
 	if err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 	<-readyChan
@@ -59,17 +58,14 @@ func (t *ReversoTranslate) PlayTTS(lang, message string) error {
 	player.Play()
 	for player.IsPlaying() {
 		if t.SoundLock.Stop {
-			t.SoundLock.Release()
 			return nil
 		} else {
 			time.Sleep(time.Millisecond)
 		}
 	}
 	if err = player.Close(); err != nil {
-		t.SoundLock.Release()
 		return err
 	}
 
-	t.SoundLock.Release()
 	return nil
 }
