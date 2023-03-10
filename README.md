@@ -6,6 +6,7 @@ Support:
 [`ApertiumTranslate`](https://www.apertium.org/),
 [`ArgosTranslate`](https://translate.argosopentech.com/),
 [`GoogleTranslate`](https://translate.google.com/)
+[`ReversoTranslate`](https://www.reverso.net/text-translation)
 
 ## ScreenShot
 
@@ -43,10 +44,12 @@ You can pass `-src` and `-dst` in argument to set source and destination languag
 gtt -src "English" -dst "Chinese (Traditional)"
 ```
 
-See language on
-[Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`,
-[argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`,
-[Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`.
+See language on:
+
+- [Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`
+- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`
+- [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
+- [Reverso Translation](https://www.reverso.net/text-translation) for `ReversoTranslate`
 
 ## Key Map
 
@@ -87,7 +90,7 @@ Stop play sound.
 Toggle transparent.
 
 `<C-\>`
-Toggle Definition & Part of speech
+Toggle Definition/Example & Part of speech.
 
 `<Tab>`, `<S-Tab>`
 Cycle through the pop out widget.
@@ -105,7 +108,10 @@ Switch pop out window.
 
 ## Credit
 
-[soimort/translate-shell](https://github.com/soimort/translate-shell) For translation URL.
+[soimort/translate-shell](https://github.com/soimort/translate-shell),
+[SimplyTranslate-Engines](https://codeberg.org/SimpleWeb/SimplyTranslate-Engines),
+[s0ftik3/reverso-api](https://github.com/s0ftik3/reverso-api)
+For translation URL.
 
 [snsd0805/GoogleTranslate-TUI](https://github.com/snsd0805/GoogleTranslate-TUI) For inspiration.
 

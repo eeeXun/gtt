@@ -38,7 +38,7 @@ const (
 [#%[1]s]<C-t>[-]
 	Toggle transparent.
 [#%[1]s]<C-\>[-]
-	Toggle Definition & Part of speech
+	Toggle Definition/Example & Part of speech.
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
 [#%[1]s]<1>, <2>, <3>[-]
@@ -237,7 +237,7 @@ func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
 	dstOutput.SetBorder(true)
-	defOutput.SetBorder(true).SetTitle("Definition")
+	defOutput.SetBorder(true).SetTitle("Definition/Example")
 	posOutput.SetBorder(true).SetTitle("Part of speech")
 
 	// dropdown
