@@ -2,54 +2,42 @@ package reversotranslate
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"time"
 
-	"github.com/eeeXun/gtt/internal/lock"
+	"github.com/eeeXun/gtt/internal/translate/core"
+	"github.com/hajimehoshi/go-mp3"
+	"github.com/hajimehoshi/oto/v2"
 )
 
 const (
 	textURL   = "https://api.reverso.net/translate/v1/translation"
+	ttsURL    = "https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=%s?voiceSpeed=80&inputText=%s"
 	userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
 )
 
 type ReversoTranslate struct {
-	srcLang    string
-	dstLang    string
-	EngineName string
-	SoundLock  *lock.Lock
+	*core.Language
+	*core.TTSLock
+	core.EngineName
 }
 
-func (t *ReversoTranslate) GetEngineName() string {
-	return t.EngineName
+func NewReversoTranslate() *ReversoTranslate {
+	return &ReversoTranslate{
+		Language:   core.NewLanguage(),
+		TTSLock:    core.NewTTSLock(),
+		EngineName: core.NewEngineName("ReversoTranslate"),
+	}
 }
 
 func (t *ReversoTranslate) GetAllLang() []string {
 	return lang
-}
-
-func (t *ReversoTranslate) GetSrcLang() string {
-	return t.srcLang
-}
-
-func (t *ReversoTranslate) GetDstLang() string {
-	return t.dstLang
-}
-
-func (t *ReversoTranslate) SetSrcLang(srcLang string) {
-	t.srcLang = srcLang
-}
-
-func (t *ReversoTranslate) SetDstLang(dstLang string) {
-	t.dstLang = dstLang
-}
-
-func (t *ReversoTranslate) SwapLang() {
-	t.srcLang, t.dstLang = t.dstLang, t.srcLang
 }
 
 func (t *ReversoTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
@@ -57,8 +45,8 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 
 	userData, _ := json.Marshal(map[string]interface{}{
 		"format": "text",
-		"from":   langCode[t.srcLang],
-		"to":     langCode[t.dstLang],
+		"from":   langCode[t.GetSrcLang()],
+		"to":     langCode[t.GetDstLang()],
 		"input":  message,
 		"options": map[string]string{
 			"sentenceSplitter":  "true",
@@ -113,4 +101,46 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 	}
 
 	return translation, definition, partOfSpeech, nil
+}
+
+func (t *ReversoTranslate) PlayTTS(lang, message string) error {
+	defer t.ReleaseLock()
+
+	name, ok := voiceName[lang]
+	if !ok {
+		return errors.New(t.GetEngineName() + " does not support text to speech of " + lang)
+	}
+	urlStr := fmt.Sprintf(
+		ttsURL,
+		name,
+		base64.StdEncoding.EncodeToString([]byte(message)),
+	)
+	req, _ := http.NewRequest("GET", urlStr, nil)
+	req.Header.Add("User-Agent", userAgent)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	decoder, err := mp3.NewDecoder(res.Body)
+	if err != nil {
+		return err
+	}
+	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
+	if err != nil {
+		return err
+	}
+	<-readyChan
+	player := otoCtx.NewPlayer(decoder)
+	player.Play()
+	for player.IsPlaying() {
+		if t.IsStopped() {
+			return nil
+		}
+		time.Sleep(time.Millisecond)
+	}
+	if err = player.Close(); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -499,7 +499,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 			message := srcInput.GetText()
 			// Only play when message exist
 			if len(message) > 0 {
-				translator.LockAcquire()
+				translator.AcquireLock()
 				go func() {
 					err := translator.PlayTTS(translator.GetSrcLang(), message)
 					if err != nil {
@@ -515,7 +515,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 			message := dstOutput.GetText(false)
 			// Only play when message exist
 			if len(message) > 0 {
-				translator.LockAcquire()
+				translator.AcquireLock()
 				go func() {
 					err := translator.PlayTTS(translator.GetDstLang(), message)
 					if err != nil {

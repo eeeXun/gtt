@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/eeeXun/gtt/internal/lock"
+	"github.com/eeeXun/gtt/internal/translate/core"
 )
 
 const (
@@ -16,38 +16,21 @@ const (
 )
 
 type ArgosTranslate struct {
-	srcLang    string
-	dstLang    string
-	EngineName string
-	SoundLock  *lock.Lock
+	*core.Language
+	*core.TTSLock
+	core.EngineName
 }
 
-func (t *ArgosTranslate) GetEngineName() string {
-	return t.EngineName
+func NewArgosTranslate() *ArgosTranslate {
+	return &ArgosTranslate{
+		Language:   core.NewLanguage(),
+		TTSLock:    core.NewTTSLock(),
+		EngineName: core.NewEngineName("ArgosTranslate"),
+	}
 }
 
 func (t *ArgosTranslate) GetAllLang() []string {
 	return lang
-}
-
-func (t *ArgosTranslate) GetSrcLang() string {
-	return t.srcLang
-}
-
-func (t *ArgosTranslate) GetDstLang() string {
-	return t.dstLang
-}
-
-func (t *ArgosTranslate) SetSrcLang(srcLang string) {
-	t.srcLang = srcLang
-}
-
-func (t *ArgosTranslate) SetDstLang(dstLang string) {
-	t.dstLang = dstLang
-}
-
-func (t *ArgosTranslate) SwapLang() {
-	t.srcLang, t.dstLang = t.dstLang, t.srcLang
 }
 
 func (t *ArgosTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
@@ -56,8 +39,8 @@ func (t *ArgosTranslate) Translate(message string) (translation, definition, par
 	res, err := http.PostForm(textURL,
 		url.Values{
 			"q":      {message},
-			"source": {langCode[t.srcLang]},
-			"target": {langCode[t.dstLang]},
+			"source": {langCode[t.GetSrcLang()]},
+			"target": {langCode[t.GetDstLang()]},
 		})
 	if err != nil {
 		return "", "", "", err
@@ -77,4 +60,10 @@ func (t *ArgosTranslate) Translate(message string) (translation, definition, par
 	translation += fmt.Sprintf("%v", data["translatedText"])
 
 	return translation, definition, partOfSpeech, nil
+}
+
+func (t *ArgosTranslate) PlayTTS(lang, message string) error {
+	defer t.ReleaseLock()
+
+	return errors.New(t.GetEngineName() + " does not support text to speech")
 }

@@ -7,47 +7,34 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 
-	"github.com/eeeXun/gtt/internal/lock"
+	"github.com/eeeXun/gtt/internal/translate/core"
+	"github.com/hajimehoshi/go-mp3"
+	"github.com/hajimehoshi/oto/v2"
 )
 
 const (
 	textURL = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&dt=md&dt=ex&sl=%s&tl=%s&q=%s"
+	ttsURL  = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
 type GoogleTranslate struct {
-	srcLang    string
-	dstLang    string
-	EngineName string
-	SoundLock  *lock.Lock
+	*core.Language
+	*core.TTSLock
+	core.EngineName
 }
 
-func (t *GoogleTranslate) GetEngineName() string {
-	return t.EngineName
+func NewGoogleTranslate() *GoogleTranslate {
+	return &GoogleTranslate{
+		Language:   core.NewLanguage(),
+		TTSLock:    core.NewTTSLock(),
+		EngineName: core.NewEngineName("GoogleTranslate"),
+	}
 }
 
 func (t *GoogleTranslate) GetAllLang() []string {
 	return lang
-}
-
-func (t *GoogleTranslate) GetSrcLang() string {
-	return t.srcLang
-}
-
-func (t *GoogleTranslate) GetDstLang() string {
-	return t.dstLang
-}
-
-func (t *GoogleTranslate) SetSrcLang(srcLang string) {
-	t.srcLang = srcLang
-}
-
-func (t *GoogleTranslate) SetDstLang(dstLang string) {
-	t.dstLang = dstLang
-}
-
-func (t *GoogleTranslate) SwapLang() {
-	t.srcLang, t.dstLang = t.dstLang, t.srcLang
 }
 
 func (t *GoogleTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
@@ -55,8 +42,8 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 
 	urlStr := fmt.Sprintf(
 		textURL,
-		langCode[t.srcLang],
-		langCode[t.dstLang],
+		langCode[t.GetSrcLang()],
+		langCode[t.GetDstLang()],
 		url.QueryEscape(message),
 	)
 	res, err := http.Get(urlStr)
@@ -124,4 +111,40 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 	}
 
 	return translation, definition, partOfSpeech, nil
+}
+
+func (t *GoogleTranslate) PlayTTS(lang, message string) error {
+	defer t.ReleaseLock()
+
+	urlStr := fmt.Sprintf(
+		ttsURL,
+		url.QueryEscape(message),
+		langCode[lang],
+	)
+	res, err := http.Get(urlStr)
+	if err != nil {
+		return err
+	}
+	decoder, err := mp3.NewDecoder(res.Body)
+	if err != nil {
+		return err
+	}
+	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
+	if err != nil {
+		return err
+	}
+	<-readyChan
+	player := otoCtx.NewPlayer(decoder)
+	player.Play()
+	for player.IsPlaying() {
+		if t.IsStopped() {
+			return nil
+		}
+		time.Sleep(time.Millisecond)
+	}
+	if err = player.Close(); err != nil {
+		return err
+	}
+
+	return nil
 }

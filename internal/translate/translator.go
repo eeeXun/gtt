@@ -1,7 +1,6 @@
 package translate
 
 import (
-	"github.com/eeeXun/gtt/internal/lock"
 	"github.com/eeeXun/gtt/internal/translate/apertiumtranslate"
 	"github.com/eeeXun/gtt/internal/translate/argostranslate"
 	"github.com/eeeXun/gtt/internal/translate/googletranslate"
@@ -13,20 +12,40 @@ var (
 )
 
 type Translator interface {
-	// engine name
+	// Get engine name of the translator
 	GetEngineName() string
-	// text
+
+	// Get all languages of the translator
 	GetAllLang() []string
+
+	// Get source language of the translator
 	GetSrcLang() string
+
+	// Get destination language of the translator
 	GetDstLang() string
-	SetSrcLang(srcLang string)
-	SetDstLang(dstLang string)
+
+	// Set source language of the translator
+	SetSrcLang(lang string)
+
+	// Set destination language of the translator
+	SetDstLang(lang string)
+
+	// Swap source and destination language of the translator
 	SwapLang()
-	Translate(message string) (translation, definition, partOfSpeech string, err error)
-	// text to speech
+
+	// Check if lock is available
 	LockAvailable() bool
-	LockAcquire()
+
+	// Acquire the lock
+	AcquireLock()
+
+	// Stop text to speech
 	StopTTS()
+
+	// Translate from source to destination language
+	Translate(message string) (translation, definition, partOfSpeech string, err error)
+
+	// Play text to speech
 	PlayTTS(lang, message string) error
 }
 
@@ -35,25 +54,13 @@ func NewTranslator(name string) Translator {
 
 	switch name {
 	case "ApertiumTranslate":
-		translator = &apertiumtranslate.ApertiumTranslate{
-			EngineName: "ApertiumTranslate",
-			SoundLock:  lock.NewLock(),
-		}
+		translator = apertiumtranslate.NewApertiumTranslate()
 	case "ArgosTranslate":
-		translator = &argostranslate.ArgosTranslate{
-			EngineName: "ArgosTranslate",
-			SoundLock:  lock.NewLock(),
-		}
+		translator = argostranslate.NewArgosTranslate()
 	case "GoogleTranslate":
-		translator = &googletranslate.GoogleTranslate{
-			EngineName: "GoogleTranslate",
-			SoundLock:  lock.NewLock(),
-		}
+		translator = googletranslate.NewGoogleTranslate()
 	case "ReversoTranslate":
-		translator = &reversotranslate.ReversoTranslate{
-			EngineName: "ReversoTranslate",
-			SoundLock:  lock.NewLock(),
-		}
+		translator = reversotranslate.NewReversoTranslate()
 	}
 
 	return translator
