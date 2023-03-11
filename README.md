@@ -2,10 +2,10 @@
 
 Google Translate TUI (Originally)
 
-Support:
+Supported Translator:
 [`ApertiumTranslate`](https://www.apertium.org/),
 [`ArgosTranslate`](https://translate.argosopentech.com/),
-[`GoogleTranslate`](https://translate.google.com/)
+[`GoogleTranslate`](https://translate.google.com/),
 [`ReversoTranslate`](https://www.reverso.net/text-translation)
 
 ## ScreenShot
