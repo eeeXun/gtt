@@ -43,6 +43,12 @@ func (t *ReversoTranslate) GetAllLang() []string {
 func (t *ReversoTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
 	var data map[string]interface{}
 
+	if t.GetSrcLang() == t.GetDstLang() {
+		return "", "", "", errors.New(
+			fmt.Sprintf("%s doesn't support translation of the same language.\ni.e. %s to %s",
+				t.GetEngineName(), t.GetSrcLang(), t.GetDstLang()))
+	}
+
 	userData, _ := json.Marshal(map[string]interface{}{
 		"format": "text",
 		"from":   langCode[t.GetSrcLang()],
