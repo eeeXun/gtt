@@ -76,7 +76,7 @@ func main() {
 			panic(err)
 		}
 
-		// Check if config need to update
+		// Check if config file need to be updated
 		defer updateConfig()
 	}
 }
