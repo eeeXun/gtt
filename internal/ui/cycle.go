@@ -6,8 +6,8 @@ import (
 
 type UICycle struct {
 	widget []tview.Primitive
-	index  int
-	len    int
+	index  int8
+	len    int8
 }
 
 func NewUICycle(widgets ...tview.Primitive) *UICycle {
@@ -20,7 +20,7 @@ func NewUICycle(widgets ...tview.Primitive) *UICycle {
 	return &UICycle{
 		widget: w,
 		index:  0,
-		len:    len(w),
+		len:    int8(len(w)),
 	}
 }
 
