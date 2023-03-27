@@ -6,6 +6,7 @@ Supported Translator:
 [`ApertiumTranslate`](https://www.apertium.org/),
 [`ArgosTranslate`](https://translate.argosopentech.com/),
 [`GoogleTranslate`](https://translate.google.com/),
+[`LingvaTranslate`](https://lingva.ml/),
 [`ReversoTranslate`](https://www.reverso.net/text-translation)
 
 ## ScreenShot
@@ -49,6 +50,7 @@ See language on:
 - [Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`
 - [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
+- [Lingva Translate](https://lingva.ml/) for `LingvaTranslate`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `ReversoTranslate`
 
 ## Key Map
