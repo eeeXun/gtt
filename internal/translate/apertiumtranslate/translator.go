@@ -60,7 +60,7 @@ func (t *ApertiumTranslate) Translate(message string) (translation, definition, 
 
 	switch res.StatusCode {
 	case 200:
-		translation += fmt.Sprintf("%v",
+		translation = fmt.Sprintf("%v",
 			data["responseData"].(map[string]interface{})["translatedText"])
 	default:
 		return "", "", "", errors.New(
