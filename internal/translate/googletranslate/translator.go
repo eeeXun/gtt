@@ -63,8 +63,8 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 	}
 
 	// translation = data[0]
-	for _, lines := range data[0].([]interface{}) {
-		translatedLine := lines.([]interface{})[0]
+	for _, line := range data[0].([]interface{}) {
+		translatedLine := line.([]interface{})[0]
 		translation += fmt.Sprintf("%v", translatedLine)
 	}
 	// part of speech = data[1]

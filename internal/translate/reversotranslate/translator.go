@@ -83,7 +83,9 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 	}
 
 	// translation
-	translation += fmt.Sprintf("%v", data["translation"].([]interface{})[0])
+	for _, line := range data["translation"].([]interface{}) {
+		translation += fmt.Sprintf("%v", line)
+	}
 	// definition and part of speech
 	if data["contextResults"] != nil {
 		for _, results := range data["contextResults"].(map[string]interface{})["results"].([]interface{}) {
