@@ -4,11 +4,18 @@ import (
 	"github.com/eeeXun/gtt/internal/translate/apertiumtranslate"
 	"github.com/eeeXun/gtt/internal/translate/argostranslate"
 	"github.com/eeeXun/gtt/internal/translate/googletranslate"
+	"github.com/eeeXun/gtt/internal/translate/lingvatranslate"
 	"github.com/eeeXun/gtt/internal/translate/reversotranslate"
 )
 
 var (
-	AllTranslator = []string{"ApertiumTranslate", "ArgosTranslate", "GoogleTranslate", "ReversoTranslate"}
+	AllTranslator = []string{
+		"ApertiumTranslate",
+		"ArgosTranslate",
+		"GoogleTranslate",
+		"LingvaTranslate",
+		"ReversoTranslate",
+	}
 )
 
 type Translator interface {
@@ -59,6 +66,8 @@ func NewTranslator(name string) Translator {
 		translator = argostranslate.NewArgosTranslate()
 	case "GoogleTranslate":
 		translator = googletranslate.NewGoogleTranslate()
+	case "LingvaTranslate":
+		translator = lingvatranslate.NewLingvaTranslate()
 	case "ReversoTranslate":
 		translator = reversotranslate.NewReversoTranslate()
 	}
