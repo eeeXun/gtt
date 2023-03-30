@@ -66,10 +66,11 @@ func (t *LingvaTranslate) Translate(message string) (translation, definition, pa
 	translation = fmt.Sprintf("%v", data["pageProps"].(map[string]interface{})["translation"])
 	// definition
 	for _, definitions := range data["pageProps"].(map[string]interface{})["info"].(map[string]interface{})["definitions"].([]interface{}) {
+		definitions := definitions.(map[string]interface{})
 		// part of speech
-		pos := definitions.(map[string]interface{})["type"]
+		pos := definitions["type"]
 		definition += fmt.Sprintf("[%v]\n", pos)
-		for _, sentences := range definitions.(map[string]interface{})["list"].([]interface{}) {
+		for _, sentences := range definitions["list"].([]interface{}) {
 			sentences := sentences.(map[string]interface{})
 			// definition
 			def := sentences["definition"]
