@@ -82,6 +82,29 @@ func (t *LingvaTranslate) Translate(message string) (translation, definition, pa
 			}
 		}
 	}
+	// part of speech
+	for _, partOfSpeeches := range data["info"].(map[string]interface{})["extraTranslations"].([]interface{}) {
+		partOfSpeeches := partOfSpeeches.(map[string]interface{})
+		// part of speech
+		pos := partOfSpeeches["type"]
+		partOfSpeech += fmt.Sprintf("[%v]\n", pos)
+		for _, words := range partOfSpeeches["list"].([]interface{}) {
+			words := words.(map[string]interface{})
+			dstWord := words["word"]
+			partOfSpeech += fmt.Sprintf("\t%v:", dstWord)
+			// src lang
+			firstWord := true
+			for _, word := range words["meanings"].([]interface{}) {
+				if firstWord {
+					partOfSpeech += fmt.Sprintf(" %v", word)
+					firstWord = false
+				} else {
+					partOfSpeech += fmt.Sprintf(", %v", word)
+				}
+			}
+			partOfSpeech += "\n"
+		}
+	}
 
 	return translation, definition, partOfSpeech, nil
 }
