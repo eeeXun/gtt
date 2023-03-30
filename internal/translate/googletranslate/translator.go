@@ -69,17 +69,19 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 	}
 	// part of speech = data[1]
 	if data[1] != nil {
-		for _, parts := range data[1].([]interface{}) {
+		for _, partOfSpeeches := range data[1].([]interface{}) {
+			partOfSpeeches := partOfSpeeches.([]interface{})
 			// part of speech
-			part := parts.([]interface{})[0]
-			partOfSpeech += fmt.Sprintf("[%v]\n", part)
-			for _, words := range parts.([]interface{})[2].([]interface{}) {
+			pos := partOfSpeeches[0]
+			partOfSpeech += fmt.Sprintf("[%v]\n", pos)
+			for _, words := range partOfSpeeches[2].([]interface{}) {
+				words := words.([]interface{})
 				// dst lang
-				dstWord := words.([]interface{})[0]
+				dstWord := words[0]
 				partOfSpeech += fmt.Sprintf("\t%v:", dstWord)
 				// src lang
 				firstWord := true
-				for _, word := range words.([]interface{})[1].([]interface{}) {
+				for _, word := range words[1].([]interface{}) {
 					if firstWord {
 						partOfSpeech += fmt.Sprintf(" %v", word)
 						firstWord = false
@@ -93,17 +95,19 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 	}
 	// definition = data[12]
 	if len(data) >= 13 && data[12] != nil {
-		for _, parts := range data[12].([]interface{}) {
+		for _, definitions := range data[12].([]interface{}) {
+			definitions := definitions.([]interface{})
 			// part of speech
-			part := parts.([]interface{})[0]
-			definition += fmt.Sprintf("[%v]\n", part)
-			for _, sentences := range parts.([]interface{})[1].([]interface{}) {
+			pos := definitions[0]
+			definition += fmt.Sprintf("[%v]\n", pos)
+			for _, sentences := range definitions[1].([]interface{}) {
+				sentences := sentences.([]interface{})
 				// definition
-				def := sentences.([]interface{})[0]
+				def := sentences[0]
 				definition += fmt.Sprintf("\t- %v\n", def)
 				// example sentence
-				if len(sentences.([]interface{})) >= 3 && sentences.([]interface{})[2] != nil {
-					example := sentences.([]interface{})[2]
+				if len(sentences) >= 3 && sentences[2] != nil {
+					example := sentences[2]
 					definition += fmt.Sprintf("\t\t\"%v\"\n", example)
 				}
 			}
