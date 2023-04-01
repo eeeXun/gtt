@@ -69,8 +69,11 @@ func (t *LingvaTranslate) Translate(message string) (translation, definition, pa
 	for _, definitions := range data["info"].(map[string]interface{})["definitions"].([]interface{}) {
 		definitions := definitions.(map[string]interface{})
 		// part of speech
-		pos := definitions["type"]
-		definition += fmt.Sprintf("[%v]\n", pos)
+		if pos, ok := definitions["type"]; ok {
+			definition += fmt.Sprintf("[%v]\n", pos)
+		} else {
+			definition += "[]\n"
+		}
 		for _, sentences := range definitions["list"].([]interface{}) {
 			sentences := sentences.(map[string]interface{})
 			// definition
@@ -86,8 +89,11 @@ func (t *LingvaTranslate) Translate(message string) (translation, definition, pa
 	for _, partOfSpeeches := range data["info"].(map[string]interface{})["extraTranslations"].([]interface{}) {
 		partOfSpeeches := partOfSpeeches.(map[string]interface{})
 		// part of speech
-		pos := partOfSpeeches["type"]
-		partOfSpeech += fmt.Sprintf("[%v]\n", pos)
+		if pos, ok := partOfSpeeches["type"]; ok {
+			partOfSpeech += fmt.Sprintf("[%v]\n", pos)
+		} else {
+			partOfSpeech += "[]\n"
+		}
 		for _, words := range partOfSpeeches["list"].([]interface{}) {
 			words := words.(map[string]interface{})
 			dstWord := words["word"]
