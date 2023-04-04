@@ -7,12 +7,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-
-	// "time"
+	"time"
 
 	"github.com/eeeXun/gtt/internal/translate/core"
-	// "github.com/hajimehoshi/go-mp3"
-	// "github.com/hajimehoshi/oto/v2"
+	"github.com/hajimehoshi/oto/v2"
 )
 
 const (
@@ -117,6 +115,54 @@ func (t *LingvaTranslate) Translate(message string) (translation, definition, pa
 
 func (t *LingvaTranslate) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
+	var data map[string]interface{}
+	var voiceData []interface{}
+
+	urlStr := fmt.Sprintf(
+		textURL,
+		langCode[t.GetSrcLang()],
+		langCode[t.GetDstLang()],
+		url.PathEscape(message),
+	)
+	res, err := http.Get(urlStr)
+	if err != nil {
+		return err
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	if err = json.Unmarshal(body, &data); err != nil {
+		return err
+	}
+
+	if len(data) <= 0 {
+		return errors.New("Text to Speech not found")
+	}
+
+	data = data["pageProps"].(map[string]interface{})
+	if lang == data["initial"].(map[string]interface{})["source"] {
+		voiceData = data["audio"].(map[string]interface{})["query"].([]interface{})
+	} else {
+		voiceData = data["audio"].(map[string]interface{})["translation"].([]interface{})
+	}
+	voice, _ := json.Marshal(voiceData)
+	decoder := NewDecoder(voice)
+	otoCtx, readyChan, err := oto.NewContext(24000, 2, 2)
+	if err != nil {
+		return err
+	}
+	<-readyChan
+	player := otoCtx.NewPlayer(decoder)
+	for player.IsPlaying() {
+		if t.IsStopped() {
+			return nil
+		}
+		time.Sleep(time.Millisecond)
+	}
+	if err = player.Close(); err != nil {
+		return err
+	}
 
 	return nil
 }
