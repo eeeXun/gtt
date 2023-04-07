@@ -1,24 +1,24 @@
 package core
 
 type TTSLock struct {
-	stop        bool
-	threadCount int8
+	using bool
+	stop  bool
 }
 
 func NewTTSLock() *TTSLock {
 	return &TTSLock{
-		stop:        true,
-		threadCount: 0,
+		stop:  true,
+		using: false,
 	}
 }
 
 func (l *TTSLock) LockAvailable() bool {
-	return l.stop && l.threadCount == 0
+	return l.stop && !l.using
 }
 
 func (l *TTSLock) AcquireLock() {
 	l.stop = false
-	l.threadCount++
+	l.using = true
 }
 
 func (l *TTSLock) IsStopped() bool {
@@ -31,5 +31,5 @@ func (l *TTSLock) StopTTS() {
 
 func (l *TTSLock) ReleaseLock() {
 	l.stop = true
-	l.threadCount--
+	l.using = false
 }
