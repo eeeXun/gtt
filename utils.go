@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 )
 
 func IndexOf(candidate string, arr []string) int {
@@ -21,25 +22,22 @@ func SetTermTitle(name string) {
 }
 
 func CopyToClipboard(text string) {
+	var cmd *exec.Cmd
+
 	switch runtime.GOOS {
 	case "linux":
 		switch os.Getenv("XDG_SESSION_TYPE") {
 		case "x11":
-			exec.Command("sh", "-c",
-				fmt.Sprintf("echo -n '%s' | xclip -selection clipboard", text)).
-				Start()
+			cmd = exec.Command("xclip", "-selection", "clipboard")
 		case "wayland":
-			exec.Command("sh", "-c",
-				fmt.Sprintf("echo -n '%s' | wl-copy", text)).
-				Start()
+			cmd = exec.Command("wl-copy")
 		}
 	case "darwin":
-		exec.Command("sh", "-c",
-			fmt.Sprintf("echo -n '%s' | pbcopy", text)).
-			Start()
+		cmd = exec.Command("pbcopy")
 	case "windows":
-		exec.Command("cmd", "/c",
-			fmt.Sprintf("echo %s | clip", text)).
-			Start()
+		cmd = exec.Command("clip")
 	}
+
+	cmd.Stdin = strings.NewReader(text)
+	cmd.Start()
 }
