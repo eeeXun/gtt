@@ -22,6 +22,8 @@ func configInit() {
 			"destination.language.apertiumtranslate": "English",
 			"source.language.argostranslate":         "English",
 			"destination.language.argostranslate":    "English",
+			"source.language.bingtranslate":          "English",
+			"destination.language.bingtranslate":     "English",
 			"source.language.googletranslate":        "English",
 			"destination.language.googletranslate":   "English",
 			"source.language.reversotranslate":       "English",

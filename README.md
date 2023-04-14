@@ -5,6 +5,7 @@ Google Translate TUI (Originally)
 Supported Translator:
 [`ApertiumTranslate`](https://www.apertium.org/),
 [`ArgosTranslate`](https://translate.argosopentech.com/),
+[`BingTranslate`](https://www.bing.com/translator),
 [`GoogleTranslate`](https://translate.google.com/),
 [`ReversoTranslate`](https://www.reverso.net/text-translation)
 
@@ -48,6 +49,7 @@ See language on:
 
 - [Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`
 - [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`
+- [Bing Translate](https://www.bing.com/translator) for `BingTranslate`
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `ReversoTranslate`
 
