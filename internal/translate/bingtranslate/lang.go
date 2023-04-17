@@ -193,7 +193,6 @@ var (
 		"Latvian":                 "lv",
 		"Lingala":                 "ln",
 		"Lithuanian":              "lt",
-		"Lower Sorbian":           "dsb",
 		"Macedonian":              "mk",
 		"Malagasy":                "mg",
 		"Malay":                   "ms",
