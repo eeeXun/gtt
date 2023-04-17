@@ -9,13 +9,18 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/eeeXun/gtt/internal/translate/core"
+	"github.com/hajimehoshi/go-mp3"
+	"github.com/hajimehoshi/oto/v2"
 )
 
 const (
 	setUpURL = "https://www.bing.com/translator"
 	textURL  = "https://www.bing.com/ttranslatev3?IG=%s&IID=%s"
+	ttsURL   = "https://www.bing.com/tfettts?IG=%s&IID=%s"
+	ttsSSML = "<speak version='1.0' xml:lang='%[1]s'><voice xml:lang='%[1]s' xml:gender='Female' name='%s'><prosody rate='-20.00%%'>%s</prosody></voice></speak>"
 )
 
 type BingTranslate struct {
@@ -122,5 +127,49 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 func (t *BingTranslate) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
-	return errors.New(t.GetEngineName() + " does not support text to speech")
+	name, ok := voiceName[lang]
+	if !ok {
+		return errors.New(t.GetEngineName() + " does not support text to speech of " + lang)
+	}
+	initData, err := t.setUp()
+	if err != nil {
+		return err
+	}
+	userData := url.Values{
+		"ssml":  {fmt.Sprintf(ttsSSML, langCode[lang], name, message)},
+		"key":   {initData.key},
+		"token": {initData.token},
+	}
+	req, err := http.NewRequest("POST",
+		fmt.Sprintf(ttsURL, initData.ig, initData.iid),
+		strings.NewReader(userData.Encode()),
+	)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("User-Agent", core.UserAgent)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	decoder, err := mp3.NewDecoder(res.Body)
+	if err != nil {
+		return err
+	}
+	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
+	if err != nil {
+		return err
+	}
+	<-readyChan
+	player := otoCtx.NewPlayer(decoder)
+	player.Play()
+	for player.IsPlaying() {
+		if t.IsStopped() {
+			return nil
+		}
+		time.Sleep(time.Millisecond)
+	}
+	if err = player.Close(); err != nil {
+		return err
+	}
+
+	return nil
 }
