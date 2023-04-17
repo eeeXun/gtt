@@ -14,7 +14,7 @@ Supported Translator:
 
 ## Install
 
-### Arch Linux (AUR)
+### Arch Linux ([AUR](https://aur.archlinux.org/packages/gtt-bin))
 
 ```
 yay -S gtt-bin
