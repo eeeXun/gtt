@@ -19,6 +19,7 @@ import (
 const (
 	setUpURL = "https://www.bing.com/translator"
 	textURL  = "https://www.bing.com/ttranslatev3?IG=%s&IID=%s"
+	posURL   = "https://www.bing.com/tlookupv3?IG=%s&IID=%s"
 	ttsURL   = "https://www.bing.com/tfettts?IG=%s&IID=%s"
 	ttsSSML  = "<speak version='1.0' xml:lang='%[1]s'><voice xml:lang='%[1]s' xml:gender='Female' name='%s'><prosody rate='-20.00%%'>%s</prosody></voice></speak>"
 )
@@ -120,6 +121,46 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	// translation
 	translation = fmt.Sprintf("%v",
 		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"])
+
+	userData = url.Values{
+		"from":  {langCode[t.GetSrcLang()]},
+		"to":    {langCode[t.GetDstLang()]},
+		"text":  {message},
+		"key":   {initData.key},
+		"token": {initData.token},
+	}
+	req, err = http.NewRequest("POST",
+		fmt.Sprintf(posURL, initData.ig, initData.iid),
+		strings.NewReader(userData.Encode()),
+	)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("User-Agent", core.UserAgent)
+	res, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return "", "", "", err
+	}
+	body, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return "", "", "", err
+	}
+	// Bing will return a list request part of speech success
+	// Otherwises, it would return map
+	// Then the following err would not be nil
+	if err = json.Unmarshal(body, &data); err == nil {
+		set := make(posSet)
+		for _, pos := range data[0].(map[string]interface{})["translations"].([]interface{}) {
+			pos := pos.(map[string]interface{})
+			var words translationWord
+
+			words.target = pos["displayTarget"].(string)
+			for _, backTranslation := range pos["backTranslations"].([]interface{}) {
+				backTranslation := backTranslation.(map[string]interface{})
+				words.add(backTranslation["displayText"].(string))
+			}
+			set.add(pos["posTag"].(string), words)
+		}
+		partOfSpeech = set.format()
+	}
 
 	return translation, definition, partOfSpeech, nil
 }
