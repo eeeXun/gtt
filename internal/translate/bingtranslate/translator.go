@@ -20,7 +20,7 @@ const (
 	setUpURL = "https://www.bing.com/translator"
 	textURL  = "https://www.bing.com/ttranslatev3?IG=%s&IID=%s"
 	ttsURL   = "https://www.bing.com/tfettts?IG=%s&IID=%s"
-	ttsSSML = "<speak version='1.0' xml:lang='%[1]s'><voice xml:lang='%[1]s' xml:gender='Female' name='%s'><prosody rate='-20.00%%'>%s</prosody></voice></speak>"
+	ttsSSML  = "<speak version='1.0' xml:lang='%[1]s'><voice xml:lang='%[1]s' xml:gender='Female' name='%s'><prosody rate='-20.00%%'>%s</prosody></voice></speak>"
 )
 
 type BingTranslate struct {
@@ -136,6 +136,9 @@ func (t *BingTranslate) PlayTTS(lang, message string) error {
 		return err
 	}
 	userData := url.Values{
+		// lang='%s' in ssml should be xx-XX, e.g. en-US
+		// But xx also works, e.g. en
+		// So don't do extra work to get xx-XX
 		"ssml":  {fmt.Sprintf(ttsSSML, langCode[lang], name, message)},
 		"key":   {initData.key},
 		"token": {initData.token},
