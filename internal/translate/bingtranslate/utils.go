@@ -16,11 +16,7 @@ func (t *posWords) add(s string) {
 type posSet map[string][]posWords
 
 func (set posSet) add(tag string, words posWords) {
-	if _, ok := set[tag]; !ok {
-		set[tag] = []posWords{words}
-	} else {
-		set[tag] = append(set[tag], words)
-	}
+	set[tag] = append(set[tag], words)
 }
 
 func (set posSet) format() (s string) {
