@@ -150,7 +150,7 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 		set := make(posSet)
 		for _, pos := range data[0].(map[string]interface{})["translations"].([]interface{}) {
 			pos := pos.(map[string]interface{})
-			var words translationWords
+			var words posWords
 
 			words.target = pos["displayTarget"].(string)
 			for _, backTranslation := range pos["backTranslations"].([]interface{}) {

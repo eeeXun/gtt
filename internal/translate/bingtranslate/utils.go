@@ -4,20 +4,20 @@ import (
 	"fmt"
 )
 
-type translationWords struct {
+type posWords struct {
 	target      string
 	backTargets []string
 }
 
-func (t *translationWords) add(s string) {
+func (t *posWords) add(s string) {
 	t.backTargets = append(t.backTargets, s)
 }
 
-type posSet map[string][]translationWords
+type posSet map[string][]posWords
 
-func (set posSet) add(tag string, words translationWords) {
+func (set posSet) add(tag string, words posWords) {
 	if _, ok := set[tag]; !ok {
-		set[tag] = []translationWords{words}
+		set[tag] = []posWords{words}
 	} else {
 		set[tag] = append(set[tag], words)
 	}
