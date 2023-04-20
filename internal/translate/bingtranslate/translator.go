@@ -122,6 +122,7 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	translation = fmt.Sprintf("%v",
 		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"])
 
+	// request part of speech
 	userData.Del("fromLang")
 	userData.Add("from", langCode[t.GetSrcLang()])
 	req, err = http.NewRequest("POST",
@@ -142,7 +143,7 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	// Otherwises, it would return map
 	// Then the following err would not be nil
 	if err = json.Unmarshal(body, &data); err == nil {
-		set := make(posSet)
+		poses := make(posSet)
 		for _, pos := range data[0].(map[string]interface{})["translations"].([]interface{}) {
 			pos := pos.(map[string]interface{})
 			var words posWords
@@ -152,9 +153,9 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 				backTranslation := backTranslation.(map[string]interface{})
 				words.add(backTranslation["displayText"].(string))
 			}
-			set.add(pos["posTag"].(string), words)
+			poses.add(pos["posTag"].(string), words)
 		}
-		partOfSpeech = set.format()
+		partOfSpeech = poses.format()
 	}
 
 	return translation, definition, partOfSpeech, nil
