@@ -139,9 +139,8 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	if err != nil {
 		return "", "", "", err
 	}
-	// Bing will return the request with list when success
-	// Otherwises, it would return map
-	// Then the following err would not be nil
+	// Bing will return the request with list when success.
+	// Otherwises, it would return map. Then the following err would not be nil.
 	if err = json.Unmarshal(body, &data); err == nil {
 		poses := make(posSet)
 		for _, pos := range data[0].(map[string]interface{})["translations"].([]interface{}) {
