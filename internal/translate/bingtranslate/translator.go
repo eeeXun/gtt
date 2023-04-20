@@ -122,13 +122,8 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	translation = fmt.Sprintf("%v",
 		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"])
 
-	userData = url.Values{
-		"from":  {langCode[t.GetSrcLang()]},
-		"to":    {langCode[t.GetDstLang()]},
-		"text":  {message},
-		"key":   {initData.key},
-		"token": {initData.token},
-	}
+	userData.Del("fromLang")
+	userData.Add("from", langCode[t.GetSrcLang()])
 	req, err = http.NewRequest("POST",
 		fmt.Sprintf(posURL, initData.ig, initData.iid),
 		strings.NewReader(userData.Encode()),
