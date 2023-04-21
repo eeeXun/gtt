@@ -44,7 +44,7 @@ You can pass `-src` and `-dst` in argument to set source and destination languag
 gtt -src "English" -dst "Chinese (Traditional)"
 ```
 
-See language on:
+See available languages on:
 
 - [Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`
 - [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`
