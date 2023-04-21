@@ -49,7 +49,7 @@ See language on:
 
 - [Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`
 - [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`
-- [Bing Translate](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support) for `BingTranslate`
+- [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support) for `BingTranslate`
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `ReversoTranslate`
 
