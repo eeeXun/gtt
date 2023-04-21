@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	textURL   = "https://api.reverso.net/translate/v1/translation"
-	ttsURL    = "https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=%s?voiceSpeed=80&inputText=%s"
+	textURL = "https://api.reverso.net/translate/v1/translation"
+	ttsURL  = "https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=%s?voiceSpeed=80&inputText=%s"
 )
 
 type ReversoTranslate struct {
