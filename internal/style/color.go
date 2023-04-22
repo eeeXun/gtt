@@ -37,7 +37,7 @@ var (
 
 func NewTheme(name string, palette map[string]int32) {
 	AllTheme = append(AllTheme, name)
-	themes[name] = map[string]tcell.Color{}
+	themes[name] = make(map[string]tcell.Color)
 	for color, rgb := range palette {
 		themes[name][color] = tcell.NewHexColor(rgb)
 	}
