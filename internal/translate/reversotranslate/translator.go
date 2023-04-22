@@ -39,11 +39,12 @@ func (t *ReversoTranslate) GetAllLang() []string {
 	return lang
 }
 
-func (t *ReversoTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
+func (t *ReversoTranslate) Translate(message string) (translation *core.Translation, err error) {
+	translation = new(core.Translation)
 	var data map[string]interface{}
 
 	if t.GetSrcLang() == t.GetDstLang() {
-		return "", "", "", errors.New(
+		return nil, errors.New(
 			fmt.Sprintf("%s doesn't support translation of the same language.\ni.e. %s to %s",
 				t.GetEngineName(), t.GetSrcLang(), t.GetDstLang()))
 	}
@@ -67,23 +68,23 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 	req.Header.Add("User-Agent", core.UserAgent)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 
 	if len(data) <= 0 {
-		return "", "", "", errors.New("Translation not found")
+		return nil, errors.New("Translation not found")
 	}
 
 	// translation
 	for _, line := range data["translation"].([]interface{}) {
-		translation += fmt.Sprintf("%v", line)
+		translation.TEXT += fmt.Sprintf("%v", line)
 	}
 	// definition and part of speech
 	if data["contextResults"] != nil {
@@ -94,20 +95,20 @@ func (t *ReversoTranslate) Translate(message string) (translation, definition, p
 			dstExample := results["targetExamples"].([]interface{})
 			if len(srcExample) > 0 && len(dstExample) > 0 {
 				for i := 0; i < len(srcExample) && i < len(dstExample); i++ {
-					definition += fmt.Sprintf("- %v\n\t\"%v\"\n", srcExample[i], dstExample[i])
+					translation.DEF += fmt.Sprintf("- %v\n\t\"%v\"\n", srcExample[i], dstExample[i])
 				}
 			}
 			// part of speech
 			if results["partOfSpeech"] == nil {
-				partOfSpeech += fmt.Sprintf("%v\n", results["translation"])
+				translation.POS += fmt.Sprintf("%v\n", results["translation"])
 			} else {
-				partOfSpeech += fmt.Sprintf("%v [%v]\n", results["translation"], results["partOfSpeech"])
+				translation.POS += fmt.Sprintf("%v [%v]\n", results["translation"], results["partOfSpeech"])
 			}
 		}
-		definition = regexp.MustCompile("<(|/)em>").ReplaceAllString(definition, "")
+		translation.DEF = regexp.MustCompile("<(|/)em>").ReplaceAllString(translation.DEF, "")
 	}
 
-	return translation, definition, partOfSpeech, nil
+	return translation, nil
 }
 
 func (t *ReversoTranslate) PlayTTS(lang, message string) error {

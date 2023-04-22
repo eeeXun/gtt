@@ -4,6 +4,7 @@ import (
 	"github.com/eeeXun/gtt/internal/translate/apertiumtranslate"
 	"github.com/eeeXun/gtt/internal/translate/argostranslate"
 	"github.com/eeeXun/gtt/internal/translate/bingtranslate"
+	"github.com/eeeXun/gtt/internal/translate/core"
 	"github.com/eeeXun/gtt/internal/translate/googletranslate"
 	"github.com/eeeXun/gtt/internal/translate/reversotranslate"
 )
@@ -50,7 +51,7 @@ type Translator interface {
 	StopTTS()
 
 	// Translate from source to destination language
-	Translate(message string) (translation, definition, partOfSpeech string, err error)
+	Translate(message string) (translation *core.Translation, err error)
 
 	// Play text to speech
 	PlayTTS(lang, message string) error

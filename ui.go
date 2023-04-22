@@ -454,13 +454,13 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		message := srcInput.GetText()
 		// Only translate when message exist
 		if len(message) > 0 {
-			translation, definition, partOfSpeech, err := translator.Translate(message)
+			translation, err := translator.Translate(message)
 			if err != nil {
 				dstOutput.SetText(err.Error())
 			} else {
-				dstOutput.SetText(translation)
-				defOutput.SetText(definition, false)
-				posOutput.SetText(partOfSpeech, false)
+				dstOutput.SetText(translation.TEXT)
+				defOutput.SetText(translation.DEF, false)
+				posOutput.SetText(translation.POS, false)
 			}
 		}
 	case tcell.KeyCtrlQ:

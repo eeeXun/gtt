@@ -33,7 +33,8 @@ func (t *ApertiumTranslate) GetAllLang() []string {
 	return lang
 }
 
-func (t *ApertiumTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
+func (t *ApertiumTranslate) Translate(message string) (translation *core.Translation, err error) {
+	translation = new(core.Translation)
 	var data map[string]interface{}
 
 	urlStr := fmt.Sprintf(
@@ -44,26 +45,26 @@ func (t *ApertiumTranslate) Translate(message string) (translation, definition, 
 	)
 	res, err := http.Get(urlStr)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 
 	if len(data) <= 0 {
-		return "", "", "", errors.New("Translation not found")
+		return nil, errors.New("Translation not found")
 	}
 
 	switch res.StatusCode {
 	case 200:
-		translation = fmt.Sprintf("%v",
+		translation.TEXT = fmt.Sprintf("%v",
 			data["responseData"].(map[string]interface{})["translatedText"])
 	default:
-		return "", "", "", errors.New(
+		return nil, errors.New(
 			fmt.Sprintf("%s does not support translate from %s to %s.\nSee available pair on %s",
 				t.GetEngineName(),
 				t.GetSrcLang(),
@@ -72,7 +73,7 @@ func (t *ApertiumTranslate) Translate(message string) (translation, definition, 
 			))
 	}
 
-	return translation, definition, partOfSpeech, nil
+	return translation, nil
 }
 
 func (t *ApertiumTranslate) PlayTTS(lang, message string) error {

@@ -82,12 +82,13 @@ func (t *BingTranslate) setUp() (*setUpData, error) {
 	return &data, nil
 }
 
-func (t *BingTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
+func (t *BingTranslate) Translate(message string) (translation *core.Translation, err error) {
+	translation = new(core.Translation)
 	var data []interface{}
 
 	initData, err := t.setUp()
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	userData := url.Values{
 		"fromLang": {langCode[t.GetSrcLang()]},
@@ -104,22 +105,22 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	req.Header.Add("User-Agent", core.UserAgent)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 
 	if len(data) <= 0 {
-		return "", "", "", errors.New("Translation not found")
+		return nil, errors.New("Translation not found")
 	}
 
 	// translation
-	translation = fmt.Sprintf("%v",
+	translation.TEXT = fmt.Sprintf("%v",
 		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"])
 
 	// request part of speech
@@ -133,11 +134,11 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	req.Header.Add("User-Agent", core.UserAgent)
 	res, err = http.DefaultClient.Do(req)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err = ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	// Bing will return the request with list when success.
 	// Otherwises, it would return map. Then the following err would not be nil.
@@ -154,10 +155,10 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 			}
 			poses.add(pos["posTag"].(string), words)
 		}
-		partOfSpeech = poses.format()
+		translation.POS = poses.format()
 	}
 
-	return translation, definition, partOfSpeech, nil
+	return translation, nil
 }
 
 func (t *BingTranslate) PlayTTS(lang, message string) error {
