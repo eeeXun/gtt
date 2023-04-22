@@ -11,8 +11,8 @@ import (
 var (
 	AllTranslator = []string{
 		"ApertiumTranslate",
-		"BingTranslate",
 		"ArgosTranslate",
+		"BingTranslate",
 		"GoogleTranslate",
 		"ReversoTranslate",
 	}
