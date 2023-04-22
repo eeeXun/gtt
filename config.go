@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
 	config "github.com/spf13/viper"
 )
@@ -12,6 +13,7 @@ import (
 func configInit() {
 	var (
 		defaultConfigPath string
+		themeConfig       = config.New()
 		defaultConfig     = map[string]interface{}{
 			"hide_below":                             false,
 			"transparent":                            false,
@@ -34,13 +36,17 @@ func configInit() {
 
 	config.SetConfigName("gtt")
 	config.SetConfigType("yaml")
+	themeConfig.SetConfigName("theme")
+	themeConfig.SetConfigType("yaml")
 	if len(os.Getenv("XDG_CONFIG_HOME")) > 0 {
 		defaultConfigPath = os.Getenv("XDG_CONFIG_HOME") + "/gtt"
 		config.AddConfigPath(defaultConfigPath)
+		themeConfig.AddConfigPath(defaultConfigPath)
 	} else {
 		defaultConfigPath = os.Getenv("HOME") + "/.config/gtt"
 	}
 	config.AddConfigPath("$HOME/.config/gtt")
+	themeConfig.AddConfigPath("$HOME/.config/gtt")
 
 	// Create config file if not exists
 	// Otherwise check if config value is missing
@@ -62,6 +68,19 @@ func configInit() {
 		}
 		if missing {
 			config.WriteConfig()
+		}
+	}
+	// import theme if file exists
+	if err := themeConfig.ReadInConfig(); err == nil {
+		var (
+			palate = make(map[string]int32)
+			colors = []string{"bg", "fg", "gray", "red", "green", "yellow", "blue", "purple", "cyan", "orange"}
+		)
+		for name := range themeConfig.AllSettings() {
+			for _, color := range colors {
+				palate[color] = themeConfig.GetInt32(fmt.Sprintf("%s.%s", name, color))
+			}
+			style.NewTheme(name, palate)
 		}
 	}
 
