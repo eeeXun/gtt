@@ -50,7 +50,7 @@ func (t *BingTranslate) GetAllLang() []string {
 }
 
 func (t *BingTranslate) setUp() (*setUpData, error) {
-	var data setUpData
+	data := new(setUpData)
 
 	res, err := http.Get(setUpURL)
 	if err != nil {
@@ -79,7 +79,7 @@ func (t *BingTranslate) setUp() (*setUpData, error) {
 	data.key = paramsStr[0]
 	data.token = paramsStr[1][1 : len(paramsStr[1])-1]
 
-	return &data, nil
+	return data, nil
 }
 
 func (t *BingTranslate) Translate(message string) (translation *core.Translation, err error) {
