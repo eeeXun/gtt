@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
 	config "github.com/spf13/viper"
 )
@@ -15,7 +16,7 @@ func configInit() {
 		defaultConfig     = map[string]interface{}{
 			"hide_below":                             false,
 			"transparent":                            false,
-			"theme":                                  "Gruvbox",
+			"theme":                                  "gruvbox",
 			"source.border_color":                    "red",
 			"destination.border_color":               "blue",
 			"source.language.apertiumtranslate":      "English",
@@ -42,7 +43,7 @@ func configInit() {
 	}
 	config.AddConfigPath("$HOME/.config/gtt")
 
-	// Create config file if not exists
+	// Create config file if it does not exist
 	// Otherwise check if config value is missing
 	if err := config.ReadInConfig(); err != nil {
 		for key, value := range defaultConfig {
@@ -59,6 +60,11 @@ func configInit() {
 				config.Set(key, value)
 				missing = true
 			}
+		}
+		// Set to default theme if theme in config does not exist
+		if IndexOf(config.GetString("theme"), style.AllTheme) < 0 {
+			config.Set("theme", defaultConfig["theme"])
+			missing = true
 		}
 		if missing {
 			config.WriteConfig()
