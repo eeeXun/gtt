@@ -5,10 +5,6 @@ type Language struct {
 	dstLang string
 }
 
-func NewLanguage() *Language {
-	return &Language{}
-}
-
 func (l *Language) GetSrcLang() string {
 	return l.srcLang
 }

@@ -27,7 +27,7 @@ type Translator struct {
 
 func NewTranslator() *Translator {
 	return &Translator{
-		Language:   core.NewLanguage(),
+		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
 		EngineName: core.NewEngineName("Google"),
 	}
