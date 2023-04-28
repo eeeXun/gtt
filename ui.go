@@ -296,7 +296,7 @@ func uiInit() {
 				Item{item: attachItems(true, tview.FlexColumn,
 					Item{item: attachItems(false, tview.FlexRow,
 						Item{item: translatorDropDown, fixedSize: 0, proportion: 1, focus: false}),
-						fixedSize: 0, proportion: 2, focus: false}),
+						fixedSize: 0, proportion: 1, focus: false}),
 					fixedSize: 1, proportion: 1, focus: false},
 				Item{item: attachItems(false, tview.FlexColumn,
 					Item{item: srcLangDropDown, fixedSize: 0, proportion: 1, focus: true},
