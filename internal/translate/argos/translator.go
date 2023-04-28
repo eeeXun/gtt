@@ -1,4 +1,4 @@
-package argostranslate
+package argos
 
 import (
 	"encoding/json"
@@ -15,25 +15,25 @@ const (
 	textURL = "https://translate.argosopentech.com/translate"
 )
 
-type ArgosTranslate struct {
+type Translator struct {
 	*core.Language
 	*core.TTSLock
 	core.EngineName
 }
 
-func NewArgosTranslate() *ArgosTranslate {
-	return &ArgosTranslate{
+func NewTranslator() *Translator {
+	return &Translator{
 		Language:   core.NewLanguage(),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("ArgosTranslate"),
+		EngineName: core.NewEngineName("Argos"),
 	}
 }
 
-func (t *ArgosTranslate) GetAllLang() []string {
+func (t *Translator) GetAllLang() []string {
 	return lang
 }
 
-func (t *ArgosTranslate) Translate(message string) (translation *core.Translation, err error) {
+func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
@@ -63,7 +63,7 @@ func (t *ArgosTranslate) Translate(message string) (translation *core.Translatio
 	return translation, nil
 }
 
-func (t *ArgosTranslate) PlayTTS(lang, message string) error {
+func (t *Translator) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
 	return errors.New(t.GetEngineName() + " does not support text to speech")

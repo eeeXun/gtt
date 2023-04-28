@@ -1,4 +1,4 @@
-package apertiumtranslate
+package apertium
 
 var (
 	lang = []string{

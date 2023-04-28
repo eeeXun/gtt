@@ -1,4 +1,4 @@
-package apertiumtranslate
+package apertium
 
 import (
 	"encoding/json"
@@ -15,25 +15,25 @@ const (
 	textURL = "https://www.apertium.org/apy/translate?langpair=%s|%s&q=%s"
 )
 
-type ApertiumTranslate struct {
+type Translator struct {
 	*core.Language
 	*core.TTSLock
 	core.EngineName
 }
 
-func NewApertiumTranslate() *ApertiumTranslate {
-	return &ApertiumTranslate{
+func NewTranslator() *Translator {
+	return &Translator{
 		Language:   core.NewLanguage(),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("ApertiumTranslate"),
+		EngineName: core.NewEngineName("Apertium"),
 	}
 }
 
-func (t *ApertiumTranslate) GetAllLang() []string {
+func (t *Translator) GetAllLang() []string {
 	return lang
 }
 
-func (t *ApertiumTranslate) Translate(message string) (translation *core.Translation, err error) {
+func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
@@ -76,7 +76,7 @@ func (t *ApertiumTranslate) Translate(message string) (translation *core.Transla
 	return translation, nil
 }
 
-func (t *ApertiumTranslate) PlayTTS(lang, message string) error {
+func (t *Translator) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
 	return errors.New(t.GetEngineName() + " does not support text to speech")

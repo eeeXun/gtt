@@ -14,22 +14,22 @@ func configInit() {
 	var (
 		defaultConfigPath string
 		defaultConfig     = map[string]interface{}{
-			"hide_below":                             false,
-			"transparent":                            false,
-			"theme":                                  "gruvbox",
-			"source.border_color":                    "red",
-			"destination.border_color":               "blue",
-			"source.language.apertiumtranslate":      "English",
-			"destination.language.apertiumtranslate": "English",
-			"source.language.argostranslate":         "English",
-			"destination.language.argostranslate":    "English",
-			"source.language.bingtranslate":          "English",
-			"destination.language.bingtranslate":     "English",
-			"source.language.googletranslate":        "English",
-			"destination.language.googletranslate":   "English",
-			"source.language.reversotranslate":       "English",
-			"destination.language.reversotranslate":  "English",
-			"translator":                             "ArgosTranslate",
+			"hide_below":                    false,
+			"transparent":                   false,
+			"theme":                         "gruvbox",
+			"source.border_color":           "red",
+			"destination.border_color":      "blue",
+			"source.language.apertium":      "English",
+			"destination.language.apertium": "English",
+			"source.language.argos":         "English",
+			"destination.language.argos":    "English",
+			"source.language.bing":          "English",
+			"destination.language.bing":     "English",
+			"source.language.google":        "English",
+			"destination.language.google":   "English",
+			"source.language.reverso":       "English",
+			"destination.language.reverso":  "English",
+			"translator":                    "Argos",
 		}
 	)
 
@@ -64,6 +64,11 @@ func configInit() {
 		// Set to default theme if theme in config does not exist
 		if IndexOf(config.GetString("theme"), style.AllTheme) < 0 {
 			config.Set("theme", defaultConfig["theme"])
+			missing = true
+		}
+		// Set to default translator if translator in config does not exist
+		if IndexOf(config.GetString("translator"), translate.AllTranslator) < 0 {
+			config.Set("translator", defaultConfig["translator"])
 			missing = true
 		}
 		if missing {

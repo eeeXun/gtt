@@ -1,21 +1,21 @@
 package translate
 
 import (
-	"github.com/eeeXun/gtt/internal/translate/apertiumtranslate"
-	"github.com/eeeXun/gtt/internal/translate/argostranslate"
-	"github.com/eeeXun/gtt/internal/translate/bingtranslate"
+	"github.com/eeeXun/gtt/internal/translate/apertium"
+	"github.com/eeeXun/gtt/internal/translate/argos"
+	"github.com/eeeXun/gtt/internal/translate/bing"
 	"github.com/eeeXun/gtt/internal/translate/core"
-	"github.com/eeeXun/gtt/internal/translate/googletranslate"
-	"github.com/eeeXun/gtt/internal/translate/reversotranslate"
+	"github.com/eeeXun/gtt/internal/translate/google"
+	"github.com/eeeXun/gtt/internal/translate/reverso"
 )
 
 var (
 	AllTranslator = []string{
-		"ApertiumTranslate",
-		"ArgosTranslate",
-		"BingTranslate",
-		"GoogleTranslate",
-		"ReversoTranslate",
+		"Apertium",
+		"Argos",
+		"Bing",
+		"Google",
+		"Reverso",
 	}
 )
 
@@ -61,16 +61,16 @@ func NewTranslator(name string) Translator {
 	var translator Translator
 
 	switch name {
-	case "ApertiumTranslate":
-		translator = apertiumtranslate.NewApertiumTranslate()
-	case "ArgosTranslate":
-		translator = argostranslate.NewArgosTranslate()
-	case "BingTranslate":
-		translator = bingtranslate.NewBingTranslate()
-	case "GoogleTranslate":
-		translator = googletranslate.NewGoogleTranslate()
-	case "ReversoTranslate":
-		translator = reversotranslate.NewReversoTranslate()
+	case "Apertium":
+		translator = apertium.NewTranslator()
+	case "Argos":
+		translator = argos.NewTranslator()
+	case "Bing":
+		translator = bing.NewTranslator()
+	case "Google":
+		translator = google.NewTranslator()
+	case "Reverso":
+		translator = reverso.NewTranslator()
 	}
 
 	return translator

@@ -1,4 +1,4 @@
-package googletranslate
+package google
 
 import (
 	"encoding/json"
@@ -19,25 +19,25 @@ const (
 	ttsURL  = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
-type GoogleTranslate struct {
+type Translator struct {
 	*core.Language
 	*core.TTSLock
 	core.EngineName
 }
 
-func NewGoogleTranslate() *GoogleTranslate {
-	return &GoogleTranslate{
+func NewTranslator() *Translator {
+	return &Translator{
 		Language:   core.NewLanguage(),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("GoogleTranslate"),
+		EngineName: core.NewEngineName("Google"),
 	}
 }
 
-func (t *GoogleTranslate) GetAllLang() []string {
+func (t *Translator) GetAllLang() []string {
 	return lang
 }
 
-func (t *GoogleTranslate) Translate(message string) (translation *core.Translation, err error) {
+func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
 	var data []interface{}
 
@@ -118,7 +118,7 @@ func (t *GoogleTranslate) Translate(message string) (translation *core.Translati
 	return translation, nil
 }
 
-func (t *GoogleTranslate) PlayTTS(lang, message string) error {
+func (t *Translator) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
 	urlStr := fmt.Sprintf(

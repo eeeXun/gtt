@@ -1,4 +1,4 @@
-package argostranslate
+package argos
 
 var (
 	lang = []string{

@@ -1,4 +1,4 @@
-package reversotranslate
+package reverso
 
 import (
 	"bytes"
@@ -21,25 +21,25 @@ const (
 	ttsURL  = "https://voice.reverso.net/RestPronunciation.svc/v1/output=json/GetVoiceStream/voiceName=%s?voiceSpeed=80&inputText=%s"
 )
 
-type ReversoTranslate struct {
+type Translator struct {
 	*core.Language
 	*core.TTSLock
 	core.EngineName
 }
 
-func NewReversoTranslate() *ReversoTranslate {
-	return &ReversoTranslate{
+func NewTranslator() *Translator {
+	return &Translator{
 		Language:   core.NewLanguage(),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("ReversoTranslate"),
+		EngineName: core.NewEngineName("Reverso"),
 	}
 }
 
-func (t *ReversoTranslate) GetAllLang() []string {
+func (t *Translator) GetAllLang() []string {
 	return lang
 }
 
-func (t *ReversoTranslate) Translate(message string) (translation *core.Translation, err error) {
+func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
@@ -111,7 +111,7 @@ func (t *ReversoTranslate) Translate(message string) (translation *core.Translat
 	return translation, nil
 }
 
-func (t *ReversoTranslate) PlayTTS(lang, message string) error {
+func (t *Translator) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
 	name, ok := voiceName[lang]

@@ -3,11 +3,11 @@
 Google Translate TUI (Originally)
 
 Supported Translator:
-[`ApertiumTranslate`](https://www.apertium.org/),
-[`ArgosTranslate`](https://translate.argosopentech.com/)(default),
-[`BingTranslate`](https://www.bing.com/translator),
-[`GoogleTranslate`](https://translate.google.com/),
-[`ReversoTranslate`](https://www.reverso.net/text-translation)
+[`Apertium`](https://www.apertium.org/),
+[`Argos`](https://translate.argosopentech.com/)(default),
+[`Bing`](https://www.bing.com/translator),
+[`Google`](https://translate.google.com/),
+[`Reverso`](https://www.reverso.net/text-translation)
 
 ## ScreenShot
 
@@ -47,11 +47,11 @@ gtt -src "English" -dst "Chinese (Traditional)"
 
 See available languages on:
 
-- [Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`
-- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`
-- [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `BingTranslate`
-- [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
-- [Reverso Translation](https://www.reverso.net/text-translation) for `ReversoTranslate`
+- [Apertium Translate](https://www.apertium.org/) for `Apertium`
+- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
+- [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
+- [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
+- [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
 ## Key Map
 
