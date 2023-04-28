@@ -4,9 +4,9 @@ Google Translate TUI (Originally)
 
 Supported Translator:
 [`Apertium`](https://www.apertium.org/),
-[`Argos`](https://translate.argosopentech.com/)(default),
+[`Argos`](https://translate.argosopentech.com/),
 [`Bing`](https://www.bing.com/translator),
-[`Google`](https://translate.google.com/),
+[`Google`](https://translate.google.com/)(default),
 [`Reverso`](https://www.reverso.net/text-translation)
 
 ## ScreenShot

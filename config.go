@@ -29,7 +29,7 @@ func configInit() {
 			"destination.language.google":   "English",
 			"source.language.reverso":       "English",
 			"destination.language.reverso":  "English",
-			"translator":                    "Argos",
+			"translator":                    "Google",
 		}
 	)
 
