@@ -80,6 +80,9 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	if len(data) <= 0 {
 		return nil, errors.New("Translation not found")
 	}
+	if data["error"] != nil {
+		return nil, errors.New(data["error"].(map[string]interface{})["message"].(string))
+	}
 
 	translation.TEXT =
 		data["choices"].([]interface{})[0].(map[string]interface{})["message"].(map[string]interface{})["content"].(string)
