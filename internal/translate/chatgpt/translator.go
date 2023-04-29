@@ -43,7 +43,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	var data map[string]interface{}
 
 	if len(t.apiKey) <= 0 {
-		return nil, errors.New("Please set API Key in config file for " + t.GetEngineName())
+		return nil, errors.New("Please write your API Key in config file for " + t.GetEngineName())
 	}
 
 	userData, _ := json.Marshal(map[string]interface{}{
