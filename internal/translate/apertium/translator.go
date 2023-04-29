@@ -58,20 +58,17 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	if len(data) <= 0 {
 		return nil, errors.New("Translation not found")
 	}
-
-	switch res.StatusCode {
-	case 200:
-		translation.TEXT = fmt.Sprintf("%v",
-			data["responseData"].(map[string]interface{})["translatedText"])
-	default:
-		return nil, errors.New(
-			fmt.Sprintf("%s does not support translate from %s to %s.\nSee available pair on %s",
-				t.GetEngineName(),
-				t.GetSrcLang(),
-				t.GetDstLang(),
-				"https://www.apertium.org/",
-			))
+	// If responseData is nil, then suppose the translation pair is not available
+	if data["responseData"] == nil {
+		return nil, errors.New(fmt.Sprintf("%s does not support translate from %s to %s.",
+			t.GetEngineName(),
+			t.GetSrcLang(),
+			t.GetDstLang(),
+		))
 	}
+
+	translation.TEXT = fmt.Sprintf("%v",
+		data["responseData"].(map[string]interface{})["translatedText"])
 
 	return translation, nil
 }
