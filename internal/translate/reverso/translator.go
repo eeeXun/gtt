@@ -63,7 +63,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	})
 	req, _ := http.NewRequest("POST",
 		textURL,
-		bytes.NewBuffer([]byte(userData)))
+		bytes.NewBuffer(userData))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("User-Agent", core.UserAgent)
 	res, err := http.DefaultClient.Do(req)
