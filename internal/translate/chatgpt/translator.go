@@ -1,35 +1,37 @@
-package apertium
+package chatgpt
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 
 	"github.com/eeeXun/gtt/internal/translate/core"
 )
 
 const (
-	textURL = "https://www.apertium.org/apy/translate?langpair=%s|%s&q=%s"
+	textURL = "https://api.openai.com/v1/chat/completions"
 )
 
 type Translator struct {
 	*core.Language
 	*core.TTSLock
 	core.EngineName
+	apiKey string
 }
 
 func NewTranslator() *Translator {
 	return &Translator{
 		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("Apertium"),
+		EngineName: core.NewEngineName("ChatGPT"),
 	}
 }
 
 func (t *Translator) SetAPIKey(key string) {
+	t.apiKey = key
 }
 
 func (t *Translator) GetAllLang() []string {
@@ -40,13 +42,30 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
-	urlStr := fmt.Sprintf(
+	if len(t.apiKey) <= 0 {
+		return nil, errors.New("Please set API Key in config file for " + t.GetEngineName())
+	}
+
+	userData, _ := json.Marshal(map[string]interface{}{
+		"model": "gpt-3.5-turbo",
+		"messages": []map[string]string{{
+			"role": "user",
+			"content": fmt.Sprintf(
+				"Translate following text from %s to %s\n%s",
+				t.GetSrcLang(),
+				t.GetDstLang(),
+				message,
+			),
+		}},
+		"temperature": 0.7,
+	})
+	req, _ := http.NewRequest("POST",
 		textURL,
-		langCode[t.GetSrcLang()],
-		langCode[t.GetDstLang()],
-		url.QueryEscape(message),
+		bytes.NewBuffer(userData),
 	)
-	res, err := http.Get(urlStr)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+t.apiKey)
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -62,19 +81,8 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		return nil, errors.New("Translation not found")
 	}
 
-	switch res.StatusCode {
-	case 200:
-		translation.TEXT = fmt.Sprintf("%v",
-			data["responseData"].(map[string]interface{})["translatedText"])
-	default:
-		return nil, errors.New(
-			fmt.Sprintf("%s does not support translate from %s to %s.\nSee available pair on %s",
-				t.GetEngineName(),
-				t.GetSrcLang(),
-				t.GetDstLang(),
-				"https://www.apertium.org/",
-			))
-	}
+	translation.TEXT =
+		data["choices"].([]interface{})[0].(map[string]interface{})["message"].(map[string]interface{})["content"].(string)
 
 	return translation, nil
 }

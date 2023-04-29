@@ -45,6 +45,9 @@ func NewTranslator() *Translator {
 	}
 }
 
+func (t *Translator) SetAPIKey(key string) {
+}
+
 func (t *Translator) GetAllLang() []string {
 	return lang
 }

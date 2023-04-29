@@ -6,8 +6,19 @@ Supported Translator:
 [`Apertium`](https://www.apertium.org/),
 [`Argos`](https://translate.argosopentech.com/),
 [`Bing`](https://www.bing.com/translator),
+[`ChatGPT`](https://chat.openai.com/),
 [`Google`](https://translate.google.com/)(default),
 [`Reverso`](https://www.reverso.net/text-translation)
+
+## ⚠️ Note for ChatGPT
+
+You need to apply a API key on [ChatGPT](https://platform.openai.com/account/api-keys).
+And write it to `$XDG_CONFIG_HOME/gtt/gtt.yaml` or `$HOME/.config/gtt/gtt.yaml`.
+
+```yaml
+api_key:
+  chatgpt: YOUR_API_KEY # <- Replace with your API Key
+```
 
 ## ScreenShot
 
@@ -50,6 +61,7 @@ See available languages on:
 - [Apertium Translate](https://www.apertium.org/) for `Apertium`
 - [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
 - [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
+- `ChatGPT` is same as `Bing`. See [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation)
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
