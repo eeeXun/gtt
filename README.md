@@ -17,7 +17,7 @@ And write it to `$XDG_CONFIG_HOME/gtt/gtt.yaml` or `$HOME/.config/gtt/gtt.yaml`.
 
 ```yaml
 api_key:
-  chatgpt: YOUR_API_KEY # <- Replace with your API Key
+    chatgpt: YOUR_API_KEY # <- Replace with your API Key
 ```
 
 ## ScreenShot
