@@ -61,7 +61,7 @@ See available languages on:
 - [Apertium Translate](https://www.apertium.org/) for `Apertium`
 - [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
 - [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
-- `ChatGPT` is same as `Bing`. See [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation)
+- `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
