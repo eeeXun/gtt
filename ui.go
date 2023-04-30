@@ -233,6 +233,26 @@ func attachItems(center bool, direction int, items ...Item) *tview.Flex {
 	return container
 }
 
+func showLangPopout() {
+	mainPage.HidePage("stylePopOut")
+	mainPage.HidePage("keyMapPopOut")
+	mainPage.ShowPage("langPopOut")
+	app.SetFocus(langCycle.GetCurrentUI())
+}
+
+func showStylePopout() {
+	mainPage.HidePage("langPopOut")
+	mainPage.HidePage("keyMapPopOut")
+	mainPage.ShowPage("stylePopOut")
+	app.SetFocus(styleCycle.GetCurrentUI())
+}
+
+func showKeyMapPopout() {
+	mainPage.HidePage("langPopOut")
+	mainPage.HidePage("stylePopOut")
+	mainPage.ShowPage("keyMapPopOut")
+}
+
 func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
@@ -402,23 +422,9 @@ func uiInit() {
 			mainPage.HidePage("keyMapPopOut")
 		}
 	})
-	langButton.SetSelectedFunc(func() {
-		mainPage.HidePage("stylePopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("langPopOut")
-		app.SetFocus(langCycle.GetCurrentUI())
-	})
-	styleButton.SetSelectedFunc(func() {
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("stylePopOut")
-		app.SetFocus(styleCycle.GetCurrentUI())
-	})
-	keyMapButton.SetSelectedFunc(func() {
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("stylePopOut")
-		mainPage.ShowPage("keyMapPopOut")
-	})
+	langButton.SetSelectedFunc(showLangPopout)
+	styleButton.SetSelectedFunc(showStylePopout)
+	keyMapButton.SetSelectedFunc(showKeyMapPopout)
 }
 
 func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
@@ -537,19 +543,11 @@ func popOutHandler(event *tcell.EventKey) *tcell.EventKey {
 
 	switch ch {
 	case '1':
-		mainPage.HidePage("stylePopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("langPopOut")
-		app.SetFocus(langCycle.GetCurrentUI())
+		showLangPopout()
 	case '2':
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("stylePopOut")
-		app.SetFocus(styleCycle.GetCurrentUI())
+		showStylePopout()
 	case '3':
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("stylePopOut")
-		mainPage.ShowPage("keyMapPopOut")
+		showKeyMapPopout()
 	}
 
 	return event
