@@ -16,22 +16,19 @@ const (
 )
 
 type Translator struct {
+	*core.APIKey
 	*core.Language
 	*core.TTSLock
 	core.EngineName
-	apiKey string
 }
 
 func NewTranslator() *Translator {
 	return &Translator{
+		APIKey:     new(core.APIKey),
 		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
 		EngineName: core.NewEngineName("ChatGPT"),
 	}
-}
-
-func (t *Translator) SetAPIKey(key string) {
-	t.apiKey = key
 }
 
 func (t *Translator) GetAllLang() []string {
@@ -42,7 +39,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
-	if len(t.apiKey) <= 0 {
+	if len(t.GetAPIKey()) <= 0 {
 		return nil, errors.New("Please write your API Key in config file for " + t.GetEngineName())
 	}
 
@@ -64,7 +61,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		bytes.NewBuffer(userData),
 	)
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", "Bearer "+t.apiKey)
+	req.Header.Add("Authorization", "Bearer "+t.GetAPIKey())
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
