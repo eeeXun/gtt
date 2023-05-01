@@ -106,8 +106,6 @@ Switch pop out window.
 
 [`wl-clipboard`](https://github.com/bugaevc/wl-clipboard) for Linux/Wayland to copy text.
 
-`pbcopy` For macOS to copy text.
-
 ## Credit
 
 [soimort/translate-shell](https://github.com/soimort/translate-shell),
