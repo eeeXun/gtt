@@ -130,6 +130,9 @@ func (t *Translator) PlayTTS(lang, message string) error {
 	if err != nil {
 		return err
 	}
+	if res.StatusCode == 400 {
+		return errors.New(t.GetEngineName() + " does not support text to speech of " + lang)
+	}
 	decoder, err := mp3.NewDecoder(res.Body)
 	if err != nil {
 		return err
