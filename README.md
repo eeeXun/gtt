@@ -12,7 +12,7 @@ Supported Translator:
 
 ## ⚠️ Note for ChatGPT
 
-You need to apply a API key on [ChatGPT](https://platform.openai.com/account/api-keys).
+You need to apply an API key on [OpenAI API keys](https://platform.openai.com/account/api-keys).
 And write it to `$XDG_CONFIG_HOME/gtt/gtt.yaml` or `$HOME/.config/gtt/gtt.yaml`.
 
 ```yaml
@@ -92,10 +92,10 @@ Copy all text in source of translation window.
 Copy all text in destination of translation window.
 
 `<C-o>`
-Play sound on source of translation window.
+Play text to speech on source of translation window.
 
 `<C-p>`
-Play sound on destination of translation window.
+Play text to speech on destination of translation window.
 
 `<C-x>`
 Stop play sound.

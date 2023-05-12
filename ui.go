@@ -30,9 +30,9 @@ const (
 [#%[1]s]<C-r>[-]
 	Copy all text in destination of translation window.
 [#%[1]s]<C-o>[-]
-	Play sound on source of translation window.
+	Play text to speech on source of translation window.
 [#%[1]s]<C-p>[-]
-	Play sound on destination of translation window.
+	Play text to speech on destination of translation window.
 [#%[1]s]<C-x>[-]
 	Stop play sound.
 [#%[1]s]<C-t>[-]
@@ -500,7 +500,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 		dstOutput.SetText(srcText)
 	case tcell.KeyCtrlO:
-		// Play source sound
+		// Play text to speech on source of translation window.
 		if translator.LockAvailable() {
 			message := srcInput.GetText()
 			// Only play when message exist
@@ -517,7 +517,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 
 		}
 	case tcell.KeyCtrlP:
-		// Play destination sound
+		// Play text to speech on destination of translation window.
 		if translator.LockAvailable() {
 			message := dstOutput.GetText(false)
 			// Only play when message exist
