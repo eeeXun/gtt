@@ -22,7 +22,7 @@ api_key:
 
 ## ScreenShot
 
-![screenshot](https://user-images.githubusercontent.com/58657914/213123592-5d8bccfb-ff80-4ad6-aaca-03b31c4c2c59.gif)
+![screenshot](https://github.com/eeeXun/gtt/assets/58657914/3841c2bf-62f7-434a-9e77-91c3748c5675)
 
 ## Install
 
