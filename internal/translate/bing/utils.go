@@ -1,4 +1,4 @@
-package bingtranslate
+package bing
 
 import (
 	"fmt"

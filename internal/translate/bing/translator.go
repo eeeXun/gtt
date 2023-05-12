@@ -1,4 +1,4 @@
-package bingtranslate
+package bing
 
 import (
 	"encoding/json"
@@ -24,7 +24,8 @@ const (
 	ttsSSML  = "<speak version='1.0' xml:lang='%[1]s'><voice xml:lang='%[1]s' xml:gender='Female' name='%s'><prosody rate='-20.00%%'>%s</prosody></voice></speak>"
 )
 
-type BingTranslate struct {
+type Translator struct {
+	*core.APIKey
 	*core.Language
 	*core.TTSLock
 	core.EngineName
@@ -37,20 +38,21 @@ type setUpData struct {
 	token string
 }
 
-func NewBingTranslate() *BingTranslate {
-	return &BingTranslate{
-		Language:   core.NewLanguage(),
+func NewTranslator() *Translator {
+	return &Translator{
+		APIKey:     new(core.APIKey),
+		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("BingTranslate"),
+		EngineName: core.NewEngineName("Bing"),
 	}
 }
 
-func (t *BingTranslate) GetAllLang() []string {
+func (t *Translator) GetAllLang() []string {
 	return lang
 }
 
-func (t *BingTranslate) setUp() (*setUpData, error) {
-	var data setUpData
+func (t *Translator) setUp() (*setUpData, error) {
+	data := new(setUpData)
 
 	res, err := http.Get(setUpURL)
 	if err != nil {
@@ -79,15 +81,16 @@ func (t *BingTranslate) setUp() (*setUpData, error) {
 	data.key = paramsStr[0]
 	data.token = paramsStr[1][1 : len(paramsStr[1])-1]
 
-	return &data, nil
+	return data, nil
 }
 
-func (t *BingTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
+func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
+	translation = new(core.Translation)
 	var data []interface{}
 
 	initData, err := t.setUp()
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	userData := url.Values{
 		"fromLang": {langCode[t.GetSrcLang()]},
@@ -104,23 +107,23 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	req.Header.Add("User-Agent", core.UserAgent)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 
 	if len(data) <= 0 {
-		return "", "", "", errors.New("Translation not found")
+		return nil, errors.New("Translation not found")
 	}
 
 	// translation
-	translation = fmt.Sprintf("%v",
-		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"])
+	translation.TEXT =
+		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"].(string)
 
 	// request part of speech
 	userData.Del("fromLang")
@@ -133,11 +136,11 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 	req.Header.Add("User-Agent", core.UserAgent)
 	res, err = http.DefaultClient.Do(req)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err = ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	// Bing will return the request with list when success.
 	// Otherwises, it would return map. Then the following err would not be nil.
@@ -154,13 +157,13 @@ func (t *BingTranslate) Translate(message string) (translation, definition, part
 			}
 			poses.add(pos["posTag"].(string), words)
 		}
-		partOfSpeech = poses.format()
+		translation.POS = poses.format()
 	}
 
-	return translation, definition, partOfSpeech, nil
+	return translation, nil
 }
 
-func (t *BingTranslate) PlayTTS(lang, message string) error {
+func (t *Translator) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
 	name, ok := voiceName[lang]

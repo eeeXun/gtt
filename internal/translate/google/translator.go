@@ -1,4 +1,4 @@
-package googletranslate
+package google
 
 import (
 	"encoding/json"
@@ -19,25 +19,28 @@ const (
 	ttsURL  = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
-type GoogleTranslate struct {
+type Translator struct {
+	*core.APIKey
 	*core.Language
 	*core.TTSLock
 	core.EngineName
 }
 
-func NewGoogleTranslate() *GoogleTranslate {
-	return &GoogleTranslate{
-		Language:   core.NewLanguage(),
+func NewTranslator() *Translator {
+	return &Translator{
+		APIKey:     new(core.APIKey),
+		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("GoogleTranslate"),
+		EngineName: core.NewEngineName("Google"),
 	}
 }
 
-func (t *GoogleTranslate) GetAllLang() []string {
+func (t *Translator) GetAllLang() []string {
 	return lang
 }
 
-func (t *GoogleTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
+func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
+	translation = new(core.Translation)
 	var data []interface{}
 
 	urlStr := fmt.Sprintf(
@@ -48,24 +51,24 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 	)
 	res, err := http.Get(urlStr)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 
 	if len(data) <= 0 {
-		return "", "", "", errors.New("Translation not found")
+		return nil, errors.New("Translation not found")
 	}
 
 	// translation = data[0]
 	for _, line := range data[0].([]interface{}) {
 		translatedLine := line.([]interface{})[0]
-		translation += fmt.Sprintf("%v", translatedLine)
+		translation.TEXT += translatedLine.(string)
 	}
 	// part of speech = data[1]
 	if data[1] != nil {
@@ -73,23 +76,23 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 			partOfSpeeches := partOfSpeeches.([]interface{})
 			// part of speech
 			pos := partOfSpeeches[0]
-			partOfSpeech += fmt.Sprintf("[%v]\n", pos)
+			translation.POS += fmt.Sprintf("[%v]\n", pos)
 			for _, words := range partOfSpeeches[2].([]interface{}) {
 				words := words.([]interface{})
 				// dst lang
 				dstWord := words[0]
-				partOfSpeech += fmt.Sprintf("\t%v:", dstWord)
+				translation.POS += fmt.Sprintf("\t%v:", dstWord)
 				// src lang
 				firstWord := true
 				for _, word := range words[1].([]interface{}) {
 					if firstWord {
-						partOfSpeech += fmt.Sprintf(" %v", word)
+						translation.POS += fmt.Sprintf(" %v", word)
 						firstWord = false
 					} else {
-						partOfSpeech += fmt.Sprintf(", %v", word)
+						translation.POS += fmt.Sprintf(", %v", word)
 					}
 				}
-				partOfSpeech += "\n"
+				translation.POS += "\n"
 			}
 		}
 	}
@@ -99,25 +102,25 @@ func (t *GoogleTranslate) Translate(message string) (translation, definition, pa
 			definitions := definitions.([]interface{})
 			// part of speech
 			pos := definitions[0]
-			definition += fmt.Sprintf("[%v]\n", pos)
+			translation.DEF += fmt.Sprintf("[%v]\n", pos)
 			for _, sentences := range definitions[1].([]interface{}) {
 				sentences := sentences.([]interface{})
 				// definition
 				def := sentences[0]
-				definition += fmt.Sprintf("\t- %v\n", def)
+				translation.DEF += fmt.Sprintf("\t- %v\n", def)
 				// example sentence
 				if len(sentences) >= 3 && sentences[2] != nil {
 					example := sentences[2]
-					definition += fmt.Sprintf("\t\t\"%v\"\n", example)
+					translation.DEF += fmt.Sprintf("\t\t\"%v\"\n", example)
 				}
 			}
 		}
 	}
 
-	return translation, definition, partOfSpeech, nil
+	return translation, nil
 }
 
-func (t *GoogleTranslate) PlayTTS(lang, message string) error {
+func (t *Translator) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
 	urlStr := fmt.Sprintf(
@@ -128,6 +131,9 @@ func (t *GoogleTranslate) PlayTTS(lang, message string) error {
 	res, err := http.Get(urlStr)
 	if err != nil {
 		return err
+	}
+	if res.StatusCode == 400 {
+		return errors.New(t.GetEngineName() + " does not support text to speech of " + lang)
 	}
 	decoder, err := mp3.NewDecoder(res.Body)
 	if err != nil {

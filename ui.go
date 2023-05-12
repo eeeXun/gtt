@@ -30,9 +30,9 @@ const (
 [#%[1]s]<C-r>[-]
 	Copy all text in destination of translation window.
 [#%[1]s]<C-o>[-]
-	Play sound on source of translation window.
+	Play text to speech on source of translation window.
 [#%[1]s]<C-p>[-]
-	Play sound on destination of translation window.
+	Play text to speech on destination of translation window.
 [#%[1]s]<C-x>[-]
 	Stop play sound.
 [#%[1]s]<C-t>[-]
@@ -233,6 +233,26 @@ func attachItems(center bool, direction int, items ...Item) *tview.Flex {
 	return container
 }
 
+func showLangPopout() {
+	mainPage.HidePage("stylePopOut")
+	mainPage.HidePage("keyMapPopOut")
+	mainPage.ShowPage("langPopOut")
+	app.SetFocus(langCycle.GetCurrentUI())
+}
+
+func showStylePopout() {
+	mainPage.HidePage("langPopOut")
+	mainPage.HidePage("keyMapPopOut")
+	mainPage.ShowPage("stylePopOut")
+	app.SetFocus(styleCycle.GetCurrentUI())
+}
+
+func showKeyMapPopout() {
+	mainPage.HidePage("langPopOut")
+	mainPage.HidePage("stylePopOut")
+	mainPage.ShowPage("keyMapPopOut")
+}
+
 func uiInit() {
 	// input/output
 	srcInput.SetBorder(true)
@@ -296,7 +316,7 @@ func uiInit() {
 				Item{item: attachItems(true, tview.FlexColumn,
 					Item{item: attachItems(false, tview.FlexRow,
 						Item{item: translatorDropDown, fixedSize: 0, proportion: 1, focus: false}),
-						fixedSize: 0, proportion: 2, focus: false}),
+						fixedSize: 0, proportion: 1, focus: false}),
 					fixedSize: 1, proportion: 1, focus: false},
 				Item{item: attachItems(false, tview.FlexColumn,
 					Item{item: srcLangDropDown, fixedSize: 0, proportion: 1, focus: true},
@@ -402,23 +422,9 @@ func uiInit() {
 			mainPage.HidePage("keyMapPopOut")
 		}
 	})
-	langButton.SetSelectedFunc(func() {
-		mainPage.HidePage("stylePopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("langPopOut")
-		app.SetFocus(langCycle.GetCurrentUI())
-	})
-	styleButton.SetSelectedFunc(func() {
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("stylePopOut")
-		app.SetFocus(styleCycle.GetCurrentUI())
-	})
-	keyMapButton.SetSelectedFunc(func() {
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("stylePopOut")
-		mainPage.ShowPage("keyMapPopOut")
-	})
+	langButton.SetSelectedFunc(showLangPopout)
+	styleButton.SetSelectedFunc(showStylePopout)
+	keyMapButton.SetSelectedFunc(showKeyMapPopout)
 }
 
 func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
@@ -454,13 +460,13 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		message := srcInput.GetText()
 		// Only translate when message exist
 		if len(message) > 0 {
-			translation, definition, partOfSpeech, err := translator.Translate(message)
+			translation, err := translator.Translate(message)
 			if err != nil {
 				dstOutput.SetText(err.Error())
 			} else {
-				dstOutput.SetText(translation)
-				defOutput.SetText(definition, false)
-				posOutput.SetText(partOfSpeech, false)
+				dstOutput.SetText(translation.TEXT)
+				defOutput.SetText(translation.DEF, false)
+				posOutput.SetText(translation.POS, false)
 			}
 		}
 	case tcell.KeyCtrlQ:
@@ -494,7 +500,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 		dstOutput.SetText(srcText)
 	case tcell.KeyCtrlO:
-		// Play source sound
+		// Play text to speech on source of translation window.
 		if translator.LockAvailable() {
 			message := srcInput.GetText()
 			// Only play when message exist
@@ -504,13 +510,14 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 					err := translator.PlayTTS(translator.GetSrcLang(), message)
 					if err != nil {
 						srcInput.SetText(err.Error(), true)
+						app.Draw()
 					}
 				}()
 			}
 
 		}
 	case tcell.KeyCtrlP:
-		// Play destination sound
+		// Play text to speech on destination of translation window.
 		if translator.LockAvailable() {
 			message := dstOutput.GetText(false)
 			// Only play when message exist
@@ -520,6 +527,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 					err := translator.PlayTTS(translator.GetDstLang(), message)
 					if err != nil {
 						dstOutput.SetText(err.Error())
+						app.Draw()
 					}
 				}()
 			}
@@ -537,19 +545,11 @@ func popOutHandler(event *tcell.EventKey) *tcell.EventKey {
 
 	switch ch {
 	case '1':
-		mainPage.HidePage("stylePopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("langPopOut")
-		app.SetFocus(langCycle.GetCurrentUI())
+		showLangPopout()
 	case '2':
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("keyMapPopOut")
-		mainPage.ShowPage("stylePopOut")
-		app.SetFocus(styleCycle.GetCurrentUI())
+		showStylePopout()
 	case '3':
-		mainPage.HidePage("langPopOut")
-		mainPage.HidePage("stylePopOut")
-		mainPage.ShowPage("keyMapPopOut")
+		showKeyMapPopout()
 	}
 
 	return event

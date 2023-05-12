@@ -1,4 +1,4 @@
-package reversotranslate
+package reverso
 
 var (
 	lang = []string{

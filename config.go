@@ -15,22 +15,24 @@ func configInit() {
 		defaultConfigPath string
 		themeConfig       = config.New()
 		defaultConfig     = map[string]interface{}{
-			"hide_below":                             false,
-			"transparent":                            false,
-			"theme":                                  "Gruvbox",
-			"source.border_color":                    "red",
-			"destination.border_color":               "blue",
-			"source.language.apertiumtranslate":      "English",
-			"destination.language.apertiumtranslate": "English",
-			"source.language.argostranslate":         "English",
-			"destination.language.argostranslate":    "English",
-			"source.language.bingtranslate":          "English",
-			"destination.language.bingtranslate":     "English",
-			"source.language.googletranslate":        "English",
-			"destination.language.googletranslate":   "English",
-			"source.language.reversotranslate":       "English",
-			"destination.language.reversotranslate":  "English",
-			"translator":                             "ArgosTranslate",
+			"hide_below":                    false,
+			"transparent":                   false,
+			"theme":                         "gruvbox",
+			"source.border_color":           "red",
+			"destination.border_color":      "blue",
+			"source.language.apertium":      "English",
+			"destination.language.apertium": "English",
+			"source.language.argos":         "English",
+			"destination.language.argos":    "English",
+			"source.language.bing":          "English",
+			"destination.language.bing":     "English",
+			"source.language.chatgpt":       "English",
+			"destination.language.chatgpt":  "English",
+			"source.language.google":        "English",
+			"destination.language.google":   "English",
+			"source.language.reverso":       "English",
+			"destination.language.reverso":  "English",
+			"translator":                    "Google",
 		}
 	)
 
@@ -48,7 +50,7 @@ func configInit() {
 	config.AddConfigPath("$HOME/.config/gtt")
 	themeConfig.AddConfigPath("$HOME/.config/gtt")
 
-	// Create config file if not exists
+	// Create config file if it does not exist
 	// Otherwise check if config value is missing
 	if err := config.ReadInConfig(); err != nil {
 		for key, value := range defaultConfig {
@@ -65,6 +67,16 @@ func configInit() {
 				config.Set(key, value)
 				missing = true
 			}
+		}
+		// Set to default theme if theme in config does not exist
+		if IndexOf(config.GetString("theme"), style.AllTheme) < 0 {
+			config.Set("theme", defaultConfig["theme"])
+			missing = true
+		}
+		// Set to default translator if translator in config does not exist
+		if IndexOf(config.GetString("translator"), translate.AllTranslator) < 0 {
+			config.Set("translator", defaultConfig["translator"])
+			missing = true
 		}
 		if missing {
 			config.WriteConfig()
@@ -84,7 +96,7 @@ func configInit() {
 		}
 	}
 
-	// setup
+	// Setup
 	for _, name := range translate.AllTranslator {
 		translators[name] = translate.NewTranslator(name)
 		translators[name].SetSrcLang(
@@ -98,7 +110,11 @@ func configInit() {
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
 		SetDstBorderColor(config.GetString("destination.border_color"))
-	// set argument language
+	// Set API Key
+	if config.Get("api_key.chatgpt") != nil {
+		translators["ChatGPT"].SetAPIKey(config.GetString("api_key.chatgpt"))
+	}
+	// Set argument language
 	if len(*srcLangArg) > 0 {
 		translator.SetSrcLang(*srcLangArg)
 	}

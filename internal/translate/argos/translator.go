@@ -1,9 +1,8 @@
-package argostranslate
+package argos
 
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -15,25 +14,28 @@ const (
 	textURL = "https://translate.argosopentech.com/translate"
 )
 
-type ArgosTranslate struct {
+type Translator struct {
+	*core.APIKey
 	*core.Language
 	*core.TTSLock
 	core.EngineName
 }
 
-func NewArgosTranslate() *ArgosTranslate {
-	return &ArgosTranslate{
-		Language:   core.NewLanguage(),
+func NewTranslator() *Translator {
+	return &Translator{
+		APIKey:     new(core.APIKey),
+		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("ArgosTranslate"),
+		EngineName: core.NewEngineName("Argos"),
 	}
 }
 
-func (t *ArgosTranslate) GetAllLang() []string {
+func (t *Translator) GetAllLang() []string {
 	return lang
 }
 
-func (t *ArgosTranslate) Translate(message string) (translation, definition, partOfSpeech string, err error) {
+func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
+	translation = new(core.Translation)
 	var data map[string]interface{}
 
 	res, err := http.PostForm(textURL,
@@ -43,26 +45,26 @@ func (t *ArgosTranslate) Translate(message string) (translation, definition, par
 			"target": {langCode[t.GetDstLang()]},
 		})
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 	if err = json.Unmarshal(body, &data); err != nil {
-		return "", "", "", err
+		return nil, err
 	}
 
 	if len(data) <= 0 {
-		return "", "", "", errors.New("Translation not found")
+		return nil, errors.New("Translation not found")
 	}
 
-	translation = fmt.Sprintf("%v", data["translatedText"])
+	translation.TEXT = data["translatedText"].(string)
 
-	return translation, definition, partOfSpeech, nil
+	return translation, nil
 }
 
-func (t *ArgosTranslate) PlayTTS(lang, message string) error {
+func (t *Translator) PlayTTS(lang, message string) error {
 	defer t.ReleaseLock()
 
 	return errors.New(t.GetEngineName() + " does not support text to speech")

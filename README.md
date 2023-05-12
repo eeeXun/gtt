@@ -3,11 +3,22 @@
 Google Translate TUI (Originally)
 
 Supported Translator:
-[`ApertiumTranslate`](https://www.apertium.org/),
-[`ArgosTranslate`](https://translate.argosopentech.com/)(default),
-[`BingTranslate`](https://www.bing.com/translator),
-[`GoogleTranslate`](https://translate.google.com/),
-[`ReversoTranslate`](https://www.reverso.net/text-translation)
+[`Apertium`](https://www.apertium.org/),
+[`Argos`](https://translate.argosopentech.com/),
+[`Bing`](https://www.bing.com/translator),
+[`ChatGPT`](https://chat.openai.com/),
+[`Google`](https://translate.google.com/)(default),
+[`Reverso`](https://www.reverso.net/text-translation)
+
+## ⚠️ Note for ChatGPT
+
+You need to apply an API key on [OpenAI API keys](https://platform.openai.com/account/api-keys).
+And write it to `$XDG_CONFIG_HOME/gtt/gtt.yaml` or `$HOME/.config/gtt/gtt.yaml`.
+
+```yaml
+api_key:
+    chatgpt: YOUR_API_KEY # <- Replace with your API Key
+```
 
 ## ScreenShot
 
@@ -47,11 +58,12 @@ gtt -src "English" -dst "Chinese (Traditional)"
 
 See available languages on:
 
-- [Apertium Translate](https://www.apertium.org/) for `ApertiumTranslate`
-- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `ArgosTranslate`
-- [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `BingTranslate`
-- [Google Language support](https://cloud.google.com/translate/docs/languages) for `GoogleTranslate`
-- [Reverso Translation](https://www.reverso.net/text-translation) for `ReversoTranslate`
+- [Apertium Translate](https://www.apertium.org/) for `Apertium`
+- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
+- [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
+- `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
+- [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
+- [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
 ## Key Map
 
@@ -80,10 +92,10 @@ Copy all text in source of translation window.
 Copy all text in destination of translation window.
 
 `<C-o>`
-Play sound on source of translation window.
+Play text to speech on source of translation window.
 
 `<C-p>`
-Play sound on destination of translation window.
+Play text to speech on destination of translation window.
 
 `<C-x>`
 Stop play sound.
@@ -105,8 +117,6 @@ Switch pop out window.
 [`xclip`](https://github.com/astrand/xclip) for Linux/X11 to copy text.
 
 [`wl-clipboard`](https://github.com/bugaevc/wl-clipboard) for Linux/Wayland to copy text.
-
-`pbcopy` For macOS to copy text.
 
 ## Credit
 
