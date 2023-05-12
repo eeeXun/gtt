@@ -510,6 +510,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 					err := translator.PlayTTS(translator.GetSrcLang(), message)
 					if err != nil {
 						srcInput.SetText(err.Error(), true)
+						app.Draw()
 					}
 				}()
 			}
@@ -526,6 +527,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 					err := translator.PlayTTS(translator.GetDstLang(), message)
 					if err != nil {
 						dstOutput.SetText(err.Error())
+						app.Draw()
 					}
 				}()
 			}
