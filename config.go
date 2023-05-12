@@ -50,6 +50,19 @@ func configInit() {
 	config.AddConfigPath("$HOME/.config/gtt")
 	themeConfig.AddConfigPath("$HOME/.config/gtt")
 
+	// import theme if file exists
+	if err := themeConfig.ReadInConfig(); err == nil {
+		var (
+			palate = make(map[string]int32)
+			colors = []string{"bg", "fg", "gray", "red", "green", "yellow", "blue", "purple", "cyan", "orange"}
+		)
+		for name := range themeConfig.AllSettings() {
+			for _, color := range colors {
+				palate[color] = themeConfig.GetInt32(fmt.Sprintf("%s.%s", name, color))
+			}
+			style.NewTheme(name, palate)
+		}
+	}
 	// Create config file if it does not exist
 	// Otherwise check if config value is missing
 	if err := config.ReadInConfig(); err != nil {
@@ -80,19 +93,6 @@ func configInit() {
 		}
 		if missing {
 			config.WriteConfig()
-		}
-	}
-	// import theme if file exists
-	if err := themeConfig.ReadInConfig(); err == nil {
-		var (
-			palate = make(map[string]int32)
-			colors = []string{"bg", "fg", "gray", "red", "green", "yellow", "blue", "purple", "cyan", "orange"}
-		)
-		for name := range themeConfig.AllSettings() {
-			for _, color := range colors {
-				palate[color] = themeConfig.GetInt32(fmt.Sprintf("%s.%s", name, color))
-			}
-			style.NewTheme(name, palate)
 		}
 	}
 
