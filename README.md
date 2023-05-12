@@ -26,6 +26,16 @@ api_key:
 
 ## Install
 
+### Dependencies
+
+For Arch Linux, you need `alsa-lib`.
+For Ubuntu or Debian, you need `libasound2-dev`.
+For RedHat-based Linux, you need `alsa-lib-devel`.
+
+[`xclip`](https://github.com/astrand/xclip) (optional) - for Linux/X11 to copy text.
+
+[`wl-clipboard`](https://github.com/bugaevc/wl-clipboard) (optional) - for Linux/Wayland to copy text.
+
 ### Arch Linux ([AUR](https://aur.archlinux.org/packages/gtt-bin))
 
 ```
@@ -125,12 +135,6 @@ Cycle through the pop out widget.
 
 `<1>`, `<2>`, `<3>`
 Switch pop out window.
-
-## Dependencies
-
-[`xclip`](https://github.com/astrand/xclip) for Linux/X11 to copy text.
-
-[`wl-clipboard`](https://github.com/bugaevc/wl-clipboard) for Linux/Wayland to copy text.
 
 ## Credit
 
