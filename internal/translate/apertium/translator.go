@@ -69,8 +69,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		))
 	}
 
-	translation.TEXT = fmt.Sprintf("%v",
-		data["responseData"].(map[string]interface{})["translatedText"])
+	translation.TEXT = data["responseData"].(map[string]interface{})["translatedText"].(string)
 
 	return translation, nil
 }

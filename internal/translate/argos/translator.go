@@ -3,7 +3,6 @@ package argos
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -60,7 +59,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		return nil, errors.New("Translation not found")
 	}
 
-	translation.TEXT = fmt.Sprintf("%v", data["translatedText"])
+	translation.TEXT = data["translatedText"].(string)
 
 	return translation, nil
 }

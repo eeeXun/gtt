@@ -122,8 +122,8 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 
 	// translation
-	translation.TEXT = fmt.Sprintf("%v",
-		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"])
+	translation.TEXT =
+		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"].(string)
 
 	// request part of speech
 	userData.Del("fromLang")

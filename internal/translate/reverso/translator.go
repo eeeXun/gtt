@@ -86,7 +86,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 
 	// translation
 	for _, line := range data["translation"].([]interface{}) {
-		translation.TEXT += fmt.Sprintf("%v", line)
+		translation.TEXT += line.(string)
 	}
 	// definition and part of speech
 	if data["contextResults"] != nil {
