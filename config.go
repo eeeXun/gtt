@@ -25,6 +25,8 @@ func configInit() {
 			"destination.language.argos":    "English",
 			"source.language.bing":          "English",
 			"destination.language.bing":     "English",
+			"source.language.chatgpt":       "English",
+			"destination.language.chatgpt":  "English",
 			"source.language.google":        "English",
 			"destination.language.google":   "English",
 			"source.language.reverso":       "English",
@@ -76,7 +78,7 @@ func configInit() {
 		}
 	}
 
-	// setup
+	// Setup
 	for _, name := range translate.AllTranslator {
 		translators[name] = translate.NewTranslator(name)
 		translators[name].SetSrcLang(
@@ -90,7 +92,11 @@ func configInit() {
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
 		SetDstBorderColor(config.GetString("destination.border_color"))
-	// set argument language
+	// Set API Key
+	if config.Get("api_key.chatgpt") != nil {
+		translators["ChatGPT"].SetAPIKey(config.GetString("api_key.chatgpt"))
+	}
+	// Set argument language
 	if len(*srcLangArg) > 0 {
 		translator.SetSrcLang(*srcLangArg)
 	}

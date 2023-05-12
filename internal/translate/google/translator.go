@@ -20,6 +20,7 @@ const (
 )
 
 type Translator struct {
+	*core.APIKey
 	*core.Language
 	*core.TTSLock
 	core.EngineName
@@ -27,6 +28,7 @@ type Translator struct {
 
 func NewTranslator() *Translator {
 	return &Translator{
+		APIKey:     new(core.APIKey),
 		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
 		EngineName: core.NewEngineName("Google"),

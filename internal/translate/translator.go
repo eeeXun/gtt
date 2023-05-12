@@ -4,6 +4,7 @@ import (
 	"github.com/eeeXun/gtt/internal/translate/apertium"
 	"github.com/eeeXun/gtt/internal/translate/argos"
 	"github.com/eeeXun/gtt/internal/translate/bing"
+	"github.com/eeeXun/gtt/internal/translate/chatgpt"
 	"github.com/eeeXun/gtt/internal/translate/core"
 	"github.com/eeeXun/gtt/internal/translate/google"
 	"github.com/eeeXun/gtt/internal/translate/reverso"
@@ -14,6 +15,7 @@ var (
 		"Apertium",
 		"Argos",
 		"Bing",
+		"ChatGPT",
 		"Google",
 		"Reverso",
 	}
@@ -41,6 +43,9 @@ type Translator interface {
 	// Swap source and destination language of the translator
 	SwapLang()
 
+	// Set API Key
+	SetAPIKey(key string)
+
 	// Check if lock is available
 	LockAvailable() bool
 
@@ -67,6 +72,8 @@ func NewTranslator(name string) Translator {
 		translator = argos.NewTranslator()
 	case "Bing":
 		translator = bing.NewTranslator()
+	case "ChatGPT":
+		translator = chatgpt.NewTranslator()
 	case "Google":
 		translator = google.NewTranslator()
 	case "Reverso":

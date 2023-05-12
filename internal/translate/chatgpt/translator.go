@@ -1,18 +1,18 @@
-package argos
+package chatgpt
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 
 	"github.com/eeeXun/gtt/internal/translate/core"
 )
 
 const (
-	textURL = "https://translate.argosopentech.com/translate"
+	textURL = "https://api.openai.com/v1/chat/completions"
 )
 
 type Translator struct {
@@ -27,7 +27,7 @@ func NewTranslator() *Translator {
 		APIKey:     new(core.APIKey),
 		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("Argos"),
+		EngineName: core.NewEngineName("ChatGPT"),
 	}
 }
 
@@ -39,12 +39,30 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
-	res, err := http.PostForm(textURL,
-		url.Values{
-			"q":      {message},
-			"source": {langCode[t.GetSrcLang()]},
-			"target": {langCode[t.GetDstLang()]},
-		})
+	if len(t.GetAPIKey()) <= 0 {
+		return nil, errors.New("Please write your API Key in config file for " + t.GetEngineName())
+	}
+
+	userData, _ := json.Marshal(map[string]interface{}{
+		"model": "gpt-3.5-turbo",
+		"messages": []map[string]string{{
+			"role": "user",
+			"content": fmt.Sprintf(
+				"Translate following text from %s to %s\n%s",
+				t.GetSrcLang(),
+				t.GetDstLang(),
+				message,
+			),
+		}},
+		"temperature": 0.7,
+	})
+	req, _ := http.NewRequest("POST",
+		textURL,
+		bytes.NewBuffer(userData),
+	)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+t.GetAPIKey())
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +77,12 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	if len(data) <= 0 {
 		return nil, errors.New("Translation not found")
 	}
+	if data["error"] != nil {
+		return nil, errors.New(data["error"].(map[string]interface{})["message"].(string))
+	}
 
-	translation.TEXT = fmt.Sprintf("%v", data["translatedText"])
+	translation.TEXT =
+		data["choices"].([]interface{})[0].(map[string]interface{})["message"].(map[string]interface{})["content"].(string)
 
 	return translation, nil
 }
