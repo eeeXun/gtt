@@ -52,6 +52,14 @@ docker run -it eeexun/gtt
 
 You can create a theme with theme name. And you must provide the color of `bg`, `fg`, `gray`, `red`, `green`, `yellow`, `blue`, `purple`, `cyan`, `orange`.
 
+And note that:
+
+- `bg` is for background color
+- `fg` is for foreground color
+- `gray` is for selected color
+- `yellow` is for label color
+- `orange` is for KeyMap menu color
+
 See the example in [theme.yaml](example/theme.yaml) file. This file should located under `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`
 
 ## Language in argument
