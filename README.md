@@ -38,7 +38,7 @@ For RedHat-based Linux, you need `alsa-lib-devel`.
 
 ### Arch Linux ([AUR](https://aur.archlinux.org/packages/gtt-bin))
 
-```
+```sh
 yay -S gtt-bin
 ```
 
@@ -48,19 +48,27 @@ Binary file is available in [Release Page](https://github.com/eeeXun/gtt/release
 
 ### From source
 
-```
+#### go install
+
+```sh
 go install github.com/eeeXun/gtt@latest
 ```
 
-or
+And make sure `$HOME/go/bin` is in your `$PATH`
 
+```sh
+export PATH=$PATH:$HOME/go/bin
 ```
+
+#### go build
+
+```sh
 git clone https://github.com/eeeXun/gtt.git && cd gtt && go build -ldflags="-s -w -X main.version=$(git describe --tags)"
 ```
 
 ### Run on Docker
 
-```
+```sh
 docker run -it eeexun/gtt
 ```
 
@@ -82,7 +90,7 @@ See the example in [theme.yaml](example/theme.yaml) file. This file should locat
 
 You can pass `-src` and `-dst` in argument to set source and destination language.
 
-```
+```sh
 gtt -src "English" -dst "Chinese (Traditional)"
 ```
 
