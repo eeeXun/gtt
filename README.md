@@ -52,6 +52,12 @@ Binary file is available in [Release Page](https://github.com/eeeXun/gtt/release
 go install github.com/eeeXun/gtt@latest
 ```
 
+or
+
+```
+git clone https://github.com/eeeXun/gtt.git && cd gtt && go build -ldflags="-s -w -X main.version=$(git describe --tags)"
+```
+
 ### Run on Docker
 
 ```
