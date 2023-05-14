@@ -28,6 +28,8 @@ func configInit() {
 			"destination.language.bing":     "English",
 			"source.language.chatgpt":       "English",
 			"destination.language.chatgpt":  "English",
+			"source.language.deepl":         "English",
+			"destination.language.deepl":    "English",
 			"source.language.google":        "English",
 			"destination.language.google":   "English",
 			"source.language.reverso":       "English",
