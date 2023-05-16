@@ -7,7 +7,7 @@ Supported Translator:
 [`Argos`](https://translate.argosopentech.com/),
 [`Bing`](https://www.bing.com/translator),
 [`ChatGPT`](https://chat.openai.com/),
-[`DeepL`](https://deepl.com/translator) (only free API),
+[`DeepL`](https://deepl.com/translator)(only free API),
 [`Google`](https://translate.google.com/)(default),
 [`Reverso`](https://www.reverso.net/text-translation)
 
@@ -18,7 +18,7 @@ ChatGPT and DeepL translations require API keys, which can be obtained from
 [DeepL API signup](https://www.deepl.com/pro-api) pages, respectively. Note
 that only the free API is supported for DeepL currently. Once you have your
 API key add it to `$XDG_CONFIG_HOME/gtt/gtt.yaml` or
-`$HOME/.config/gtt/gtt.yaml`:
+`$HOME/.config/gtt/gtt.yaml`
 
 ```yaml
 api_key:
@@ -90,7 +90,7 @@ And note that:
 - `yellow` is for label color
 - `orange` is for KeyMap menu color
 
-See the example in [theme.yaml](example/theme.yaml) file. This file should located under `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`
+See the example in [theme.yaml](example/theme.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`
 
 ## Language in argument
 

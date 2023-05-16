@@ -1,4 +1,4 @@
-# This file should located under $XDG_CONFIG_HOME/gtt/theme.yaml or $HOME/.config/gtt/theme.yaml
+# This file should located at $XDG_CONFIG_HOME/gtt/theme.yaml or $HOME/.config/gtt/theme.yaml
 # You have to provide theme name. e.g. tokyonight
 # And colors: bg, fg, gray, red, green, yellow, blue, purple, cyan, orange
 # bg is for background color
