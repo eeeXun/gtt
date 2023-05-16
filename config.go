@@ -28,6 +28,8 @@ func configInit() {
 			"destination.language.bing":     "English",
 			"source.language.chatgpt":       "English",
 			"destination.language.chatgpt":  "English",
+			"source.language.deepl":         "English",
+			"destination.language.deepl":    "English",
 			"source.language.google":        "English",
 			"destination.language.google":   "English",
 			"source.language.reverso":       "English",
@@ -110,9 +112,12 @@ func configInit() {
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
 		SetDstBorderColor(config.GetString("destination.border_color"))
-	// Set API Key
+	// Set API Keys
 	if config.Get("api_key.chatgpt") != nil {
 		translators["ChatGPT"].SetAPIKey(config.GetString("api_key.chatgpt"))
+	}
+	if config.Get("api_key.deepl") != nil {
+		translators["DeepL"].SetAPIKey(config.GetString("api_key.deepl"))
 	}
 	// Set argument language
 	if len(*srcLangArg) > 0 {

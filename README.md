@@ -7,17 +7,23 @@ Supported Translator:
 [`Argos`](https://translate.argosopentech.com/),
 [`Bing`](https://www.bing.com/translator),
 [`ChatGPT`](https://chat.openai.com/),
+[`DeepL`](https://deepl.com/translator) (only free API),
 [`Google`](https://translate.google.com/)(default),
 [`Reverso`](https://www.reverso.net/text-translation)
 
-## ⚠️ Note for ChatGPT
+## ⚠️ Note for ChatGPT and DeepL
 
-You need to apply an API key on [OpenAI API keys](https://platform.openai.com/account/api-keys).
-And write it to `$XDG_CONFIG_HOME/gtt/gtt.yaml` or `$HOME/.config/gtt/gtt.yaml`.
+ChatGPT and DeepL translations require API keys, which can be obtained from
+[OpenAI API keys](https://platform.openai.com/account/api-keys) and
+[DeepL API signup](https://www.deepl.com/pro-api) pages, respectively. Note
+that only the free API is supported for DeepL currently. Once you have your
+API key add it to `$XDG_CONFIG_HOME/gtt/gtt.yaml` or
+`$HOME/.config/gtt/gtt.yaml`:
 
 ```yaml
 api_key:
-    chatgpt: YOUR_API_KEY # <- Replace with your API Key
+    chatgpt: CHATGPT_API_KEY # <- Replace with your API Key
+    deepl: DEEPL_API_KEY # <- Replace with your API Key
 ```
 
 ## ScreenShot
@@ -100,6 +106,7 @@ See available languages on:
 - [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
 - [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
 - `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
+- [DeepL API docs](https://www.deepl.com/docs-api/translate-text/) for `DeepL`
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
