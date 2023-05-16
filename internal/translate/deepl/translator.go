@@ -3,7 +3,6 @@ package deepl
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -44,15 +43,16 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		return nil, errors.New("Please write your API Key in config file for " + t.GetEngineName())
 	}
 
-	userData := url.Values{}
-	userData.Set("text", message)
-	userData.Set("source_lang", langCode[t.GetSrcLang()])
-	userData.Set("target_lang", langCode[t.GetDstLang()])
+	userData := url.Values{
+		"text":        {message},
+		"source_lang": {langCode[t.GetSrcLang()]},
+		"target_lang": {langCode[t.GetDstLang()]},
+	}
 	req, _ := http.NewRequest(http.MethodPost,
 		textURL,
 		strings.NewReader(userData.Encode()),
 	)
-	req.Header.Add("Authorization", fmt.Sprintf("DeepL-Auth-Key %s", t.GetAPIKey()))
+	req.Header.Add("Authorization", "DeepL-Auth-Key "+t.GetAPIKey())
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -70,9 +70,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		return nil, errors.New("translation not found")
 	}
 
-	// fmt.Println("Request: ", req)
 	translation.TEXT = data["translations"].([]interface{})[0].(map[string]interface{})["text"].(string)
-	// translation.TEXT = fmt.Sprintf("Data: %s\nBody: %s\nRequest: %v", userData.Encode(), body, req)
 
 	return translation, nil
 }
