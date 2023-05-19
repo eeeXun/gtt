@@ -113,11 +113,10 @@ func configInit() {
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
 		SetDstBorderColor(config.GetString("destination.border_color"))
 	// Set API Keys
-	if config.Get("api_key.chatgpt") != nil {
-		translators["ChatGPT"].SetAPIKey(config.GetString("api_key.chatgpt"))
-	}
-	if config.Get("api_key.deepl") != nil {
-		translators["DeepL"].SetAPIKey(config.GetString("api_key.deepl"))
+	for _, name := range []string{"ChatGPT", "DeepL"} {
+		if config.Get(fmt.Sprintf("api_key.%s", name)) != nil {
+			translators[name].SetAPIKey(config.GetString(fmt.Sprintf("api_key.%s", name)))
+		}
 	}
 	// Set argument language
 	if len(*srcLangArg) > 0 {
