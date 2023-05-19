@@ -34,7 +34,7 @@ const (
 [#%[1]s]<C-p>[-]
 	Play text to speech on destination of translation window.
 [#%[1]s]<C-x>[-]
-	Stop play sound.
+	Stop playing text to speech.
 [#%[1]s]<C-t>[-]
 	Toggle transparent.
 [#%[1]s]<C-\>[-]

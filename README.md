@@ -143,7 +143,7 @@ Play text to speech on source of translation window.
 Play text to speech on destination of translation window.
 
 `<C-x>`
-Stop play sound.
+Stop playing text to speech.
 
 `<C-t>`
 Toggle transparent.
