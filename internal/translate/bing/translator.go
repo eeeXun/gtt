@@ -99,7 +99,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		"key":      {initData.key},
 		"token":    {initData.token},
 	}
-	req, err := http.NewRequest("POST",
+	req, err := http.NewRequest(http.MethodPost,
 		fmt.Sprintf(textURL, initData.ig, initData.iid),
 		strings.NewReader(userData.Encode()),
 	)
@@ -128,7 +128,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	// request part of speech
 	userData.Del("fromLang")
 	userData.Add("from", langCode[t.GetSrcLang()])
-	req, err = http.NewRequest("POST",
+	req, err = http.NewRequest(http.MethodPost,
 		fmt.Sprintf(posURL, initData.ig, initData.iid),
 		strings.NewReader(userData.Encode()),
 	)
@@ -182,7 +182,7 @@ func (t *Translator) PlayTTS(lang, message string) error {
 		"key":   {initData.key},
 		"token": {initData.token},
 	}
-	req, err := http.NewRequest("POST",
+	req, err := http.NewRequest(http.MethodPost,
 		fmt.Sprintf(ttsURL, initData.ig, initData.iid),
 		strings.NewReader(userData.Encode()),
 	)

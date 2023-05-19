@@ -56,7 +56,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		}},
 		"temperature": 0.7,
 	})
-	req, _ := http.NewRequest("POST",
+	req, _ := http.NewRequest(http.MethodPost,
 		textURL,
 		bytes.NewBuffer(userData),
 	)

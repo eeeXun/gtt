@@ -63,7 +63,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 			"languageDetection": "false",
 		},
 	})
-	req, _ := http.NewRequest("POST",
+	req, _ := http.NewRequest(http.MethodPost,
 		textURL,
 		bytes.NewBuffer(userData))
 	req.Header.Add("Content-Type", "application/json")
