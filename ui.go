@@ -433,7 +433,7 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyCtrlT:
 		// Toggle transparent
 		uiStyle.Transparent = !uiStyle.Transparent
-		updateBackgroundColor()
+		// The following will trigger transparentDropDown SetDoneFunc
 		transparentDropDown.SetCurrentOption(
 			IndexOf(strconv.FormatBool(uiStyle.Transparent),
 				[]string{"true", "false"}))
