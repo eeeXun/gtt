@@ -53,13 +53,10 @@ type Item struct {
 }
 
 func updateTranslateWindow() {
-	translateWindow.Clear()
 	if uiStyle.HideBelow {
-		translateWindow.AddItem(translateAboveWidget, 0, 1, true)
+		translateWindow.RemoveItem(translateBelowWidget)
 	} else {
-		translateWindow.SetDirection(tview.FlexRow).
-			AddItem(translateAboveWidget, 0, 1, true).
-			AddItem(translateBelowWidget, 0, 1, false)
+		translateWindow.AddItem(translateBelowWidget, 0, 1, false)
 	}
 }
 
@@ -308,6 +305,8 @@ func uiInit() {
 	translateBelowWidget.SetDirection(tview.FlexColumn).
 		AddItem(defOutput, 0, 1, false).
 		AddItem(posOutput, 0, 1, false)
+	translateWindow.SetDirection(tview.FlexRow).
+		AddItem(translateAboveWidget, 0, 1, true)
 	updateTranslateWindow()
 	langPopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
@@ -439,8 +438,9 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 			IndexOf(strconv.FormatBool(uiStyle.Transparent),
 				[]string{"true", "false"}))
 	case tcell.KeyCtrlBackslash:
+		// Toggle Hide below window
 		uiStyle.HideBelow = !uiStyle.HideBelow
-		updateTranslateWindow()
+		// The following will trigger hideBelowDropDown SetDoneFunc
 		hideBelowDropDown.SetCurrentOption(
 			IndexOf(strconv.FormatBool(uiStyle.HideBelow),
 				[]string{"true", "false"}))
