@@ -293,8 +293,6 @@ func uiInit() {
 
 	// key map
 	keyMapMenu.SetDynamicColors(true).
-		SetText(fmt.Sprintf(keyMapText,
-			fmt.Sprintf("%.6x", uiStyle.HighLightColor().TrueColor().Hex()))).
 		SetBorder(true).
 		SetTitle("Key Map")
 
