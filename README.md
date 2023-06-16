@@ -72,10 +72,10 @@ export PATH=$PATH:$HOME/go/bin
 git clone https://github.com/eeeXun/gtt.git && cd gtt && go build -ldflags="-s -w -X main.version=$(git describe --tags)"
 ```
 
-### Run on Docker
+### Run on Docker ([Docker Hub](https://hub.docker.com/r/eeexun/gtt/tags))
 
 ```sh
-docker run -it eeexun/gtt
+docker run -it eeexun/gtt:latest
 ```
 
 ## Create a theme
