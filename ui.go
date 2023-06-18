@@ -155,10 +155,13 @@ func updateNonConfigColor() {
 
 	// button
 	for _, button := range []*tview.Button{langButton, styleButton, keyMapButton} {
-		button.SetLabelColor(uiStyle.ForegroundColor()).
-			SetBackgroundColorActivated(uiStyle.PressColor()).
-			SetLabelColorActivated(uiStyle.ForegroundColor()).
-			SetBackgroundColor(uiStyle.SelectedColor())
+		button.SetStyle(tcell.StyleDefault.
+			Background(uiStyle.SelectedColor()).
+			Foreground(uiStyle.ForegroundColor())).
+			SetActivatedStyle(
+				tcell.StyleDefault.
+					Background(uiStyle.PressColor()).
+					Foreground(uiStyle.ForegroundColor()))
 	}
 
 	// key map
