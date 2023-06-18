@@ -17,27 +17,27 @@ const (
 	Exit program.
 [#%[1]s]<Esc>[-]
 	Toggle pop out window.
-[#%[1]s]<C-j>[-]
+[#%[1]s]<C-%[2]c>[-]
 	Translate from source to destination window.
-[#%[1]s]<C-s>[-]
+[#%[1]s]<C-%[3]c>[-]
 	Swap language.
-[#%[1]s]<C-q>[-]
+[#%[1]s]<C-%[4]c>[-]
 	Clear all text in source of translation window.
-[#%[1]s]<C-y>[-]
+[#%[1]s]<C-%[5]c>[-]
 	Copy selected text.
-[#%[1]s]<C-g>[-]
+[#%[1]s]<C-%[6]c>[-]
 	Copy all text in source of translation window.
-[#%[1]s]<C-r>[-]
+[#%[1]s]<C-%[7]c>[-]
 	Copy all text in destination of translation window.
-[#%[1]s]<C-o>[-]
+[#%[1]s]<C-%[8]c>[-]
 	Play text to speech on source of translation window.
-[#%[1]s]<C-p>[-]
+[#%[1]s]<C-%[9]c>[-]
 	Play text to speech on destination of translation window.
-[#%[1]s]<C-x>[-]
+[#%[1]s]<C-%[10]c>[-]
 	Stop playing text to speech.
-[#%[1]s]<C-t>[-]
+[#%[1]s]<C-%[11]c>[-]
 	Toggle transparent.
-[#%[1]s]<C-\>[-]
+[#%[1]s]<C-%[12]c>[-]
 	Toggle Definition/Example & Part of speech.
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
@@ -164,8 +164,19 @@ func updateNonConfigColor() {
 	// key map
 	keyMapMenu.SetTextColor(uiStyle.ForegroundColor()).
 		SetText(fmt.Sprintf(keyMapText,
-			fmt.Sprintf("%.6x",
-				uiStyle.HighLightColor().TrueColor().Hex()))).
+			fmt.Sprintf("%.6x", uiStyle.HighLightColor().TrueColor().Hex()),
+			keyMaps["translate"].GetName(),
+			keyMaps["swap_language"].GetName(),
+			keyMaps["clear"].GetName(),
+			keyMaps["copy_selected"].GetName(),
+			keyMaps["copy_src"].GetName(),
+			keyMaps["copy_dst"].GetName(),
+			keyMaps["tts_src"].GetName(),
+			keyMaps["tts_dst"].GetName(),
+			keyMaps["stop_tts"].GetName(),
+			keyMaps["toggle_transparent"].GetName(),
+			keyMaps["toggle_below"].GetName(),
+		)).
 		SetBorderColor(uiStyle.HighLightColor()).
 		SetTitleColor(uiStyle.HighLightColor())
 }
@@ -364,7 +375,7 @@ func uiInit() {
 		widget.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 			key := event.Key()
 			switch key {
-			case tcell.KeyCtrlY:
+			case keyMaps["copy_selected"].GetKey():
 				// copy selected text
 				text, _, _ := widget.GetSelection()
 
@@ -372,6 +383,7 @@ func uiInit() {
 				if len(text) > 0 {
 					CopyToClipboard(text)
 				}
+				return nil
 			}
 			return event
 		})
@@ -425,23 +437,58 @@ func uiInit() {
 }
 
 func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
+	// panic(keyMaps["toggle_transparent"].GetEvent().Name())
+	// panic(event.Key())
+	// panic(event.Name())
+	// panic(tcell.NewEventKey(tcell.KeyCtrlA, rune('t'), tcell.ModCtrl).Key())
+	// key := event.Key()
+	// switch event.Name() {
+	// // case keyMaps["toggle_transparent"].GetEvent().Name():
+	// case tcell.NewEventKey(tcell.KeyRune, rune('t'), tcell.ModAlt).Name():
+	// 	// Toggle transparent
+	// 	uiStyle.Transparent = !uiStyle.Transparent
+	// 	// The following will trigger transparentDropDown SetDoneFunc
+	// 	transparentDropDown.SetCurrentOption(
+	// 		IndexOf(strconv.FormatBool(uiStyle.Transparent),
+	// 			[]string{"true", "false"}))
+	// 	return nil
+	// case keyMaps["toggle_below"].GetEvent().Name():
+	// 	// Toggle Hide below window
+	// 	uiStyle.HideBelow = !uiStyle.HideBelow
+	// 	// The following will trigger hideBelowDropDown SetDoneFunc
+	// 	hideBelowDropDown.SetCurrentOption(
+	// 		IndexOf(strconv.FormatBool(uiStyle.HideBelow),
+	// 			[]string{"true", "false"}))
+	// 	return nil
+	// }
+
+	// key := event.Key()
+	// switch key {
+	// case tcell.KeyRune:
+	// 	switch event.Rune() {
+	// 		// case keyMaps["toggle_transparent"]
+	// 	}
+	// }
+
 	key := event.Key()
 
 	switch key {
-	case tcell.KeyCtrlT:
+	case keyMaps["toggle_transparent"].GetKey():
 		// Toggle transparent
 		uiStyle.Transparent = !uiStyle.Transparent
 		// The following will trigger transparentDropDown SetDoneFunc
 		transparentDropDown.SetCurrentOption(
 			IndexOf(strconv.FormatBool(uiStyle.Transparent),
 				[]string{"true", "false"}))
-	case tcell.KeyCtrlBackslash:
+		return nil
+	case keyMaps["toggle_below"].GetKey():
 		// Toggle Hide below window
 		uiStyle.HideBelow = !uiStyle.HideBelow
 		// The following will trigger hideBelowDropDown SetDoneFunc
 		hideBelowDropDown.SetCurrentOption(
 			IndexOf(strconv.FormatBool(uiStyle.HideBelow),
 				[]string{"true", "false"}))
+		return nil
 	}
 
 	return event
@@ -454,7 +501,8 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 	case tcell.KeyEsc:
 		mainPage.ShowPage("langPopOut")
 		app.SetFocus(langCycle.GetCurrentUI())
-	case tcell.KeyCtrlJ:
+		return nil
+	case keyMaps["translate"].GetKey():
 		message := srcInput.GetText()
 		// Only translate when message exist
 		if len(message) > 0 {
@@ -467,9 +515,11 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 				posOutput.SetText(translation.POS, false)
 			}
 		}
-	case tcell.KeyCtrlQ:
+		return nil
+	case keyMaps["clear"].GetKey():
 		srcInput.SetText("", true)
-	case tcell.KeyCtrlG:
+		return nil
+	case keyMaps["copy_src"].GetKey():
 		// copy all text in Input
 		text := srcInput.GetText()
 
@@ -477,7 +527,8 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		if len(text) > 0 {
 			CopyToClipboard(text)
 		}
-	case tcell.KeyCtrlR:
+		return nil
+	case keyMaps["copy_dst"].GetKey():
 		// copy all text in Output
 		text := dstOutput.GetText(false)
 
@@ -485,7 +536,8 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		if len(text) > 0 {
 			CopyToClipboard(text[:len(text)-1])
 		}
-	case tcell.KeyCtrlS:
+		return nil
+	case keyMaps["swap_language"].GetKey():
 		translator.SwapLang()
 		updateCurrentLang()
 		srcText := srcInput.GetText()
@@ -497,7 +549,8 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 			srcInput.SetText(dstText, true)
 		}
 		dstOutput.SetText(srcText)
-	case tcell.KeyCtrlO:
+		return nil
+	case keyMaps["tts_src"].GetKey():
 		// Play text to speech on source of translation window.
 		if translator.LockAvailable() {
 			message := srcInput.GetText()
@@ -514,7 +567,8 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 			}
 
 		}
-	case tcell.KeyCtrlP:
+		return nil
+	case keyMaps["tts_dst"].GetKey():
 		// Play text to speech on destination of translation window.
 		if translator.LockAvailable() {
 			message := dstOutput.GetText(false)
@@ -530,9 +584,11 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 				}()
 			}
 		}
-	case tcell.KeyCtrlX:
+		return nil
+	case keyMaps["stop_tts"].GetKey():
 		// Stop play sound
 		translator.StopTTS()
+		return nil
 	}
 
 	return event

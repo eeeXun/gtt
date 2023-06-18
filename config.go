@@ -6,6 +6,7 @@ import (
 
 	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
+	"github.com/eeeXun/gtt/internal/ui"
 	config "github.com/spf13/viper"
 )
 
@@ -14,7 +15,20 @@ func configInit() {
 	var (
 		defaultConfigPath string
 		themeConfig       = config.New()
-		defaultConfig     = map[string]interface{}{
+		defaultKeyMaps    = map[string]string{
+			"translate":          "j",
+			"swap_language":      "s",
+			"clear":              "q",
+			"copy_selected":      "y",
+			"copy_src":           "g",
+			"copy_dst":           "r",
+			"tts_src":            "o",
+			"tts_dst":            "p",
+			"stop_tts":           "x",
+			"toggle_transparent": "t",
+			"toggle_below":       "\\",
+		}
+		defaultConfig = map[string]interface{}{
 			"hide_below":                    false,
 			"transparent":                   false,
 			"theme":                         "gruvbox",
@@ -124,6 +138,11 @@ func configInit() {
 	}
 	if len(*dstLangArg) > 0 {
 		translator.SetDstLang(*dstLangArg)
+	}
+
+	// Set key map
+	for action, key := range defaultKeyMaps {
+		keyMaps[action] = ui.NewKeyData(key)
 	}
 }
 

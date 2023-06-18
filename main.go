@@ -20,6 +20,8 @@ var (
 	translators = make(map[string]translate.Translator, len(translate.AllTranslator))
 	// UI style
 	uiStyle = style.NewStyle()
+	// keyMaps
+	keyMaps = make(ui.KeyMaps)
 	// UI
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()
