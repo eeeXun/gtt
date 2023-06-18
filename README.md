@@ -89,6 +89,7 @@ And note that:
 - `gray` is for selected color
 - `yellow` is for label color
 - `orange` is for KeyMap menu color
+- `purple` is for button pressed color
 
 See the example in [theme.yaml](example/theme.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`
 

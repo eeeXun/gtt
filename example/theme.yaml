@@ -6,6 +6,7 @@
 # gray is for selected color
 # yellow is for label color
 # orange is for KeyMap menu color
+# purple is for button pressed color
 tokyonight:
   bg: 0x1a1b26
   fg: 0xc0caf5
