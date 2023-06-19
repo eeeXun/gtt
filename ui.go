@@ -437,39 +437,6 @@ func uiInit() {
 }
 
 func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
-	// panic(keyMaps["toggle_transparent"].GetEvent().Name())
-	// panic(event.Key())
-	// panic(event.Name())
-	// panic(tcell.NewEventKey(tcell.KeyCtrlA, rune('t'), tcell.ModCtrl).Key())
-	// key := event.Key()
-	// switch event.Name() {
-	// // case keyMaps["toggle_transparent"].GetEvent().Name():
-	// case tcell.NewEventKey(tcell.KeyRune, rune('t'), tcell.ModAlt).Name():
-	// 	// Toggle transparent
-	// 	uiStyle.Transparent = !uiStyle.Transparent
-	// 	// The following will trigger transparentDropDown SetDoneFunc
-	// 	transparentDropDown.SetCurrentOption(
-	// 		IndexOf(strconv.FormatBool(uiStyle.Transparent),
-	// 			[]string{"true", "false"}))
-	// 	return nil
-	// case keyMaps["toggle_below"].GetEvent().Name():
-	// 	// Toggle Hide below window
-	// 	uiStyle.HideBelow = !uiStyle.HideBelow
-	// 	// The following will trigger hideBelowDropDown SetDoneFunc
-	// 	hideBelowDropDown.SetCurrentOption(
-	// 		IndexOf(strconv.FormatBool(uiStyle.HideBelow),
-	// 			[]string{"true", "false"}))
-	// 	return nil
-	// }
-
-	// key := event.Key()
-	// switch key {
-	// case tcell.KeyRune:
-	// 	switch event.Rune() {
-	// 		// case keyMaps["toggle_transparent"]
-	// 	}
-	// }
-
 	key := event.Key()
 
 	switch key {
