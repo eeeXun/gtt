@@ -17,27 +17,27 @@ const (
 	Exit program.
 [#%[1]s]<Esc>[-]
 	Toggle pop out window.
-[#%[1]s]<C-%[2]c>[-]
+[#%[1]s]<%[2]s>[-]
 	Translate from source to destination window.
-[#%[1]s]<C-%[3]c>[-]
+[#%[1]s]<%[3]s>[-]
 	Swap language.
-[#%[1]s]<C-%[4]c>[-]
+[#%[1]s]<%[4]s>[-]
 	Clear all text in source of translation window.
-[#%[1]s]<C-%[5]c>[-]
+[#%[1]s]<%[5]s>[-]
 	Copy selected text.
-[#%[1]s]<C-%[6]c>[-]
+[#%[1]s]<%[6]s>[-]
 	Copy all text in source of translation window.
-[#%[1]s]<C-%[7]c>[-]
+[#%[1]s]<%[7]s>[-]
 	Copy all text in destination of translation window.
-[#%[1]s]<C-%[8]c>[-]
+[#%[1]s]<%[8]s>[-]
 	Play text to speech on source of translation window.
-[#%[1]s]<C-%[9]c>[-]
+[#%[1]s]<%[9]s>[-]
 	Play text to speech on destination of translation window.
-[#%[1]s]<C-%[10]c>[-]
+[#%[1]s]<%[10]s>[-]
 	Stop playing text to speech.
-[#%[1]s]<C-%[11]c>[-]
+[#%[1]s]<%[11]s>[-]
 	Toggle transparent.
-[#%[1]s]<C-%[12]c>[-]
+[#%[1]s]<%[12]s>[-]
 	Toggle Definition/Example & Part of speech.
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
