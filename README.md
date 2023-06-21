@@ -78,7 +78,7 @@ git clone https://github.com/eeeXun/gtt.git && cd gtt && go build -ldflags="-s -
 docker run -it eeexun/gtt:latest
 ```
 
-## Create a theme
+## Customize theme
 
 You can create a theme with theme name. And you must provide the color of `bg`, `fg`, `gray`, `red`, `green`, `yellow`, `blue`, `purple`, `cyan`, `orange`.
 
@@ -111,6 +111,8 @@ See available languages on:
 - [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
 ## Key Map
+
+### Default key map
 
 `<C-c>`
 Exit program.
@@ -156,6 +158,14 @@ Cycle through the pop out widget.
 
 `<1>`, `<2>`, `<3>`
 Switch pop out window.
+
+### Customize key map
+
+See the example in [keymap.yaml](example/keymap.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`
+
+For key to combine with `Ctrl`, value can be `" "` (Space), `"\\"` or `'\'` (backslash), `"]"`, `"^"`, `"_"`, `"a"` to `"z"` (lower case).
+
+⚠️ Note, don't use `"c"`, `<C-c>` is for exit program
 
 ## Credit
 

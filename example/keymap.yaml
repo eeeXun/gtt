@@ -1,0 +1,27 @@
+# This file should located at $XDG_CONFIG_HOME/gtt/keymap.yaml or $HOME/.config/gtt/keymap.yaml
+# For key to combine with Ctrl, value can be " " (Space), "\\" or '\' (backslash), "]", "^", "_", "a" to "z" (lower case)
+# ⚠️ Note, don't use "c", <C-c> is for exit program
+# Or the function key, value can be "F1" to "F64"
+
+# Translate, <C-j>
+translate: "j"
+# Swap language, <C-s>
+swap_language: "s"
+# Clear all text in source of translation window, <C-q>
+clear: "q"
+# Copy selected text, <C-y>
+copy_selected: "y"
+# Copy all text in source of translation window, <C-g>
+copy_src: "g"
+# Copy all text in destination of translation window, <C-r>
+copy_dst: "r"
+# Play text to speech on source of translation window, <C-o>
+tts_src: "o"
+# Play text to speech on destination of translation window, <C-p>
+tts_dst: "p"
+# Stop playing text to speech, <C-x>
+stop_tts: "x"
+# Toggle transparent, <C-t>
+toggle_transparent: "t"
+# Toggle Definition/Example & Part of speech, <C-\>
+toggle_below: "\\"
