@@ -90,7 +90,7 @@ And note that:
 - `yellow` is for label color
 - `orange` is for KeyMap menu color
 
-See the example in [theme.yaml](example/theme.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`
+See the example in [theme.yaml](example/theme.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`.
 
 ## Language in argument
 
@@ -161,11 +161,13 @@ Switch pop out window.
 
 ### Customize key map
 
-See the example in [keymap.yaml](example/keymap.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`
+See the example in [keymap.yaml](example/keymap.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`.
 
 For key to combine with `Ctrl`, value can be `" "` (Space), `"\\"` or `'\'` (backslash), `"]"`, `"^"`, `"_"`, `"a"` to `"z"` (lower case).
 
-⚠️ Note, don't use `"c"`, `<C-c>` is for exit program
+Or the function key, value can be `"F1"` to `"F64"`.
+
+⚠️ Note, don't use `"c"`, `<C-c>` is for exit program.
 
 ## Credit
 
