@@ -20,6 +20,7 @@ func NewKeyData(chStr string) keyData {
 	)
 
 	if len(chStr) > 1 && chStr[0] == 'F' {
+		// function key, can be F1 to F64
 		name = chStr
 		fNum, err := strconv.Atoi(chStr[1:])
 		if err != nil {
