@@ -13,22 +13,22 @@ type keyData struct {
 
 type KeyMaps map[string]keyData
 
-func NewKeyData(chStr string) keyData {
+func NewKeyData(keyStr string) keyData {
 	var (
 		name string
 		key  tcell.Key
 	)
 
-	if len(chStr) > 1 && chStr[0] == 'F' {
+	if len(keyStr) > 1 && keyStr[0] == 'F' {
 		// function key, can be F1 to F64
-		name = chStr
-		fNum, err := strconv.Atoi(chStr[1:])
+		name = keyStr
+		fNum, err := strconv.Atoi(keyStr[1:])
 		if err != nil {
 			panic(err)
 		}
 		key = tcell.KeyF1 + tcell.Key(fNum-1)
 	} else {
-		switch chStr[0] {
+		switch keyStr[0] {
 		case ' ':
 			name = "C-Space"
 			key = tcell.KeyCtrlSpace
@@ -46,8 +46,8 @@ func NewKeyData(chStr string) keyData {
 			key = tcell.KeyCtrlUnderscore
 		default:
 			// This should be a to z
-			name = "C-" + chStr
-			key = tcell.KeyCtrlA + tcell.Key(chStr[0]-'a')
+			name = "C-" + keyStr
+			key = tcell.KeyCtrlA + tcell.Key(keyStr[0]-'a')
 		}
 	}
 

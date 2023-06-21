@@ -15,6 +15,7 @@ func configInit() {
 	var (
 		defaultConfigPath string
 		themeConfig       = config.New()
+		keyMapConfig      = config.New()
 		defaultKeyMaps    = map[string]string{
 			"translate":          "j",
 			"swap_language":      "s",
@@ -56,17 +57,21 @@ func configInit() {
 	config.SetConfigType("yaml")
 	themeConfig.SetConfigName("theme")
 	themeConfig.SetConfigType("yaml")
+	keyMapConfig.SetConfigName("keymap")
+	themeConfig.SetConfigType("yaml")
 	if len(os.Getenv("XDG_CONFIG_HOME")) > 0 {
 		defaultConfigPath = os.Getenv("XDG_CONFIG_HOME") + "/gtt"
 		config.AddConfigPath(defaultConfigPath)
 		themeConfig.AddConfigPath(defaultConfigPath)
+		keyMapConfig.AddConfigPath(defaultConfigPath)
 	} else {
 		defaultConfigPath = os.Getenv("HOME") + "/.config/gtt"
 	}
 	config.AddConfigPath("$HOME/.config/gtt")
 	themeConfig.AddConfigPath("$HOME/.config/gtt")
+	keyMapConfig.AddConfigPath("$HOME/.config/gtt")
 
-	// import theme if file exists
+	// Import theme if file exists
 	if err := themeConfig.ReadInConfig(); err == nil {
 		var (
 			palate = make(map[string]int32)
@@ -112,6 +117,22 @@ func configInit() {
 		}
 	}
 
+	// Setup key map
+	// If keymap file exist and action in file exist, then set the keyMap
+	// Otherwise, set to defaultKeyMap
+	if err := keyMapConfig.ReadInConfig(); err == nil {
+		for action, key := range defaultKeyMaps {
+			if keyMapConfig.Get(action) == nil {
+				keyMaps[action] = ui.NewKeyData(key)
+			} else {
+				keyMaps[action] = ui.NewKeyData(keyMapConfig.GetString(action))
+			}
+		}
+	} else {
+		for action, key := range defaultKeyMaps {
+			keyMaps[action] = ui.NewKeyData(key)
+		}
+	}
 	// Setup
 	for _, name := range translate.AllTranslator {
 		translators[name] = translate.NewTranslator(name)
@@ -138,11 +159,6 @@ func configInit() {
 	}
 	if len(*dstLangArg) > 0 {
 		translator.SetDstLang(*dstLangArg)
-	}
-
-	// Set key map
-	for action, key := range defaultKeyMaps {
-		keyMaps[action] = ui.NewKeyData(key)
 	}
 }
 
