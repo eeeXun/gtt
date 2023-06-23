@@ -90,7 +90,7 @@ And note that:
 - `yellow` is for label color
 - `orange` is for KeyMap menu color
 
-See the example in [theme.yaml](example/theme.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`.
+See the example in [theme.yaml](example/theme.yaml) file. This file should be located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`.
 
 ## Language in argument
 
@@ -183,7 +183,7 @@ For key to combine with `Alt`, the value can be `"A-space"` or `"A-"` + the char
 
 Or you can use function key, the value can be `"F1"` to `"F64"`.
 
-See the example in [keymap.yaml](example/keymap.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`.
+See the example in [keymap.yaml](example/keymap.yaml) file. This file should be located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`.
 
 ## Credit
 

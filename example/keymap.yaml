@@ -1,4 +1,4 @@
-# This file should located at $XDG_CONFIG_HOME/gtt/keymap.yaml or $HOME/.config/gtt/keymap.yaml.
+# This file should be located at $XDG_CONFIG_HOME/gtt/keymap.yaml or $HOME/.config/gtt/keymap.yaml.
 
 # For key to combine with Ctrl, the value can be "C-space", "C-\\", "C-]", "C-^", "C-_" or "C-a" to "C-z".
 # ⚠️ Note, don't use "C-c", <C-c> is for exit program.
