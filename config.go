@@ -6,7 +6,6 @@ import (
 
 	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
-	"github.com/eeeXun/gtt/internal/ui"
 	config "github.com/spf13/viper"
 )
 
@@ -17,17 +16,17 @@ func configInit() {
 		themeConfig       = config.New()
 		keyMapConfig      = config.New()
 		defaultKeyMaps    = map[string]string{
-			"translate":          "j",
-			"swap_language":      "s",
-			"clear":              "q",
-			"copy_selected":      "y",
-			"copy_source":        "g",
-			"copy_destination":   "r",
-			"tts_source":         "o",
-			"tts_destination":    "p",
-			"stop_tts":           "x",
-			"toggle_transparent": "t",
-			"toggle_below":       "\\",
+			"translate":          "C-j",
+			"swap_language":      "C-s",
+			"clear":              "C-q",
+			"copy_selected":      "C-y",
+			"copy_source":        "C-g",
+			"copy_destination":   "C-r",
+			"tts_source":         "C-o",
+			"tts_destination":    "C-p",
+			"stop_tts":           "C-x",
+			"toggle_transparent": "C-t",
+			"toggle_below":       "C-\\",
 		}
 		defaultConfig = map[string]interface{}{
 			"hide_below":                    false,
@@ -123,14 +122,14 @@ func configInit() {
 	if err := keyMapConfig.ReadInConfig(); err == nil {
 		for action, key := range defaultKeyMaps {
 			if keyMapConfig.Get(action) == nil {
-				keyMaps[action] = ui.NewKeyData(key)
+				keyMaps[action] = key
 			} else {
-				keyMaps[action] = ui.NewKeyData(keyMapConfig.GetString(action))
+				keyMaps[action] = keyMapConfig.GetString(action)
 			}
 		}
 	} else {
 		for action, key := range defaultKeyMaps {
-			keyMaps[action] = ui.NewKeyData(key)
+			keyMaps[action] = key
 		}
 	}
 	// Setup

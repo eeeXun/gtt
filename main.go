@@ -21,7 +21,7 @@ var (
 	// UI style
 	uiStyle = style.NewStyle()
 	// keyMaps
-	keyMaps = make(ui.KeyMaps)
+	keyMaps = make(map[string]string)
 	// UI
 	app                 = tview.NewApplication()
 	srcInput            = tview.NewTextArea()

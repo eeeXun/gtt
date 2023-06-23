@@ -161,13 +161,29 @@ Switch pop out window.
 
 ### Customize key map
 
+You can overwrite the following key
+
+- `translate`: Translate from source to destination window.
+- `swap_language`: Swap language.
+- `clear`: Clear all text in source of translation window.
+- `copy_selected`: Copy selected text.
+- `copy_source`: Copy all text in source of translation window.
+- `copy_destination`: Copy all text in destination of translation window.
+- `tts_source`: Play text to speech on source of translation window.
+- `tts_destination`: Play text to speech on destination of translation window.
+- `stop_tts`: Stop playing text to speech.
+- `toggle_transparent`: Toggle transparent.
+- `toggle_below`: Toggle Definition/Example & Part of speech.
+
+For key to combine with `Ctrl`, the value can be `"C-space"`, `"C-\\"`, `"C-]"`, `"C-^"`, `"C-_"` or `"C-a"` to `"C-z"`.
+
+⚠️ Note, don't use `"C-c"`, `<C-c>` is for exit program.
+
+For key to combine with `Alt`, the value can be `"A-space"` or `"A-"` + the character you want.
+
+Or you can use function key, the value can be `"F1"` to `"F64"`.
+
 See the example in [keymap.yaml](example/keymap.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`.
-
-For key to combine with `Ctrl`, value can be `" "` (Space), `"\\"` or `'\'` (backslash), `"]"`, `"^"`, `"_"`, `"a"` to `"z"` (lower case).
-
-Or the function key, value can be `"F1"` to `"F64"`.
-
-⚠️ Note, don't use `"c"`, `<C-c>` is for exit program.
 
 ## Credit
 
