@@ -12,13 +12,13 @@ clear: "q"
 # Copy selected text, <C-y>
 copy_selected: "y"
 # Copy all text in source of translation window, <C-g>
-copy_src: "g"
+copy_source: "g"
 # Copy all text in destination of translation window, <C-r>
-copy_dst: "r"
+copy_destination: "r"
 # Play text to speech on source of translation window, <C-o>
-tts_src: "o"
+tts_source: "o"
 # Play text to speech on destination of translation window, <C-p>
-tts_dst: "p"
+tts_destination: "p"
 # Stop playing text to speech, <C-x>
 stop_tts: "x"
 # Toggle transparent, <C-t>
