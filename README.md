@@ -163,6 +163,7 @@ Switch pop out window.
 
 You can overwrite the following key
 
+- `exit`: Exit program.
 - `translate`: Translate from source to destination window.
 - `swap_language`: Swap language.
 - `clear`: Clear all text in source of translation window.
@@ -176,8 +177,6 @@ You can overwrite the following key
 - `toggle_below`: Toggle Definition/Example & Part of speech.
 
 For key to combine with `Ctrl`, the value can be `"C-space"`, `"C-\\"`, `"C-]"`, `"C-^"`, `"C-_"` or `"C-a"` to `"C-z"`.
-
-⚠️ Note, don't use `"C-c"`, `<C-c>` is for exit program.
 
 For key to combine with `Alt`, the value can be `"A-space"` or `"A-"` + the character you want.
 

@@ -1,7 +1,6 @@
 # This file should be located at $XDG_CONFIG_HOME/gtt/keymap.yaml or $HOME/.config/gtt/keymap.yaml.
 
 # For key to combine with Ctrl, the value can be "C-space", "C-\\", "C-]", "C-^", "C-_" or "C-a" to "C-z".
-# ⚠️ Note, don't use "C-c", <C-c> is for exit program.
 
 # For key to combine with Alt, the value can be "A-space" or "A-" + the character you want.
 
@@ -10,6 +9,8 @@
 
 # The following is the default key map
 
+# Exit program, <C-c>
+exit: "C-c"
 # Translate from source to destination window, <C-j>
 translate: "C-j"
 # Swap language, <C-s>

@@ -16,6 +16,7 @@ func configInit() {
 		themeConfig       = config.New()
 		keyMapConfig      = config.New()
 		defaultKeyMaps    = map[string]string{
+			"exit":               "C-c",
 			"translate":          "C-j",
 			"swap_language":      "C-s",
 			"clear":              "C-q",

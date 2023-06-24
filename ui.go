@@ -366,7 +366,7 @@ func uiInit() {
 	updateCurrentLang()
 
 	// handler
-	mainPage.SetInputCapture(mainPageHandler)
+	app.SetInputCapture(appHandler)
 	translateWindow.SetInputCapture(translateWindowHandler)
 	for _, widget := range []*tview.TextArea{srcInput, defOutput, posOutput} {
 		// fix for loop problem
@@ -441,7 +441,7 @@ func uiInit() {
 	keyMapButton.SetSelectedFunc(showKeyMapPopout)
 }
 
-func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
+func appHandler(event *tcell.EventKey) *tcell.EventKey {
 	keyName := getKeyName(event)
 
 	if len(keyName) == 0 {
@@ -449,6 +449,9 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 	}
 
 	switch keyName {
+	case keyMaps["exit"]:
+		app.Stop()
+		return nil
 	case keyMaps["toggle_transparent"]:
 		// Toggle transparent
 		uiStyle.Transparent = !uiStyle.Transparent
@@ -465,6 +468,11 @@ func mainPageHandler(event *tcell.EventKey) *tcell.EventKey {
 			IndexOf(strconv.FormatBool(uiStyle.HideBelow),
 				[]string{"true", "false"}))
 		return nil
+	}
+
+	// Force C-c not to exit program
+	if event.Key() == tcell.KeyCtrlC {
+		return tcell.NewEventKey(tcell.KeyCtrlC, 0, tcell.ModNone)
 	}
 
 	return event
