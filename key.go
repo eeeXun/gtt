@@ -5,7 +5,6 @@ import (
 )
 
 var keyNames = map[tcell.Key]string{
-	tcell.KeyEsc:            "Esc",
 	tcell.KeyF1:             "F1",
 	tcell.KeyF2:             "F2",
 	tcell.KeyF3:             "F3",

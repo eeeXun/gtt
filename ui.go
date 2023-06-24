@@ -479,13 +479,15 @@ func appHandler(event *tcell.EventKey) *tcell.EventKey {
 }
 
 func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
-	keyName := getKeyName(event)
-
-	switch keyName {
-	case "Esc":
+	if event.Key() == tcell.KeyEsc {
 		mainPage.ShowPage("langPopOut")
 		app.SetFocus(langCycle.GetCurrentUI())
 		return nil
+	}
+
+	keyName := getKeyName(event)
+
+	switch keyName {
 	case keyMaps["translate"]:
 		message := srcInput.GetText()
 		// Only translate when message exist
