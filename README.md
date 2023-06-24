@@ -176,9 +176,9 @@ You can overwrite the following key
 - `toggle_transparent`: Toggle transparent.
 - `toggle_below`: Toggle Definition/Example & Part of speech.
 
-For key to combine with `Ctrl`, the value can be `"C-space"`, `"C-\\"`, `"C-]"`, `"C-^"`, `"C-_"` or `"C-a"` to `"C-z"`.
+For key to combine with `Ctrl`, the value can be `"C-Space"`, `"C-\\"`, `"C-]"`, `"C-^"`, `"C-_"` or `"C-a"` to `"C-z"`.
 
-For key to combine with `Alt`, the value can be `"A-space"` or `"A-"` + the character you want.
+For key to combine with `Alt`, the value can be `"A-Space"` or `"A-"` + the character you want.
 
 Or you can use function key, the value can be `"F1"` to `"F64"`.
 

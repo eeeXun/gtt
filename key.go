@@ -92,7 +92,7 @@ var keyNames = map[tcell.Key]string{
 	tcell.KeyCtrlX:          "C-x",
 	tcell.KeyCtrlY:          "C-y",
 	tcell.KeyCtrlZ:          "C-z",
-	tcell.KeyCtrlSpace:      "C-space",
+	tcell.KeyCtrlSpace:      "C-Space",
 	tcell.KeyCtrlUnderscore: "C-_",
 	tcell.KeyCtrlRightSq:    "C-]",
 	tcell.KeyCtrlBackslash:  "C-\\",
@@ -107,7 +107,7 @@ func getKeyName(event *tcell.EventKey) string {
 		if event.Modifiers() == tcell.ModAlt {
 			switch event.Rune() {
 			case ' ':
-				keyName = "A-space"
+				keyName = "A-Space"
 			default:
 				keyName = "A-" + string(event.Rune())
 			}
