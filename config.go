@@ -14,7 +14,22 @@ func configInit() {
 	var (
 		defaultConfigPath string
 		themeConfig       = config.New()
-		defaultConfig     = map[string]interface{}{
+		keyMapConfig      = config.New()
+		defaultKeyMaps    = map[string]string{
+			"exit":               "C-c",
+			"translate":          "C-j",
+			"swap_language":      "C-s",
+			"clear":              "C-q",
+			"copy_selected":      "C-y",
+			"copy_source":        "C-g",
+			"copy_destination":   "C-r",
+			"tts_source":         "C-o",
+			"tts_destination":    "C-p",
+			"stop_tts":           "C-x",
+			"toggle_transparent": "C-t",
+			"toggle_below":       "C-\\",
+		}
+		defaultConfig = map[string]interface{}{
 			"hide_below":                    false,
 			"transparent":                   false,
 			"theme":                         "gruvbox",
@@ -42,17 +57,21 @@ func configInit() {
 	config.SetConfigType("yaml")
 	themeConfig.SetConfigName("theme")
 	themeConfig.SetConfigType("yaml")
+	keyMapConfig.SetConfigName("keymap")
+	themeConfig.SetConfigType("yaml")
 	if len(os.Getenv("XDG_CONFIG_HOME")) > 0 {
 		defaultConfigPath = os.Getenv("XDG_CONFIG_HOME") + "/gtt"
 		config.AddConfigPath(defaultConfigPath)
 		themeConfig.AddConfigPath(defaultConfigPath)
+		keyMapConfig.AddConfigPath(defaultConfigPath)
 	} else {
 		defaultConfigPath = os.Getenv("HOME") + "/.config/gtt"
 	}
 	config.AddConfigPath("$HOME/.config/gtt")
 	themeConfig.AddConfigPath("$HOME/.config/gtt")
+	keyMapConfig.AddConfigPath("$HOME/.config/gtt")
 
-	// import theme if file exists
+	// Import theme if file exists
 	if err := themeConfig.ReadInConfig(); err == nil {
 		var (
 			palate = make(map[string]int32)
@@ -98,6 +117,22 @@ func configInit() {
 		}
 	}
 
+	// Setup key map
+	// If keymap file exist and action in file exist, then set the keyMap
+	// Otherwise, set to defaultKeyMap
+	if err := keyMapConfig.ReadInConfig(); err == nil {
+		for action, key := range defaultKeyMaps {
+			if keyMapConfig.Get(action) == nil {
+				keyMaps[action] = key
+			} else {
+				keyMaps[action] = keyMapConfig.GetString(action)
+			}
+		}
+	} else {
+		for action, key := range defaultKeyMaps {
+			keyMaps[action] = key
+		}
+	}
 	// Setup
 	for _, name := range translate.AllTranslator {
 		translators[name] = translate.NewTranslator(name)

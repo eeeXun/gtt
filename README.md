@@ -78,7 +78,7 @@ git clone https://github.com/eeeXun/gtt.git && cd gtt && go build -ldflags="-s -
 docker run -it eeexun/gtt:latest
 ```
 
-## Create a theme
+## Customize theme
 
 You can create a theme with theme name. And you must provide the color of `bg`, `fg`, `gray`, `red`, `green`, `yellow`, `blue`, `purple`, `cyan`, `orange`.
 
@@ -91,7 +91,7 @@ And note that:
 - `orange` is for KeyMap menu color
 - `purple` is for button pressed color
 
-See the example in [theme.yaml](example/theme.yaml) file. This file should located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`
+See the example in [theme.yaml](example/theme.yaml) file. This file should be located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`.
 
 ## Language in argument
 
@@ -112,6 +112,8 @@ See available languages on:
 - [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
 ## Key Map
+
+### Default key map
 
 `<C-c>`
 Exit program.
@@ -157,6 +159,31 @@ Cycle through the pop out widget.
 
 `<1>`, `<2>`, `<3>`
 Switch pop out window.
+
+### Customize key map
+
+You can overwrite the following key
+
+- `exit`: Exit program.
+- `translate`: Translate from source to destination window.
+- `swap_language`: Swap language.
+- `clear`: Clear all text in source of translation window.
+- `copy_selected`: Copy selected text.
+- `copy_source`: Copy all text in source of translation window.
+- `copy_destination`: Copy all text in destination of translation window.
+- `tts_source`: Play text to speech on source of translation window.
+- `tts_destination`: Play text to speech on destination of translation window.
+- `stop_tts`: Stop playing text to speech.
+- `toggle_transparent`: Toggle transparent.
+- `toggle_below`: Toggle Definition/Example & Part of speech.
+
+For key to combine with `Ctrl`, the value can be `"C-Space"`, `"C-\\"`, `"C-]"`, `"C-^"`, `"C-_"` or `"C-a"` to `"C-z"`.
+
+For key to combine with `Alt`, the value can be `"A-Space"` or `"A-"` + the character you want.
+
+Or you can use function key, the value can be `"F1"` to `"F64"`.
+
+See the example in [keymap.yaml](example/keymap.yaml) file. This file should be located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`.
 
 ## Credit
 
