@@ -265,6 +265,12 @@ func showKeyMapPopout() {
 }
 
 func uiInit() {
+	// pages
+	mainPage.AddPage("translateWindow", translateWindow, true, true)
+	mainPage.AddPage("langPopOut", langPopOut, true, false)
+	mainPage.AddPage("stylePopOut", stylePopOut, true, false)
+	mainPage.AddPage("keyMapPopOut", keyMapPopOut, true, false)
+
 	// input/output
 	srcInput.SetBorder(true)
 	dstOutput.SetBorder(true)

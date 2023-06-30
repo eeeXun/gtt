@@ -68,11 +68,6 @@ func main() {
 		uiInit()
 		SetTermTitle(translator.GetEngineName())
 
-		mainPage.AddPage("translateWindow", translateWindow, true, true)
-		mainPage.AddPage("langPopOut", langPopOut, true, false)
-		mainPage.AddPage("stylePopOut", stylePopOut, true, false)
-		mainPage.AddPage("keyMapPopOut", keyMapPopOut, true, false)
-
 		if err := app.SetRoot(mainPage, true).
 			EnableMouse(true).Run(); err != nil {
 			panic(err)
