@@ -6,15 +6,20 @@ import (
 
 	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
-	config "github.com/spf13/viper"
+	"github.com/spf13/viper"
+)
+
+var (
+	// Main config
+	config = viper.New()
 )
 
 // Search XDG_CONFIG_HOME or $HOME/.config
 func configInit() {
 	var (
 		defaultConfigPath string
-		themeConfig       = config.New()
-		keyMapConfig      = config.New()
+		themeConfig       = viper.New()
+		keyMapConfig      = viper.New()
 		defaultKeyMaps    = map[string]string{
 			"exit":               "C-c",
 			"translate":          "C-j",
@@ -54,22 +59,22 @@ func configInit() {
 	)
 
 	config.SetConfigName("gtt")
-	config.SetConfigType("yaml")
 	themeConfig.SetConfigName("theme")
-	themeConfig.SetConfigType("yaml")
 	keyMapConfig.SetConfigName("keymap")
-	themeConfig.SetConfigType("yaml")
+	for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig} {
+		c.SetConfigType("yaml")
+	}
 	if len(os.Getenv("XDG_CONFIG_HOME")) > 0 {
 		defaultConfigPath = os.Getenv("XDG_CONFIG_HOME") + "/gtt"
-		config.AddConfigPath(defaultConfigPath)
-		themeConfig.AddConfigPath(defaultConfigPath)
-		keyMapConfig.AddConfigPath(defaultConfigPath)
+		for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig} {
+			c.AddConfigPath(defaultConfigPath)
+		}
 	} else {
 		defaultConfigPath = os.Getenv("HOME") + "/.config/gtt"
 	}
-	config.AddConfigPath("$HOME/.config/gtt")
-	themeConfig.AddConfigPath("$HOME/.config/gtt")
-	keyMapConfig.AddConfigPath("$HOME/.config/gtt")
+	for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig} {
+		c.AddConfigPath("$HOME/.config/gtt")
+	}
 
 	// Import theme if file exists
 	if err := themeConfig.ReadInConfig(); err == nil {
