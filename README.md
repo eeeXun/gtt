@@ -78,42 +78,7 @@ git clone https://github.com/eeeXun/gtt.git && cd gtt && go build -ldflags="-s -
 docker run -it eeexun/gtt:latest
 ```
 
-## Customize theme
-
-You can create a theme with theme name. And you must provide the color of `bg`, `fg`, `gray`, `red`, `green`, `yellow`, `blue`, `purple`, `cyan`, `orange`.
-
-And note that:
-
-- `bg` is for background color
-- `fg` is for foreground color
-- `gray` is for selected color
-- `yellow` is for label color
-- `orange` is for KeyMap menu color
-- `purple` is for button pressed color
-
-See the example in [theme.yaml](example/theme.yaml) file. This file should be located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`.
-
-## Language in argument
-
-You can pass `-src` and `-dst` in argument to set source and destination language.
-
-```sh
-gtt -src "English" -dst "Chinese (Traditional)"
-```
-
-See available languages on:
-
-- [Apertium Translate](https://www.apertium.org/) for `Apertium`
-- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
-- [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
-- `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
-- [DeepL API docs](https://www.deepl.com/docs-api/translate-text/) for `DeepL`
-- [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
-- [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
-
 ## Key Map
-
-### Default key map
 
 `<C-c>`
 Exit program.
@@ -184,6 +149,39 @@ For key to combine with `Alt`, the value can be `"A-Space"` or `"A-"` + the char
 Or you can use function key, the value can be `"F1"` to `"F64"`.
 
 See the example in [keymap.yaml](example/keymap.yaml) file. This file should be located at `$XDG_CONFIG_HOME/gtt/keymap.yaml` or `$HOME/.config/gtt/keymap.yaml`.
+
+## Customize theme
+
+You can create a theme with theme name. And you must provide the color of `bg`, `fg`, `gray`, `red`, `green`, `yellow`, `blue`, `purple`, `cyan`, `orange`.
+
+And note that:
+
+- `bg` is for background color
+- `fg` is for foreground color
+- `gray` is for selected color
+- `yellow` is for label color
+- `orange` is for KeyMap menu color
+- `purple` is for button pressed color
+
+See the example in [theme.yaml](example/theme.yaml) file. This file should be located at `$XDG_CONFIG_HOME/gtt/theme.yaml` or `$HOME/.config/gtt/theme.yaml`.
+
+## Language in argument
+
+You can pass `-src` and `-dst` in argument to set source and destination language.
+
+```sh
+gtt -src "English" -dst "Chinese (Traditional)"
+```
+
+See available languages on:
+
+- [Apertium Translate](https://www.apertium.org/) for `Apertium`
+- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
+- [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
+- `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
+- [DeepL API docs](https://www.deepl.com/docs-api/translate-text/) for `DeepL`
+- [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
+- [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
 ## Credit
 
