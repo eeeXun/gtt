@@ -489,8 +489,7 @@ func appHandler(event *tcell.EventKey) *tcell.EventKey {
 
 func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 	if event.Key() == tcell.KeyEsc {
-		mainPage.ShowPage("langPopOut")
-		app.SetFocus(langCycle.GetCurrentUI())
+		showLangPopout()
 		return nil
 	}
 
