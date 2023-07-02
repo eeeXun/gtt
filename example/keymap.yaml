@@ -1,35 +1,35 @@
 # This file should be located at $XDG_CONFIG_HOME/gtt/keymap.yaml or $HOME/.config/gtt/keymap.yaml.
 
-# For key to combine with Ctrl, the value can be "C-Space", "C-\\", "C-]", "C-^", "C-_" or "C-a" to "C-z".
+# For key to combine with Ctrl, the value can be C-Space, C-\, C-], C-^, C-_ or C-a to C-z.
 
-# For key to combine with Alt, the value can be "A-Space" or "A-" + the character you want.
+# For key to combine with Alt, the value can be A-Space or A- with the character you want.
 
-# Or you can use function key, the value can be "F1" to "F64".
+# Or you can use function key, the value can be F1 to F64.
 
 
 # The following is the default key map
 
 # Exit program, <C-c>
-exit: "C-c"
+exit: C-c
 # Translate from source to destination window, <C-j>
-translate: "C-j"
+translate: C-j
 # Swap language, <C-s>
-swap_language: "C-s"
+swap_language: C-s
 # Clear all text in source of translation window, <C-q>
-clear: "C-q"
+clear: C-q
 # Copy selected text, <C-y>
-copy_selected: "C-y"
+copy_selected: C-y
 # Copy all text in source of translation window, <C-g>
-copy_source: "C-g"
+copy_source: C-g
 # Copy all text in destination of translation window, <C-r>
-copy_destination: "C-r"
+copy_destination: C-r
 # Play text to speech on source of translation window, <C-o>
-tts_source: "C-o"
+tts_source: C-o
 # Play text to speech on destination of translation window, <C-p>
-tts_destination: "C-p"
+tts_destination: C-p
 # Stop playing text to speech, <C-x>
-stop_tts: "C-x"
+stop_tts: C-x
 # Toggle transparent, <C-t>
-toggle_transparent: "C-t"
+toggle_transparent: C-t
 # Toggle Definition/Example & Part of speech, <C-\>
-toggle_below: "C-\\"
+toggle_below: C-\
