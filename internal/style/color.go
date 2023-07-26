@@ -21,7 +21,7 @@ var (
 			"orange": tcell.NewHexColor(0xfe8019),
 		},
 		"nord": {
-			"bg":     tcell.NewHexColor(0x3b4252),
+			"bg":     tcell.NewHexColor(0x2e3440),
 			"fg":     tcell.NewHexColor(0xeceff4),
 			"gray":   tcell.NewHexColor(0x4c566a),
 			"red":    tcell.NewHexColor(0xbf616a),
