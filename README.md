@@ -188,7 +188,7 @@ See available languages on:
 [soimort/translate-shell](https://github.com/soimort/translate-shell),
 [SimplyTranslate-Engines](https://codeberg.org/SimpleWeb/SimplyTranslate-Engines),
 [s0ftik3/reverso-api](https://github.com/s0ftik3/reverso-api)
-For translation URL.
+For request method.
 
 [snsd0805/GoogleTranslate-TUI](https://github.com/snsd0805/GoogleTranslate-TUI) For inspiration.
 
