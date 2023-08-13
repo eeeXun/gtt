@@ -57,7 +57,7 @@ Binary file is available in [Release Page](https://github.com/eeeXun/gtt/release
 #### go install
 
 ```sh
-go install github.com/eeeXun/gtt@latest
+go install -ldflags="-s -w" github.com/eeeXun/gtt@latest
 ```
 
 And make sure `$HOME/go/bin` is in your `$PATH`
