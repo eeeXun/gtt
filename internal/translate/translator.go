@@ -7,6 +7,7 @@ import (
 	"github.com/eeeXun/gtt/internal/translate/chatgpt"
 	"github.com/eeeXun/gtt/internal/translate/core"
 	"github.com/eeeXun/gtt/internal/translate/deepl"
+	"github.com/eeeXun/gtt/internal/translate/gemini"
 	"github.com/eeeXun/gtt/internal/translate/google"
 	"github.com/eeeXun/gtt/internal/translate/reverso"
 )
@@ -18,6 +19,7 @@ var (
 		"Bing",
 		"ChatGPT",
 		"DeepL",
+		"Gemini",
 		"Google",
 		"Reverso",
 	}
@@ -78,6 +80,8 @@ func NewTranslator(name string) Translator {
 		translator = chatgpt.NewTranslator()
 	case "DeepL":
 		translator = deepl.NewTranslator()
+	case "Gemini":
+		translator = gemini.NewTranslator()
 	case "Google":
 		translator = google.NewTranslator()
 	case "Reverso":
