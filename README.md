@@ -47,7 +47,21 @@ For RedHat-based Linux, you need `alsa-lib-devel`.
 ```sh
 yay -S gtt-bin
 ```
+ 
+### Nix ❄️ ([nixpkgs-unstable](https://search.nixos.org/packages?channel=unstable&show=gtt&from=0&size=50&sort=relevance&type=packages&query=gtt))
 
+add to your package list or run with:
+  
+```sh
+nix-shell -p '(import <nixpkgs-unstable> {}).gtt' --run gtt
+```
+  
+or with flakes enabled:  
+
+```sh
+nix run github:nixos/nixpkgs#gtt
+```
+  
 ### Prebuild
 
 Binary file is available in [Release Page](https://github.com/eeeXun/gtt/releases) for Linux and macOS on x86_64.
