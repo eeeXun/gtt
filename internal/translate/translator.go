@@ -50,6 +50,9 @@ type Translator interface {
 	// Set API Key
 	SetAPIKey(key string)
 
+	// Set host
+	SetHost(host string)
+
 	// Check if lock is available
 	LockAvailable() bool
 
