@@ -156,12 +156,17 @@ func configInit() {
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
 		SetDstBorderColor(config.GetString("destination.border_color"))
-	// Import api key if file exists
+	// Import api key and host if file exists
 	if err := serverConfig.ReadInConfig(); err == nil {
+		// api key
 		for _, name := range []string{"ChatGPT", "DeepL", "DeepLX"} {
 			if serverConfig.Get(fmt.Sprintf("api_key.%s", name)) != nil {
 				translators[name].SetAPIKey(serverConfig.GetString(fmt.Sprintf("api_key.%s", name)))
 			}
+		}
+		// host
+		if serverConfig.Get("host.deeplx") != nil {
+			translators["DeepLX"].SetHost(serverConfig.GetString("host.deeplx"))
 		}
 	}
 	// Set argument language

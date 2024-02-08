@@ -38,7 +38,7 @@ See the example in [server.yaml](example/server.yaml) file.
 api_key:
   deeplx: DEEPLX_API_KEY # <- Replace with your API Key
 host:
-  deeplx: 127.0.0.1:1188 # <- Replace with your DeepLX server IP address and port
+  deeplx: 127.0.0.1:1188 # <- Replace with your server IP address and port
 ```
 
 ## ScreenShot

@@ -10,12 +10,8 @@ import (
 	"github.com/eeeXun/gtt/internal/translate/core"
 )
 
-const (
-	textURL = "http://localhost:1188/translate"
-)
-
 type Translator struct {
-	*core.APIKey
+	*core.Server
 	*core.Language
 	*core.TTSLock
 	core.EngineName
@@ -23,7 +19,7 @@ type Translator struct {
 
 func NewTranslator() *Translator {
 	return &Translator{
-		APIKey:     new(core.APIKey),
+		Server:     new(core.Server),
 		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
 		EngineName: core.NewEngineName("DeepLX"),
@@ -38,13 +34,17 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
+	if len(t.GetHost()) <= 0 {
+		return nil, errors.New("Please write your host in config file for " + t.GetEngineName())
+	}
+
 	userData, _ := json.Marshal(map[string]interface{}{
 		"text":        message,
 		"source_lang": langCode[t.GetSrcLang()],
 		"target_lang": langCode[t.GetDstLang()],
 	})
 	req, _ := http.NewRequest(http.MethodPost,
-		textURL,
+		"http://"+t.GetHost()+"/translate",
 		bytes.NewBuffer(userData),
 	)
 	req.Header.Add("Content-Type", "application/json")
