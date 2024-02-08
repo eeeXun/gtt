@@ -8,6 +8,7 @@ Supported Translator:
 [`Bing`](https://www.bing.com/translator),
 [`ChatGPT`](https://chat.openai.com/),
 [`DeepL`](https://deepl.com/translator)(only free API),
+[`DeepLX`](https://github.com/OwO-Network/DeepLX),
 [`Google`](https://translate.google.com/)(default),
 [`Reverso`](https://www.reverso.net/text-translation)
 
@@ -17,13 +18,27 @@ ChatGPT and DeepL translations require API keys, which can be obtained from
 [OpenAI API keys](https://platform.openai.com/account/api-keys) and
 [DeepL API signup](https://www.deepl.com/pro-api) pages, respectively. Note
 that only the free API is supported for DeepL currently. Once you have your
-API key add it to `$XDG_CONFIG_HOME/gtt/server.yaml` or
-`$HOME/.config/gtt/server.yaml`
+API key add it to `$XDG_CONFIG_HOME/gtt/server.yaml` or `$HOME/.config/gtt/server.yaml`.
+See the example in [server.yaml](example/server.yaml) file.
 
 ```yaml
 api_key:
   chatgpt: CHATGPT_API_KEY # <- Replace with your API Key
   deepl: DEEPL_API_KEY # <- Replace with your API Key
+```
+
+## DeepLX
+
+The DeepLX is self-hosted server. You must provide IP address and port at
+`$XDG_CONFIG_HOME/gtt/server.yaml` or `$HOME/.config/gtt/server.yaml`.
+The api key for DeepLX is optional, depending on your setting.
+See the example in [server.yaml](example/server.yaml) file.
+
+```yaml
+api_key:
+  deeplx: DEEPLX_API_KEY # <- Replace with your API Key
+host:
+  deeplx: 127.0.0.1:1188 # <- Replace with your DeepLX server IP address and port
 ```
 
 ## ScreenShot
@@ -194,6 +209,7 @@ See available languages on:
 - [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
 - `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
 - [DeepL API docs](https://www.deepl.com/docs-api/translate-text/) for `DeepL`
+- `DeepLX` is same as `DeepL`. See [DeepL API docs](https://cloud.google.com/translate/docs/languages)
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
