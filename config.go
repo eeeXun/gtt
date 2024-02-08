@@ -20,6 +20,7 @@ func configInit() {
 		defaultConfigPath string
 		themeConfig       = viper.New()
 		keyMapConfig      = viper.New()
+		serverConfig      = viper.New()
 		defaultKeyMaps    = map[string]string{
 			"exit":               "C-c",
 			"translate":          "C-j",
@@ -61,18 +62,19 @@ func configInit() {
 	config.SetConfigName("gtt")
 	themeConfig.SetConfigName("theme")
 	keyMapConfig.SetConfigName("keymap")
-	for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig} {
+	serverConfig.SetConfigName("server")
+	for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig, serverConfig} {
 		c.SetConfigType("yaml")
 	}
 	if len(os.Getenv("XDG_CONFIG_HOME")) > 0 {
 		defaultConfigPath = os.Getenv("XDG_CONFIG_HOME") + "/gtt"
-		for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig} {
+		for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig, serverConfig} {
 			c.AddConfigPath(defaultConfigPath)
 		}
 	} else {
 		defaultConfigPath = os.Getenv("HOME") + "/.config/gtt"
 	}
-	for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig} {
+	for _, c := range []*viper.Viper{config, themeConfig, keyMapConfig, serverConfig} {
 		c.AddConfigPath("$HOME/.config/gtt")
 	}
 
@@ -152,10 +154,12 @@ func configInit() {
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
 		SetDstBorderColor(config.GetString("destination.border_color"))
-	// Set API Keys
-	for _, name := range []string{"ChatGPT", "DeepL"} {
-		if config.Get(fmt.Sprintf("api_key.%s", name)) != nil {
-			translators[name].SetAPIKey(config.GetString(fmt.Sprintf("api_key.%s", name)))
+	// Import api key if file exists
+	if err := serverConfig.ReadInConfig(); err == nil {
+		for _, name := range []string{"ChatGPT", "DeepL"} {
+			if serverConfig.Get(fmt.Sprintf("api_key.%s", name)) != nil {
+				translators[name].SetAPIKey(serverConfig.GetString(fmt.Sprintf("api_key.%s", name)))
+			}
 		}
 	}
 	// Set argument language
