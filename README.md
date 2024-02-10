@@ -12,6 +12,10 @@ Supported Translator:
 [`Google`](https://translate.google.com/)(default),
 [`Reverso`](https://www.reverso.net/text-translation)
 
+## ScreenShot
+
+![screenshot](https://github.com/eeeXun/gtt/assets/58657914/3841c2bf-62f7-434a-9e77-91c3748c5675)
+
 ## ⚠️ Note for ChatGPT and DeepL
 
 ChatGPT and DeepL translations require API keys, which can be obtained from
@@ -40,10 +44,6 @@ api_key:
 host:
   deeplx: 127.0.0.1:1188 # <- Replace with your server IP address and port
 ```
-
-## ScreenShot
-
-![screenshot](https://github.com/eeeXun/gtt/assets/58657914/3841c2bf-62f7-434a-9e77-91c3748c5675)
 
 ## Install
 
