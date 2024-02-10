@@ -33,7 +33,8 @@ api_key:
 
 ## DeepLX
 
-The DeepLX is self-hosted server. You must provide IP address and port at
+The DeepLX is [self-hosted server](https://github.com/OwO-Network/DeepLX).
+You must provide IP address and port at
 `$XDG_CONFIG_HOME/gtt/server.yaml` or `$HOME/.config/gtt/server.yaml`.
 The api key for DeepLX is optional, depending on your setting.
 See the example in [server.yaml](example/server.yaml) file.
