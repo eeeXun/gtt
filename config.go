@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
@@ -160,8 +161,14 @@ func configInit() {
 	if err := serverConfig.ReadInConfig(); err == nil {
 		// api key
 		for _, name := range []string{"ChatGPT", "DeepL", "DeepLX"} {
-			if serverConfig.Get(fmt.Sprintf("api_key.%s", name)) != nil {
-				translators[name].SetAPIKey(serverConfig.GetString(fmt.Sprintf("api_key.%s", name)))
+			// Read from value first, then read from file
+			if serverConfig.Get(fmt.Sprintf("api_key.%s.value", name)) != nil {
+				translators[name].SetAPIKey(serverConfig.GetString(fmt.Sprintf("api_key.%s.value", name)))
+			} else if serverConfig.Get(fmt.Sprintf("api_key.%s.file", name)) != nil {
+				buff, err := os.ReadFile(os.ExpandEnv(serverConfig.GetString(fmt.Sprintf("api_key.%s.file", name))))
+				if err == nil {
+					translators[name].SetAPIKey(strings.TrimSpace(string(buff)))
+				}
 			}
 		}
 		// host

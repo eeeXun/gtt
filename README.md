@@ -27,8 +27,12 @@ See the example in [server.yaml](example/server.yaml) file.
 
 ```yaml
 api_key:
-  chatgpt: CHATGPT_API_KEY # <- Replace with your API Key
-  deepl: DEEPL_API_KEY # <- Replace with your API Key
+  chatgpt:
+    value: CHATGPT_API_KEY # <- Replace with your API Key
+    # file: $HOME/secrets/chatgpt.txt # <- You can also specify the file where to read api key
+  deepl:
+    value: DEEPL_API_KEY # <- Replace with your API Key
+    # file: $HOME/secrets/deepl.txt # <- You can also specify the file where to read api key
 ```
 
 ## DeepLX
@@ -41,7 +45,9 @@ See the example in [server.yaml](example/server.yaml) file.
 
 ```yaml
 api_key:
-  deeplx: DEEPLX_API_KEY # <- Replace with your API Key
+  deeplx:
+    value: DEEPLX_API_KEY # <- Replace with your API Key
+    # file: $HOME/secrets/deeplx.txt # <- You can also specify the file where to read api key
 host:
   deeplx: 127.0.0.1:1188 # <- Replace with your server IP address and port
 ```
