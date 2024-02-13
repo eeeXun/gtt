@@ -25,7 +25,7 @@ const (
 )
 
 type Translator struct {
-	*core.APIKey
+	*core.Server
 	*core.Language
 	*core.TTSLock
 	core.EngineName
@@ -40,7 +40,7 @@ type setUpData struct {
 
 func NewTranslator() *Translator {
 	return &Translator{
-		APIKey:     new(core.APIKey),
+		Server:     new(core.Server),
 		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
 		EngineName: core.NewEngineName("Bing"),

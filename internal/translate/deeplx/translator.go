@@ -1,17 +1,13 @@
-package argos
+package deeplx
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
-	"net/url"
 
 	"github.com/eeeXun/gtt/internal/translate/core"
-)
-
-const (
-	textURL = "https://translate.argosopentech.com/translate"
 )
 
 type Translator struct {
@@ -26,7 +22,7 @@ func NewTranslator() *Translator {
 		Server:     new(core.Server),
 		Language:   new(core.Language),
 		TTSLock:    core.NewTTSLock(),
-		EngineName: core.NewEngineName("Argos"),
+		EngineName: core.NewEngineName("DeepLX"),
 	}
 }
 
@@ -38,12 +34,22 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	translation = new(core.Translation)
 	var data map[string]interface{}
 
-	res, err := http.PostForm(textURL,
-		url.Values{
-			"q":      {message},
-			"source": {langCode[t.GetSrcLang()]},
-			"target": {langCode[t.GetDstLang()]},
-		})
+	if len(t.GetHost()) <= 0 {
+		return nil, errors.New("Please write your host in config file for " + t.GetEngineName())
+	}
+
+	userData, _ := json.Marshal(map[string]interface{}{
+		"text":        message,
+		"source_lang": langCode[t.GetSrcLang()],
+		"target_lang": langCode[t.GetDstLang()],
+	})
+	req, _ := http.NewRequest(http.MethodPost,
+		"http://"+t.GetHost()+"/translate",
+		bytes.NewBuffer(userData),
+	)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+t.GetAPIKey())
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -56,10 +62,13 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 
 	if len(data) <= 0 {
-		return nil, errors.New("Translation not found")
+		return nil, errors.New("translation not found")
+	}
+	if res.StatusCode != 200 {
+		return nil, errors.New(data["message"].(string))
 	}
 
-	translation.TEXT = data["translatedText"].(string)
+	translation.TEXT = data["data"].(string)
 
 	return translation, nil
 }

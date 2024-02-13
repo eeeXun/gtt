@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/eeeXun/gtt/internal/style"
 	"github.com/eeeXun/gtt/internal/translate"
@@ -51,6 +52,8 @@ func configInit() {
 			"destination.language.chatgpt":  "English",
 			"source.language.deepl":         "English",
 			"destination.language.deepl":    "English",
+			"source.language.deeplx":        "English",
+			"destination.language.deeplx":   "English",
 			"source.language.google":        "English",
 			"destination.language.google":   "English",
 			"source.language.reverso":       "English",
@@ -154,12 +157,23 @@ func configInit() {
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
 		SetDstBorderColor(config.GetString("destination.border_color"))
-	// Import api key if file exists
+	// Import api key and host if file exists
 	if err := serverConfig.ReadInConfig(); err == nil {
-		for _, name := range []string{"ChatGPT", "DeepL"} {
-			if serverConfig.Get(fmt.Sprintf("api_key.%s", name)) != nil {
-				translators[name].SetAPIKey(serverConfig.GetString(fmt.Sprintf("api_key.%s", name)))
+		// api key
+		for _, name := range []string{"ChatGPT", "DeepL", "DeepLX"} {
+			// Read from value first, then read from file
+			if serverConfig.Get(fmt.Sprintf("api_key.%s.value", name)) != nil {
+				translators[name].SetAPIKey(serverConfig.GetString(fmt.Sprintf("api_key.%s.value", name)))
+			} else if serverConfig.Get(fmt.Sprintf("api_key.%s.file", name)) != nil {
+				buff, err := os.ReadFile(os.ExpandEnv(serverConfig.GetString(fmt.Sprintf("api_key.%s.file", name))))
+				if err == nil {
+					translators[name].SetAPIKey(strings.TrimSpace(string(buff)))
+				}
 			}
+		}
+		// host
+		if serverConfig.Get("host.deeplx") != nil {
+			translators["DeepLX"].SetHost(serverConfig.GetString("host.deeplx"))
 		}
 	}
 	// Set argument language
