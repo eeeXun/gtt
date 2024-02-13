@@ -12,6 +12,15 @@
           "aarch64-linux"
         ];
 
+        perSystem = { self', pkgs, ... }: {
+          apps.default = {
+            type = "app";
+            program = self'.packages.default;
+          };
+
+          packages.default = pkgs.callPackage (import ./nix/package.nix) { };
+        };
+
         flake = {
           homeManagerModules.default = import ./nix/home-manager.nix;
         };
