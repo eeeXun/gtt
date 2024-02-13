@@ -79,7 +79,7 @@ in
         };
 
         "gtt/keymap.yaml" = mkIf (cfg.keymap != { }) {
-          source = yamlFormat.generate "keymap.yaml" cfg.theme;
+          source = yamlFormat.generate "keymap.yaml" cfg.keymap;
         };
       };
     };
