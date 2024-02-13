@@ -84,6 +84,8 @@ or with flakes enabled:
 nix run github:nixos/nixpkgs#gtt
 ```
 
+There's also a home-manager module available in this repository!
+
 ### Prebuild
 
 Binary file is available in [Release Page](https://github.com/eeeXun/gtt/releases) for Linux and macOS on x86_64.
