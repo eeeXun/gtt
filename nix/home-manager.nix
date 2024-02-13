@@ -14,13 +14,14 @@ in
       example = literalExpression ''
         {
           api_key = {
-            deepl = "ctiegsrn-mcgcmdunw:l984-cnulfmuz";
+            deepl.value = "this-is-an-api-key";
+            chatgpt.file = "$\{builtins.readFile /run/agenix/chatgpt}";
           };
         }
       '';
 
       description = ''
-        Configuration writte to
+        Configuration written to
         {file}`$XDG_CONFIG_HOME/.config/gtt/server.yaml`.
       '';
     };
