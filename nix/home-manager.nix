@@ -72,7 +72,7 @@ in
 
   config = mkIf cfg.enable
     {
-      home.packages = with pkgs; [ gtt ];
+      home.packages = [ cfg.package ];
 
       xdg.configFile = {
         "gtt/server.yaml" = mkIf (cfg.settings != { }) {
