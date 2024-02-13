@@ -8,6 +8,11 @@ in
   options.programs.gtt = {
     enable = mkEnableOption "gtt";
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.gtt;
+    };
+
     settings = mkOption {
       type = yamlFormat.type;
       default = { };
