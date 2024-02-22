@@ -100,21 +100,16 @@ var keyNames = map[tcell.Key]string{
 }
 
 func getKeyName(event *tcell.EventKey) string {
-	var (
-		keyName string
-		key     = event.Key()
-	)
+	var key = event.Key()
 
-	if key == tcell.KeyRune {
-		if event.Modifiers() == tcell.ModAlt {
-			if event.Rune() == ' ' {
-				keyName = "A-Space"
-			} else {
-				keyName = "A-" + string(event.Rune())
-			}
+	keyName := keyNames[key]
+
+	if event.Modifiers() == tcell.ModAlt && key == tcell.KeyRune {
+		if event.Rune() == ' ' {
+			keyName = "A-Space"
+		} else {
+			keyName = "A-" + string(event.Rune())
 		}
-	} else {
-		keyName = keyNames[key]
 	}
 
 	return keyName
