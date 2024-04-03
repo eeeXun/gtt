@@ -511,7 +511,7 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 		}
 		return nil
 	case keyMaps["clear"]:
-		srcInput.SetText("", true)
+		srcInput.Replace(0, len(srcInput.GetText()), "")
 		return nil
 	case keyMaps["copy_source"]:
 		// copy all text in Input
