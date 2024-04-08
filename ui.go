@@ -528,21 +528,15 @@ func translateWindowHandler(event *tcell.EventKey) *tcell.EventKey {
 
 		// only copy when text exist
 		if len(text) > 0 {
-			CopyToClipboard(text[:len(text)-1])
+			CopyToClipboard(text)
 		}
 		return nil
 	case keyMaps["swap_language"]:
 		translator.SwapLang()
 		updateCurrentLang()
-		srcText := srcInput.GetText()
-		dstText := dstOutput.GetText(false)
-		if len(dstText) > 0 {
-			// GetText of Box contains "\n" if it has words
-			srcInput.SetText(dstText[:len(dstText)-1], true)
-		} else {
-			srcInput.SetText(dstText, true)
-		}
-		dstOutput.SetText(srcText)
+		tmp := srcInput.GetText()
+		srcInput.SetText(dstOutput.GetText(false), true)
+		dstOutput.SetText(tmp)
 		return nil
 	case keyMaps["tts_source"]:
 		// Play text to speech on source of translation window.
