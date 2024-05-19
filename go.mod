@@ -6,7 +6,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.7.1
 	github.com/hajimehoshi/go-mp3 v0.3.3
 	github.com/hajimehoshi/oto/v2 v2.3.1
-	github.com/rivo/tview v0.0.0-20240402201323-fec4f00cf099
+	github.com/rivo/tview v0.0.0-20240519080116-fc5680eecb61
 	github.com/spf13/viper v1.13.0
 )
 
