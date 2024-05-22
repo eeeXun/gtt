@@ -84,6 +84,7 @@ func updateBackgroundColor() {
 		themeDropDown,
 		transparentDropDown,
 		hideBelowDropDown,
+		osc52DropDown,
 		srcBorderDropDown,
 		dstBorderDropDown} {
 		dropdown.SetListStyles(tcell.StyleDefault.
@@ -145,6 +146,7 @@ func updateNonConfigColor() {
 		themeDropDown,
 		transparentDropDown,
 		hideBelowDropDown,
+		osc52DropDown,
 		srcBorderDropDown,
 		dstBorderDropDown} {
 		labelDropDown.SetLabelColor(uiStyle.LabelColor()).
@@ -286,15 +288,20 @@ func uiInit() {
 	themeDropDown.SetLabel("Theme: ").
 		SetOptions(style.AllTheme, nil).
 		SetCurrentOption(IndexOf(uiStyle.Theme, style.AllTheme))
+	transparentDropDown.SetLabel("Transparent: ").
+		SetOptions([]string{"true", "false"}, nil).
+		SetCurrentOption(
+			IndexOf(strconv.FormatBool(uiStyle.Transparent),
+				[]string{"true", "false"}))
 	hideBelowDropDown.SetLabel("Hide below: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
 			IndexOf(strconv.FormatBool(uiStyle.HideBelow),
 				[]string{"true", "false"}))
-	transparentDropDown.SetLabel("Transparent: ").
+	osc52DropDown.SetLabel("OSC 52: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
-			IndexOf(strconv.FormatBool(uiStyle.Transparent),
+			IndexOf(strconv.FormatBool(uiStyle.OSC52),
 				[]string{"true", "false"}))
 	srcBorderDropDown.SetLabel("Border Color: ").
 		SetOptions(style.Palette, nil).
@@ -351,9 +358,10 @@ func uiInit() {
 					Item{item: attachItems(false, tview.FlexRow,
 						Item{item: themeDropDown, fixedSize: 0, proportion: 1, focus: true},
 						Item{item: transparentDropDown, fixedSize: 0, proportion: 1, focus: false},
-						Item{item: hideBelowDropDown, fixedSize: 0, proportion: 1, focus: false}),
+						Item{item: hideBelowDropDown, fixedSize: 0, proportion: 1, focus: false},
+						Item{item: osc52DropDown, fixedSize: 0, proportion: 1, focus: false}),
 						fixedSize: 0, proportion: 1, focus: true}),
-					fixedSize: 3, proportion: 1, focus: true},
+					fixedSize: 4, proportion: 1, focus: true},
 				Item{item: attachItems(false, tview.FlexColumn,
 					Item{item: srcBorderDropDown, fixedSize: 0, proportion: 1, focus: false},
 					Item{item: dstBorderDropDown, fixedSize: 0, proportion: 1, focus: false}),
@@ -428,6 +436,10 @@ func uiInit() {
 		SetSelectedFunc(func(text string, index int) {
 			uiStyle.HideBelow, _ = strconv.ParseBool(text)
 			updateTranslateWindow()
+		})
+	osc52DropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(func(text string, index int) {
+			uiStyle.OSC52, _ = strconv.ParseBool(text)
 		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {

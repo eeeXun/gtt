@@ -5,6 +5,7 @@ import (
 )
 
 type style struct {
+	OSC52           bool
 	HideBelow       bool
 	Transparent     bool
 	Theme           string

@@ -37,6 +37,7 @@ func configInit() {
 			"toggle_below":       "C-\\",
 		}
 		defaultConfig = map[string]interface{}{
+			"osc52":                         false,
 			"hide_below":                    false,
 			"transparent":                   false,
 			"theme":                         "gruvbox",
@@ -153,6 +154,7 @@ func configInit() {
 	}
 	translator = translators[config.GetString("translator")]
 	uiStyle.Theme = config.GetString("theme")
+	uiStyle.OSC52 = config.GetBool("osc52")
 	uiStyle.HideBelow = config.GetBool("hide_below")
 	uiStyle.Transparent = config.GetBool("transparent")
 	uiStyle.SetSrcBorderColor(config.GetString("source.border_color")).
@@ -211,10 +213,6 @@ func updateConfig() {
 		changed = true
 		config.Set("translator", translator.GetEngineName())
 	}
-	if config.GetBool("hide_below") != uiStyle.HideBelow {
-		changed = true
-		config.Set("hide_below", uiStyle.HideBelow)
-	}
 	if config.GetString("theme") != uiStyle.Theme {
 		changed = true
 		config.Set("theme", uiStyle.Theme)
@@ -222,6 +220,14 @@ func updateConfig() {
 	if config.GetBool("transparent") != uiStyle.Transparent {
 		changed = true
 		config.Set("transparent", uiStyle.Transparent)
+	}
+	if config.GetBool("hide_below") != uiStyle.HideBelow {
+		changed = true
+		config.Set("hide_below", uiStyle.HideBelow)
+	}
+	if config.GetBool("osc52") != uiStyle.OSC52 {
+		changed = true
+		config.Set("osc52", uiStyle.OSC52)
 	}
 	if config.GetString("source.border_color") != uiStyle.SrcBorderStr() {
 		changed = true
