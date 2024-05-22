@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
 	"os/exec"
@@ -22,6 +23,11 @@ func SetTermTitle(name string) {
 }
 
 func CopyToClipboard(text string) {
+	if uiStyle.OSC52 {
+		fmt.Printf("\033]52;c;%s\a", base64.StdEncoding.EncodeToString([]byte(text)))
+		return
+	}
+
 	var cmd *exec.Cmd
 
 	switch runtime.GOOS {

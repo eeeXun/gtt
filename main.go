@@ -35,12 +35,14 @@ var (
 	themeDropDown       = tview.NewDropDown()
 	transparentDropDown = tview.NewDropDown()
 	hideBelowDropDown   = tview.NewDropDown()
+	osc52DropDown       = tview.NewDropDown()
 	srcBorderDropDown   = tview.NewDropDown()
 	dstBorderDropDown   = tview.NewDropDown()
 	styleCycle          = ui.NewUICycle(
 		themeDropDown,
 		transparentDropDown,
 		hideBelowDropDown,
+		osc52DropDown,
 		srcBorderDropDown,
 		dstBorderDropDown)
 	keyMapMenu           = tview.NewTextView()
