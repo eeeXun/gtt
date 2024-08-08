@@ -148,13 +148,9 @@ func (t *Translator) PlayTTS(lang, message string) error {
 	player.Play()
 	for player.IsPlaying() {
 		if t.IsStopped() {
-			return nil
+			return player.Close()
 		}
 		time.Sleep(time.Millisecond)
 	}
-	if err = player.Close(); err != nil {
-		return err
-	}
-
-	return nil
+	return player.Close()
 }
