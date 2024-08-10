@@ -9,11 +9,8 @@ import (
 	"io"
 	"net/http"
 	"regexp"
-	"time"
 
 	"github.com/eeeXun/gtt/internal/translate/core"
-	"github.com/hajimehoshi/go-mp3"
-	"github.com/hajimehoshi/oto/v2"
 )
 
 const (
@@ -24,7 +21,7 @@ const (
 type Translator struct {
 	*core.Server
 	*core.Language
-	*core.TTSLock
+	*core.TTS
 	core.EngineName
 }
 
@@ -32,7 +29,7 @@ func NewTranslator() *Translator {
 	return &Translator{
 		Server:     new(core.Server),
 		Language:   new(core.Language),
-		TTSLock:    core.NewTTSLock(),
+		TTS:        core.NewTTS(),
 		EngineName: core.NewEngineName("Reverso"),
 	}
 }
@@ -131,22 +128,5 @@ func (t *Translator) PlayTTS(lang, message string) error {
 	if err != nil {
 		return err
 	}
-	decoder, err := mp3.NewDecoder(res.Body)
-	if err != nil {
-		return err
-	}
-	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
-	if err != nil {
-		return err
-	}
-	<-readyChan
-	player := otoCtx.NewPlayer(decoder)
-	player.Play()
-	for player.IsPlaying() {
-		if t.IsStopped() {
-			return player.Close()
-		}
-		time.Sleep(time.Millisecond)
-	}
-	return player.Close()
+	return t.Play(res.Body)
 }

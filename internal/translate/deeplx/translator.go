@@ -13,7 +13,7 @@ import (
 type Translator struct {
 	*core.Server
 	*core.Language
-	*core.TTSLock
+	*core.TTS
 	core.EngineName
 }
 
@@ -21,7 +21,7 @@ func NewTranslator() *Translator {
 	return &Translator{
 		Server:     new(core.Server),
 		Language:   new(core.Language),
-		TTSLock:    core.NewTTSLock(),
+		TTS:        core.NewTTS(),
 		EngineName: core.NewEngineName("DeepLX"),
 	}
 }
