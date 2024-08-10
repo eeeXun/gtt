@@ -46,7 +46,7 @@ See the example in [server.yaml](example/server.yaml) file.
 ```yaml
 api_key:
   deeplx:
-    value: DEEPLX_API_KEY # <- Replace with your API Key
+    value: DEEPLX_API_KEY # <- Replace with your TOKEN
     # file: $HOME/secrets/deeplx.txt # <- You can also specify the file where to read API Key
 host:
   deeplx: 127.0.0.1:1188 # <- Replace with your server IP address and port
