@@ -19,8 +19,8 @@ type Item struct {
 
 const (
 	popOutMenuHeight int    = 20
-	langStrMaxLength   int    = 32
-	keyMapText         string = `[#%[1]s]<C-c>[-]
+	langStrMaxLength int    = 32
+	keyMapText       string = `[#%[1]s]<C-c>[-]
 	Exit program.
 [#%[1]s]<Esc>[-]
 	Toggle pop out menu.
