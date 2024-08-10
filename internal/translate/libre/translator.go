@@ -40,7 +40,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 
 	var textURL string
 	if len(t.GetHost()) > 0 {
-		textURL = "http://"+t.GetHost()+"/translate"
+		textURL = "http://" + t.GetHost() + "/translate"
 	} else {
 		textURL = defaultURL
 	}
