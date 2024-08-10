@@ -62,7 +62,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 
 	if len(data) <= 0 {
-		return nil, errors.New("translation not found")
+		return nil, errors.New("Translation not found")
 	}
 	if res.StatusCode != 200 {
 		return nil, errors.New(data["message"].(string))

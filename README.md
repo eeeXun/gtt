@@ -4,12 +4,12 @@ Google Translate TUI (Originally)
 
 Supported Translator:
 [`Apertium`](https://www.apertium.org/),
-[`Argos`](https://translate.argosopentech.com/),
 [`Bing`](https://www.bing.com/translator),
 [`ChatGPT`](https://chat.openai.com/),
 [`DeepL`](https://deepl.com/translator)(only free API),
 [`DeepLX`](https://github.com/OwO-Network/DeepLX),
 [`Google`](https://translate.google.com/)(default),
+[`Libre`](https://libretranslate.com/),
 [`Reverso`](https://www.reverso.net/text-translation)
 
 ## ScreenShot
@@ -50,6 +50,22 @@ api_key:
     # file: $HOME/secrets/deeplx.txt # <- You can also specify the file where to read API Key
 host:
   deeplx: 127.0.0.1:1188 # <- Replace with your server IP address and port
+```
+
+## Libre
+
+If you want to use official [LibreTranslate](https://libretranslate.com/), you have to obtain an API Key on their [website](https://portal.libretranslate.com/).
+Alternatively, if you want to host it by yourself, you must provide the IP address and port.
+Make sure add them to `$XDG_CONFIG_HOME/gtt/server.yaml` or `$HOME/.config/gtt/server.yaml`.
+See the example in [server.yaml](example/server.yaml) file.
+
+```yaml
+api_key:
+  libre:
+    value: LIBRE_API_KEY # <- Replace with your API Key
+    # file: $HOME/secrets/libre.txt # <- You can also specify the file where to read API Key
+host:
+  libre: 127.0.0.1:5000 # <- Replace with your server IP address and port
 ```
 
 ## Install
@@ -214,12 +230,12 @@ gtt -src "English" -dst "Chinese (Traditional)"
 See available languages on:
 
 - [Apertium Translate](https://www.apertium.org/) for `Apertium`
-- [argosopentech/argos-translate](https://github.com/argosopentech/argos-translate#supported-languages) for `Argos`
 - [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
 - `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
 - [DeepL API docs](https://www.deepl.com/docs-api/translate-text/) for `DeepL`
 - `DeepLX` is same as `DeepL`. See [DeepL API docs](https://cloud.google.com/translate/docs/languages)
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
+- [LibreTranslate Languages](https://libretranslate.com/languages) for `Libre`
 - [Reverso Translation](https://www.reverso.net/text-translation) for `Reverso`
 
 ## Credit

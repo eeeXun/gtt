@@ -141,21 +141,27 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 	// Bing will return the request with list when success.
 	// Otherwises, it would return map. Then the following err would not be nil.
-	if err = json.Unmarshal(body, &data); err == nil {
-		poses := make(posSet)
-		for _, pos := range data[0].(map[string]interface{})["translations"].([]interface{}) {
-			pos := pos.(map[string]interface{})
-			var words posWords
-
-			words.target = pos["displayTarget"].(string)
-			for _, backTranslation := range pos["backTranslations"].([]interface{}) {
-				backTranslation := backTranslation.(map[string]interface{})
-				words.add(backTranslation["displayText"].(string))
-			}
-			poses.add(pos["posTag"].(string), words)
-		}
-		translation.POS = poses.format()
+	if err = json.Unmarshal(body, &data); err != nil {
+		return nil, err
 	}
+
+	if len(data) <= 0 {
+		return nil, errors.New("Translation not found")
+	}
+
+	poses := make(posSet)
+	for _, pos := range data[0].(map[string]interface{})["translations"].([]interface{}) {
+		pos := pos.(map[string]interface{})
+		var words posWords
+
+		words.target = pos["displayTarget"].(string)
+		for _, backTranslation := range pos["backTranslations"].([]interface{}) {
+			backTranslation := backTranslation.(map[string]interface{})
+			words.add(backTranslation["displayText"].(string))
+		}
+		poses.add(pos["posTag"].(string), words)
+	}
+	translation.POS = poses.format()
 
 	return translation, nil
 }

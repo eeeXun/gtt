@@ -9,5 +9,9 @@ api_key:
   deeplx:
     value: DEEPLX_API_KEY
     # file: $HOME/secrets/deeplx.txt
+  libre:
+    value: LIBRE_API_KEY
+    # file: $HOME/secrets/libre.txt
 host:
   deeplx: 127.0.0.1:1188
+  libre: 127.0.0.1:5000
