@@ -64,6 +64,8 @@ For RedHat-based Linux, you need `alsa-lib-devel`.
 
 [`wl-clipboard`](https://github.com/bugaevc/wl-clipboard) (optional) - for Linux/Wayland to copy text.
 
+Or, if your terminal supports OSC 52, you can enable OSC 52 in page 2 of the pop out menu to copy text.
+
 ### Arch Linux ([AUR](https://aur.archlinux.org/packages/gtt-bin))
 
 ```sh
@@ -120,7 +122,7 @@ docker run -it eeexun/gtt:latest
 Exit program.
 
 `<Esc>`
-Toggle pop out window.
+Toggle pop out menu.
 
 `<C-j>`
 Translate from source to destination window.
@@ -159,7 +161,7 @@ Toggle Definition/Example & Part of speech.
 Cycle through the pop out widget.
 
 `<1>`, `<2>`, `<3>`
-Switch pop out window.
+Switch pop out menu.
 
 ### Customize key map
 

@@ -18,12 +18,12 @@ type Item struct {
 }
 
 const (
-	popOutWindowHeight int    = 20
+	popOutMenuHeight int    = 20
 	langStrMaxLength   int    = 32
 	keyMapText         string = `[#%[1]s]<C-c>[-]
 	Exit program.
 [#%[1]s]<Esc>[-]
-	Toggle pop out window.
+	Toggle pop out menu.
 [#%[1]s]<%[2]s>[-]
 	Translate from source to destination window.
 [#%[1]s]<%[3]s>[-]
@@ -49,7 +49,7 @@ const (
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
 [#%[1]s]<1>, <2>, <3>[-]
-	Switch pop out window.`
+	Switch pop out menu.`
 )
 
 func updateTranslateWindow() {
@@ -84,6 +84,7 @@ func updateBackgroundColor() {
 		themeDropDown,
 		transparentDropDown,
 		hideBelowDropDown,
+		osc52DropDown,
 		srcBorderDropDown,
 		dstBorderDropDown} {
 		dropdown.SetListStyles(tcell.StyleDefault.
@@ -145,6 +146,7 @@ func updateNonConfigColor() {
 		themeDropDown,
 		transparentDropDown,
 		hideBelowDropDown,
+		osc52DropDown,
 		srcBorderDropDown,
 		dstBorderDropDown} {
 		labelDropDown.SetLabelColor(uiStyle.LabelColor()).
@@ -286,15 +288,20 @@ func uiInit() {
 	themeDropDown.SetLabel("Theme: ").
 		SetOptions(style.AllTheme, nil).
 		SetCurrentOption(IndexOf(uiStyle.Theme, style.AllTheme))
+	transparentDropDown.SetLabel("Transparent: ").
+		SetOptions([]string{"true", "false"}, nil).
+		SetCurrentOption(
+			IndexOf(strconv.FormatBool(uiStyle.Transparent),
+				[]string{"true", "false"}))
 	hideBelowDropDown.SetLabel("Hide below: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
 			IndexOf(strconv.FormatBool(uiStyle.HideBelow),
 				[]string{"true", "false"}))
-	transparentDropDown.SetLabel("Transparent: ").
+	osc52DropDown.SetLabel("OSC 52: ").
 		SetOptions([]string{"true", "false"}, nil).
 		SetCurrentOption(
-			IndexOf(strconv.FormatBool(uiStyle.Transparent),
+			IndexOf(strconv.FormatBool(uiStyle.OSC52),
 				[]string{"true", "false"}))
 	srcBorderDropDown.SetLabel("Border Color: ").
 		SetOptions(style.Palette, nil).
@@ -340,7 +347,7 @@ func uiInit() {
 					Item{item: dstLangDropDown, fixedSize: 0, proportion: 1, focus: false}),
 					fixedSize: 0, proportion: 1, focus: true}),
 				fixedSize: 2 * langStrMaxLength, proportion: 1, focus: true}),
-			popOutWindowHeight, 1, true).
+			popOutMenuHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	stylePopOut.SetDirection(tview.FlexRow).
@@ -351,22 +358,23 @@ func uiInit() {
 					Item{item: attachItems(false, tview.FlexRow,
 						Item{item: themeDropDown, fixedSize: 0, proportion: 1, focus: true},
 						Item{item: transparentDropDown, fixedSize: 0, proportion: 1, focus: false},
-						Item{item: hideBelowDropDown, fixedSize: 0, proportion: 1, focus: false}),
+						Item{item: hideBelowDropDown, fixedSize: 0, proportion: 1, focus: false},
+						Item{item: osc52DropDown, fixedSize: 0, proportion: 1, focus: false}),
 						fixedSize: 0, proportion: 1, focus: true}),
-					fixedSize: 3, proportion: 1, focus: true},
+					fixedSize: 4, proportion: 1, focus: true},
 				Item{item: attachItems(false, tview.FlexColumn,
 					Item{item: srcBorderDropDown, fixedSize: 0, proportion: 1, focus: false},
 					Item{item: dstBorderDropDown, fixedSize: 0, proportion: 1, focus: false}),
 					fixedSize: 0, proportion: 1, focus: false}),
 				fixedSize: 2 * langStrMaxLength, proportion: 1, focus: true}),
-			popOutWindowHeight, 1, true).
+			popOutMenuHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 	keyMapPopOut.SetDirection(tview.FlexRow).
 		AddItem(nil, 0, 1, false).
 		AddItem(attachItems(true, tview.FlexColumn,
 			Item{item: keyMapMenu, fixedSize: 2 * langStrMaxLength, proportion: 1, focus: true}),
-			popOutWindowHeight, 1, true).
+			popOutMenuHeight, 1, true).
 		AddItem(attachButton(), 1, 1, false).
 		AddItem(nil, 0, 1, false)
 
@@ -428,6 +436,10 @@ func uiInit() {
 		SetSelectedFunc(func(text string, index int) {
 			uiStyle.HideBelow, _ = strconv.ParseBool(text)
 			updateTranslateWindow()
+		})
+	osc52DropDown.SetDoneFunc(styleDropDownHandler).
+		SetSelectedFunc(func(text string, index int) {
+			uiStyle.OSC52, _ = strconv.ParseBool(text)
 		})
 	srcBorderDropDown.SetDoneFunc(styleDropDownHandler).
 		SetSelectedFunc(func(text string, index int) {
