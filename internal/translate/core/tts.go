@@ -4,8 +4,8 @@ import (
 	"io"
 	"time"
 
+	"github.com/gen2brain/malgo"
 	"github.com/hajimehoshi/go-mp3"
-	"github.com/hajimehoshi/oto/v2"
 )
 
 type TTS struct {
@@ -47,18 +47,41 @@ func (s *TTS) Play(body io.Reader) error {
 	if err != nil {
 		return err
 	}
-	otoCtx, readyChan, err := oto.NewContext(decoder.SampleRate(), 2, 2)
+	ctx, err := malgo.InitContext(nil, malgo.ContextConfig{}, nil)
 	if err != nil {
 		return err
 	}
-	<-readyChan
-	player := otoCtx.NewPlayer(decoder)
-	player.Play()
-	for player.IsPlaying() {
+	defer func() {
+		ctx.Uninit()
+		ctx.Free()
+	}()
+	deviceConfig := malgo.DefaultDeviceConfig(malgo.Playback)
+	deviceConfig.Playback.Format = malgo.FormatS16
+	deviceConfig.Playback.Channels = 2
+	deviceConfig.SampleRate = uint32(decoder.SampleRate())
+	isPlaying := true
+	deviceCallbacks := malgo.DeviceCallbacks{
+		Data: func(outputSamples, inputSamples []byte, frameCount uint32) {
+			read, _ := io.ReadFull(decoder, outputSamples)
+			if read <= 0 {
+				isPlaying = false
+				return
+			}
+		}}
+	device, err := malgo.InitDevice(ctx.Context, deviceConfig, deviceCallbacks)
+	if err != nil {
+		return err
+	}
+	defer device.Uninit()
+	err = device.Start()
+	if err != nil {
+		return err
+	}
+	for isPlaying {
 		if s.IsStopped() {
-			return player.Close()
+			return nil
 		}
 		time.Sleep(time.Millisecond)
 	}
-	return player.Close()
+	return nil
 }
