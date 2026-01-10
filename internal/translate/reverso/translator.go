@@ -2,6 +2,7 @@ package reverso
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -65,9 +66,17 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		bytes.NewBuffer(userData))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("User-Agent", core.UserAgent)
-	res, err := http.DefaultClient.Do(req)
+	client := http.DefaultClient
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{
+			MinVersion: tls.VersionTLS13,
+		},
+	}
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
+	} else if res.StatusCode != 200 {
+		return nil, errors.New(fmt.Sprintf("Request failed, return code: %d", res.StatusCode))
 	}
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -124,9 +133,17 @@ func (t *Translator) PlayTTS(lang, message string) error {
 	)
 	req, _ := http.NewRequest("GET", urlStr, nil)
 	req.Header.Add("User-Agent", core.UserAgent)
-	res, err := http.DefaultClient.Do(req)
+	client := http.DefaultClient
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{
+			MinVersion: tls.VersionTLS13,
+		},
+	}
+	res, err := client.Do(req)
 	if err != nil {
 		return err
+	} else if res.StatusCode != 200 {
+		return errors.New(fmt.Sprintf("Request failed, return code: %d", res.StatusCode))
 	}
 	return t.Play(res.Body)
 }
