@@ -84,6 +84,7 @@ func (t *Translator) setUp() (*setUpData, error) {
 func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
 	var data []any
+	var tmpData any
 
 	initData, err := t.setUp()
 	if err != nil {
@@ -139,10 +140,14 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	if err != nil {
 		return nil, err
 	}
-	// Bing will return the request with list when success.
-	// Otherwises, it would return map. Then the following err would not be nil.
-	if err = json.Unmarshal(body, &data); err != nil {
+	if err = json.Unmarshal(body, &tmpData); err != nil {
 		return nil, err
+	}
+	// Bing will return the request with list when success.
+	// Otherwises, it would return map. Then the following ok would not be true.
+	data, ok := tmpData.([]any)
+	if !ok {
+		return translation, nil
 	}
 
 	if len(data) <= 0 {
