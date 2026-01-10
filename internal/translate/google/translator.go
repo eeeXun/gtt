@@ -38,7 +38,7 @@ func (t *Translator) GetAllLang() []string {
 
 func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data []interface{}
+	var data []any
 
 	urlStr := fmt.Sprintf(
 		textURL,
@@ -63,25 +63,25 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 
 	// translation = data[0]
-	for _, line := range data[0].([]interface{}) {
-		translatedLine := line.([]interface{})[0]
+	for _, line := range data[0].([]any) {
+		translatedLine := line.([]any)[0]
 		translation.TEXT += translatedLine.(string)
 	}
 	// part of speech = data[1]
 	if data[1] != nil {
-		for _, partOfSpeeches := range data[1].([]interface{}) {
-			partOfSpeeches := partOfSpeeches.([]interface{})
+		for _, partOfSpeeches := range data[1].([]any) {
+			partOfSpeeches := partOfSpeeches.([]any)
 			// part of speech
 			pos := partOfSpeeches[0]
 			translation.POS += fmt.Sprintf("[%v]\n", pos)
-			for _, words := range partOfSpeeches[2].([]interface{}) {
-				words := words.([]interface{})
+			for _, words := range partOfSpeeches[2].([]any) {
+				words := words.([]any)
 				// dst lang
 				dstWord := words[0]
 				translation.POS += fmt.Sprintf("\t%v:", dstWord)
 				// src lang
 				firstWord := true
-				for _, word := range words[1].([]interface{}) {
+				for _, word := range words[1].([]any) {
 					if firstWord {
 						translation.POS += fmt.Sprintf(" %v", word)
 						firstWord = false
@@ -95,13 +95,13 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 	// definition = data[12]
 	if len(data) >= 13 && data[12] != nil {
-		for _, definitions := range data[12].([]interface{}) {
-			definitions := definitions.([]interface{})
+		for _, definitions := range data[12].([]any) {
+			definitions := definitions.([]any)
 			// part of speech
 			pos := definitions[0]
 			translation.DEF += fmt.Sprintf("[%v]\n", pos)
-			for _, sentences := range definitions[1].([]interface{}) {
-				sentences := sentences.([]interface{})
+			for _, sentences := range definitions[1].([]any) {
+				sentences := sentences.([]any)
 				// definition
 				def := sentences[0]
 				translation.DEF += fmt.Sprintf("\t- %v\n", def)
