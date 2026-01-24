@@ -6,12 +6,14 @@ pkgrel=1
 pkgdesc='Translate TUI in Golang'
 url='https://github.com/eeeXun/gtt'
 license=('MIT')
-source_x86_64=("gtt-${pkgver}-linux-amd64.tar.gz::${url}/releases/download/v${pkgver}/gtt-linux-amd64.tar.gz")
-arch=('x86_64')
 depends=('alsa-lib')
 optdepends=('xclip: for clipboard support on X11' 'wl-clipboard: for clipboard support on Wayland')
 provides=('gtt')
+arch=('x86_64' 'aarch64')
+source_x86_64=("gtt-${pkgver}-linux-amd64.tar.gz::${url}/releases/download/v${pkgver}/gtt-linux-amd64.tar.gz")
+source_aarch64=("gtt-${pkgver}-linux-amd64.tar.gz::${url}/releases/download/v${pkgver}/gtt-linux-arm64.tar.gz")
 sha256sums_x86_64=('SHA256SUMS_X86_64')
+sha256sums_aarch64=('SHA256SUMS_AARCH64')
 
 package() {
   install -Dm755 "gtt" "$pkgdir/usr/bin/gtt"

@@ -17,11 +17,13 @@ jobs:
           git fetch --tags
           echo "VERSION=$(git describe --tags)" >> $GITHUB_ENV
 
-      - name: Replace PKGVER, SHA256SUMS_X86_64 in PKGBUILD
+      - name: Replace PKGVER, SHA256SUMS in PKGBUILD
         run: |
           sed -i "s/PKGVER/$(echo ${{ env.VERSION }} | cut -c2-)/g" build/PKGBUILD
           wget https://github.com/eeeXun/gtt/releases/download/${{ env.VERSION }}/gtt-linux-amd64.tar.gz
           sed -i "s/SHA256SUMS_X86_64/$(sha256sum gtt-linux-amd64.tar.gz | awk '{print $1}')/g" build/PKGBUILD
+          wget https://github.com/eeeXun/gtt/releases/download/${{ env.VERSION }}/gtt-linux-arm64.tar.gz
+          sed -i "s/SHA256SUMS_AARCH64/$(sha256sum gtt-linux-arm64.tar.gz | awk '{print $1}')/g" build/PKGBUILD
 
       - name: Publish to the AUR
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
