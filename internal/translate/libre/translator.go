@@ -36,7 +36,7 @@ func (t *Translator) GetAllLang() []string {
 
 func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data map[string]interface{}
+	var data map[string]any
 
 	var textURL string
 	if len(t.GetHost()) > 0 {

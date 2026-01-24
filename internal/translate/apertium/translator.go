@@ -37,7 +37,7 @@ func (t *Translator) GetAllLang() []string {
 
 func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data map[string]interface{}
+	var data map[string]any
 
 	urlStr := fmt.Sprintf(
 		textURL,
@@ -62,14 +62,13 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 	// If responseData is nil, then suppose the translation pair is not available
 	if data["responseData"] == nil {
-		return nil, errors.New(fmt.Sprintf("%s does not support translate from %s to %s.",
+		return nil, fmt.Errorf("%s does not support translate from %s to %s.",
 			t.GetEngineName(),
 			t.GetSrcLang(),
-			t.GetDstLang(),
-		))
+			t.GetDstLang())
 	}
 
-	translation.TEXT = data["responseData"].(map[string]interface{})["translatedText"].(string)
+	translation.TEXT = data["responseData"].(map[string]any)["translatedText"].(string)
 
 	return translation, nil
 }

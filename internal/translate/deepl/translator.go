@@ -38,7 +38,7 @@ func (t *Translator) GetAllLang() []string {
 
 func (t *Translator) deeplTranslate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data map[string]interface{}
+	var data map[string]any
 
 	if len(t.GetAPIKey()) <= 0 {
 		return nil, errors.New("Please write your API Key in config file for " + t.GetEngineName())
@@ -71,20 +71,20 @@ func (t *Translator) deeplTranslate(message string) (translation *core.Translati
 		return nil, errors.New("translation not found")
 	}
 
-	translation.TEXT = data["translations"].([]interface{})[0].(map[string]interface{})["text"].(string)
+	translation.TEXT = data["translations"].([]any)[0].(map[string]any)["text"].(string)
 
 	return translation, nil
 }
 
 func (t *Translator) deeplxTranslate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data map[string]interface{}
+	var data map[string]any
 
 	if len(t.GetHost()) <= 0 {
 		return nil, errors.New("Please write your host in config file for " + t.GetEngineName())
 	}
 
-	userData, _ := json.Marshal(map[string]interface{}{
+	userData, _ := json.Marshal(map[string]any{
 		"text":        message,
 		"source_lang": langCode[t.GetSrcLang()],
 		"target_lang": langCode[t.GetDstLang()],

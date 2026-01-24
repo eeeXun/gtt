@@ -37,13 +37,13 @@ func (t *Translator) GetAllLang() []string {
 
 func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data map[string]interface{}
+	var data map[string]any
 
 	if len(t.GetAPIKey()) <= 0 {
 		return nil, errors.New("Please write your API Key in config file for " + t.GetEngineName())
 	}
 
-	userData, _ := json.Marshal(map[string]interface{}{
+	userData, _ := json.Marshal(map[string]any{
 		"model": "gpt-3.5-turbo",
 		"messages": []map[string]string{{
 			"role": "user",
@@ -78,11 +78,11 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		return nil, errors.New("Translation not found")
 	}
 	if data["error"] != nil {
-		return nil, errors.New(data["error"].(map[string]interface{})["message"].(string))
+		return nil, errors.New(data["error"].(map[string]any)["message"].(string))
 	}
 
 	translation.TEXT =
-		data["choices"].([]interface{})[0].(map[string]interface{})["message"].(map[string]interface{})["content"].(string)
+		data["choices"].([]any)[0].(map[string]any)["message"].(map[string]any)["content"].(string)
 
 	return translation, nil
 }

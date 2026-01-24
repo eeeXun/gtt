@@ -83,7 +83,8 @@ func (t *Translator) setUp() (*setUpData, error) {
 
 func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data []interface{}
+	var data []any
+	var tmpData any
 
 	initData, err := t.setUp()
 	if err != nil {
@@ -120,7 +121,7 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 
 	// translation
 	translation.TEXT =
-		data[0].(map[string]interface{})["translations"].([]interface{})[0].(map[string]interface{})["text"].(string)
+		data[0].(map[string]any)["translations"].([]any)[0].(map[string]any)["text"].(string)
 
 	// request part of speech
 	userData.Del("fromLang")
@@ -139,10 +140,14 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	if err != nil {
 		return nil, err
 	}
-	// Bing will return the request with list when success.
-	// Otherwises, it would return map. Then the following err would not be nil.
-	if err = json.Unmarshal(body, &data); err != nil {
+	if err = json.Unmarshal(body, &tmpData); err != nil {
 		return nil, err
+	}
+	// Bing will return the request with list when success.
+	// Otherwises, it would return map. Then the following ok would not be true.
+	data, ok := tmpData.([]any)
+	if !ok {
+		return translation, nil
 	}
 
 	if len(data) <= 0 {
@@ -150,13 +155,13 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 
 	poses := make(posSet)
-	for _, pos := range data[0].(map[string]interface{})["translations"].([]interface{}) {
-		pos := pos.(map[string]interface{})
+	for _, pos := range data[0].(map[string]any)["translations"].([]any) {
+		pos := pos.(map[string]any)
 		var words posWords
 
 		words.target = pos["displayTarget"].(string)
-		for _, backTranslation := range pos["backTranslations"].([]interface{}) {
-			backTranslation := backTranslation.(map[string]interface{})
+		for _, backTranslation := range pos["backTranslations"].([]any) {
+			backTranslation := backTranslation.(map[string]any)
 			words.add(backTranslation["displayText"].(string))
 		}
 		poses.add(pos["posTag"].(string), words)

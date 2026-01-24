@@ -2,6 +2,7 @@ package reverso
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -40,15 +41,14 @@ func (t *Translator) GetAllLang() []string {
 
 func (t *Translator) Translate(message string) (translation *core.Translation, err error) {
 	translation = new(core.Translation)
-	var data map[string]interface{}
+	var data map[string]any
 
 	if t.GetSrcLang() == t.GetDstLang() {
-		return nil, errors.New(
-			fmt.Sprintf("%s doesn't support translation of the same language.\ni.e. %s to %s",
-				t.GetEngineName(), t.GetSrcLang(), t.GetDstLang()))
+		return nil, fmt.Errorf("%s doesn't support translation of the same language.\ni.e. %s to %s",
+			t.GetEngineName(), t.GetSrcLang(), t.GetDstLang())
 	}
 
-	userData, _ := json.Marshal(map[string]interface{}{
+	userData, _ := json.Marshal(map[string]any{
 		"format": "text",
 		"from":   langCode[t.GetSrcLang()],
 		"to":     langCode[t.GetDstLang()],
@@ -65,9 +65,17 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 		bytes.NewBuffer(userData))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("User-Agent", core.UserAgent)
-	res, err := http.DefaultClient.Do(req)
+	client := http.DefaultClient
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{
+			MinVersion: tls.VersionTLS13,
+		},
+	}
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
+	} else if res.StatusCode != 200 {
+		return nil, fmt.Errorf("Request failed, return code: %d", res.StatusCode)
 	}
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -82,16 +90,16 @@ func (t *Translator) Translate(message string) (translation *core.Translation, e
 	}
 
 	// translation
-	for _, line := range data["translation"].([]interface{}) {
+	for _, line := range data["translation"].([]any) {
 		translation.TEXT += line.(string)
 	}
 	// definition and part of speech
 	if data["contextResults"] != nil {
-		for _, results := range data["contextResults"].(map[string]interface{})["results"].([]interface{}) {
-			results := results.(map[string]interface{})
+		for _, results := range data["contextResults"].(map[string]any)["results"].([]any) {
+			results := results.(map[string]any)
 			// definition
-			srcExample := results["sourceExamples"].([]interface{})
-			dstExample := results["targetExamples"].([]interface{})
+			srcExample := results["sourceExamples"].([]any)
+			dstExample := results["targetExamples"].([]any)
 			if len(srcExample) > 0 && len(dstExample) > 0 {
 				for i := 0; i < len(srcExample) && i < len(dstExample); i++ {
 					translation.DEF += fmt.Sprintf("- %v\n\t\"%v\"\n", srcExample[i], dstExample[i])
@@ -124,9 +132,17 @@ func (t *Translator) PlayTTS(lang, message string) error {
 	)
 	req, _ := http.NewRequest("GET", urlStr, nil)
 	req.Header.Add("User-Agent", core.UserAgent)
-	res, err := http.DefaultClient.Do(req)
+	client := http.DefaultClient
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{
+			MinVersion: tls.VersionTLS13,
+		},
+	}
+	res, err := client.Do(req)
 	if err != nil {
 		return err
+	} else if res.StatusCode != 200 {
+		return fmt.Errorf("Request failed, return code: %d", res.StatusCode)
 	}
 	return t.Play(res.Body)
 }

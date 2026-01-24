@@ -36,7 +36,7 @@ func configInit() {
 			"toggle_transparent": "C-t",
 			"toggle_below":       "C-\\",
 		}
-		defaultConfig = map[string]interface{}{
+		defaultConfig = map[string]any{
 			"osc52":                         false,
 			"hide_below":                    false,
 			"transparent":                   false,
