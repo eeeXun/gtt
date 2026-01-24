@@ -104,7 +104,7 @@ nix run github:nixos/nixpkgs#gtt
 
 ### Prebuild
 
-Binary file is available in [Release Page](https://github.com/eeeXun/gtt/releases) for Linux and macOS on x86_64.
+Binary file is available in [Release Page](https://github.com/eeeXun/gtt/releases) for Linux and macOS.
 
 ### From source
 
