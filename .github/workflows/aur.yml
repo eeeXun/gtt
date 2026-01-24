@@ -10,7 +10,7 @@ jobs:
   aur:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Set env VERSION
         run: |
@@ -24,7 +24,7 @@ jobs:
           sed -i "s/SHA256SUMS_X86_64/$(sha256sum gtt-linux-amd64.tar.gz | awk '{print $1}')/g" build/PKGBUILD
 
       - name: Publish to the AUR
-        uses: KSXGitHub/github-actions-deploy-aur@v2.7.2
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
         with:
           pkgname: gtt-bin
           pkgbuild: build/PKGBUILD
