@@ -20,31 +20,31 @@ type Item struct {
 const (
 	popOutMenuHeight int    = 20
 	langStrMaxLength int    = 32
-	keyMapText       string = `[#%[1]s]<C-c>[-]
+	keyMapText       string = `[#%[1]s]<%[2]s>[-]
 	Exit program.
 [#%[1]s]<Esc>[-]
 	Toggle pop out menu.
-[#%[1]s]<%[2]s>[-]
-	Translate from source to destination window.
 [#%[1]s]<%[3]s>[-]
-	Swap language.
+	Translate from source to destination window.
 [#%[1]s]<%[4]s>[-]
-	Clear all text in source of translation window.
+	Swap language.
 [#%[1]s]<%[5]s>[-]
-	Copy selected text.
+	Clear all text in source of translation window.
 [#%[1]s]<%[6]s>[-]
-	Copy all text in source of translation window.
+	Copy selected text.
 [#%[1]s]<%[7]s>[-]
-	Copy all text in destination of translation window.
+	Copy all text in source of translation window.
 [#%[1]s]<%[8]s>[-]
-	Play text to speech on source of translation window.
+	Copy all text in destination of translation window.
 [#%[1]s]<%[9]s>[-]
-	Play text to speech on destination of translation window.
+	Play text to speech on source of translation window.
 [#%[1]s]<%[10]s>[-]
-	Stop playing text to speech.
+	Play text to speech on destination of translation window.
 [#%[1]s]<%[11]s>[-]
-	Toggle transparent.
+	Stop playing text to speech.
 [#%[1]s]<%[12]s>[-]
+	Toggle transparent.
+[#%[1]s]<%[13]s>[-]
 	Toggle Definition/Example & Part of speech.
 [#%[1]s]<Tab>, <S-Tab>[-]
 	Cycle through the pop out widget.
@@ -170,6 +170,7 @@ func updateNonConfigColor() {
 	keyMapMenu.SetTextColor(uiStyle.ForegroundColor()).
 		SetText(fmt.Sprintf(keyMapText,
 			fmt.Sprintf("%.6x", uiStyle.HighLightColor().TrueColor().Hex()),
+			keyMaps["exit"],
 			keyMaps["translate"],
 			keyMaps["swap_language"],
 			keyMaps["clear"],
@@ -386,9 +387,6 @@ func uiInit() {
 	app.SetInputCapture(appHandler)
 	translateWindow.SetInputCapture(translateWindowHandler)
 	for _, widget := range []*tview.TextArea{srcInput, defOutput, posOutput} {
-		// fix for loop problem
-		// https://github.com/golang/go/discussions/56010
-		widget := widget
 		widget.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 			keyName := getKeyName(event)
 
