@@ -387,9 +387,6 @@ func uiInit() {
 	app.SetInputCapture(appHandler)
 	translateWindow.SetInputCapture(translateWindowHandler)
 	for _, widget := range []*tview.TextArea{srcInput, defOutput, posOutput} {
-		// fix for loop problem
-		// https://github.com/golang/go/discussions/56010
-		widget := widget
 		widget.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 			keyName := getKeyName(event)
 
