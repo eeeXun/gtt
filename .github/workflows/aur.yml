@@ -26,7 +26,7 @@ jobs:
           sed -i "s/SHA256SUMS_AARCH64/$(sha256sum gtt-linux-arm64.tar.gz | awk '{print $1}')/g" build/PKGBUILD
 
       - name: Publish to the AUR
-        uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.3
         with:
           pkgname: gtt-bin
           pkgbuild: build/PKGBUILD
