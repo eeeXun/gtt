@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	textURL = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=bd&dt=md&dt=ex&sl=%s&tl=%s&q=%s"
+	textURL = "https://translate.googleapis.com/translate_a/single?client=at&dt=t&dt=bd&dt=md&dt=ex&sl=%s&tl=%s&q=%s"
 	ttsURL  = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=%s&tl=%s&client=tw-ob"
 )
 
