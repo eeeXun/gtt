@@ -3,7 +3,6 @@ package translate
 import (
 	"github.com/eeeXun/gtt/internal/translate/apertium"
 	"github.com/eeeXun/gtt/internal/translate/bing"
-	"github.com/eeeXun/gtt/internal/translate/chatgpt"
 	"github.com/eeeXun/gtt/internal/translate/core"
 	"github.com/eeeXun/gtt/internal/translate/deepl"
 	"github.com/eeeXun/gtt/internal/translate/google"
@@ -15,7 +14,6 @@ var (
 	AllTranslator = []string{
 		"Apertium",
 		"Bing",
-		"ChatGPT",
 		"DeepL",
 		"DeepLX",
 		"Google",
@@ -76,8 +74,6 @@ func NewTranslator(name string) Translator {
 		translator = apertium.NewTranslator()
 	case "Bing":
 		translator = bing.NewTranslator()
-	case "ChatGPT":
-		translator = chatgpt.NewTranslator()
 	case "DeepL", "DeepLX":
 		translator = deepl.NewTranslator(name)
 	case "Google":

@@ -1,8 +1,5 @@
 # This file should be located at $XDG_CONFIG_HOME/gtt/server.yaml or $HOME/.config/gtt/server.yaml.
 api_key:
-  chatgpt:
-    value: CHATGPT_API_KEY
-    # file: $HOME/secrets/chatgpt.txt
   deepl:
     value: DEEPL_API_KEY
     # file: $HOME/secrets/deepl.txt
