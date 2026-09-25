@@ -47,8 +47,6 @@ func configInit() {
 			"destination.language.apertium": "English",
 			"source.language.bing":          "English",
 			"destination.language.bing":     "English",
-			"source.language.chatgpt":       "English",
-			"destination.language.chatgpt":  "English",
 			"source.language.deepl":         "English",
 			"destination.language.deepl":    "English",
 			"source.language.deeplx":        "English",
@@ -162,7 +160,7 @@ func configInit() {
 	// Import api key and host if file exists
 	if err := serverConfig.ReadInConfig(); err == nil {
 		// api key
-		for _, name := range []string{"ChatGPT", "DeepL", "DeepLX", "Libre"} {
+		for _, name := range []string{"DeepL", "DeepLX", "Libre"} {
 			// Read from value first, then read from file
 			if serverConfig.Get(fmt.Sprintf("api_key.%s.value", name)) != nil {
 				translators[name].SetAPIKey(serverConfig.GetString(fmt.Sprintf("api_key.%s.value", name)))
