@@ -5,7 +5,6 @@ Google Translate TUI (Originally)
 Supported Translator:
 [`Apertium`](https://www.apertium.org/),
 [`Bing`](https://www.bing.com/translator),
-[`ChatGPT`](https://chat.openai.com/),
 [`DeepL`](https://deepl.com/translator)(only free API),
 [`DeepLX`](https://github.com/OwO-Network/DeepLX),
 [`Google`](https://translate.google.com/)(default),
@@ -16,20 +15,16 @@ Supported Translator:
 
 ![screenshot](https://github.com/eeeXun/gtt/assets/58657914/3841c2bf-62f7-434a-9e77-91c3748c5675)
 
-## ⚠️ Note for ChatGPT and DeepL
+## ⚠️ Note for DeepL
 
-ChatGPT and DeepL translations require API keys, which can be obtained from
-[OpenAI API keys](https://platform.openai.com/account/api-keys) and
-[DeepL API signup](https://www.deepl.com/pro-api) pages, respectively. Note
+DeepL translations require an API key, which can be obtained from
+[DeepL API signup](https://www.deepl.com/pro-api) page. Note
 that only the free API is supported for DeepL currently. Once you have your
 API key add it to `$XDG_CONFIG_HOME/gtt/server.yaml` or `$HOME/.config/gtt/server.yaml`.
 See the example in [server.yaml](example/server.yaml) file.
 
 ```yaml
 api_key:
-  chatgpt:
-    value: CHATGPT_API_KEY # <- Replace with your API Key
-    # file: $HOME/secrets/chatgpt.txt # <- You can also specify the file where to read API Key
   deepl:
     value: DEEPL_API_KEY # <- Replace with your API Key
     # file: $HOME/secrets/deepl.txt # <- You can also specify the file where to read API Key
@@ -231,7 +226,6 @@ See available languages on:
 
 - [Apertium Translate](https://www.apertium.org/) for `Apertium`
 - [Bing language-support](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translation) for `Bing`
-- `ChatGPT` is same as `Google`. See [Google Language support](https://cloud.google.com/translate/docs/languages)
 - [DeepL API docs](https://www.deepl.com/docs-api/translate-text/) for `DeepL`
 - `DeepLX` is same as `DeepL`. See [DeepL API docs](https://cloud.google.com/translate/docs/languages)
 - [Google Language support](https://cloud.google.com/translate/docs/languages) for `Google`
